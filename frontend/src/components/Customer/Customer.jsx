@@ -2,9 +2,10 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import Paper from '@mui/material/Paper';
-import Logout from '../Logout/Logout';
+import { useNavigate } from 'react-router-dom';
 
 export default function Customer() {
+  const navigate = useNavigate();
   const styleForHorizontalCenter = {
     position: 'absolute',
     top: '50%',
@@ -20,8 +21,12 @@ export default function Customer() {
   };
 
   const [user, setUser] = React.useState('Abc');
-  //let {id} = useParams();
-  let id = 1;
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    localStorage.setItem('isAuthenticated', false);
+    navigate('/');
+  };
 
   return (
     <Container fluid style={{ ...styleForHorizontalCenter }}>
@@ -42,7 +47,13 @@ export default function Customer() {
             </Button>{' '}
             <br />
             <br />
-            <Logout />
+            <Button
+              onClick={(e) => handleSubmit(e)}
+              variant='success'
+              size='lg'
+            >
+              Logout
+            </Button>
           </Paper>
         </Col>
       </Row>

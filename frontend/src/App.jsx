@@ -9,11 +9,10 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 function App() {
   return (
+    <>
       <Router>
         {/* <NavBar/> */}
         <Routes>
-          {/* <Route exact path='/*' element={<Customer />} />
-          <Route exact path='/login' element={<Customer />} /> */}
           <Route path='/' element={<Login />} />
           <Route
             path='/customer'
@@ -44,6 +43,7 @@ function App() {
           <Route path='*' element={<NotFound />} />
         </Routes>
       </Router>
+    </>
   );
 }
 
