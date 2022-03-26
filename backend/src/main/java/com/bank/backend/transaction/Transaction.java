@@ -1,5 +1,10 @@
 package com.bank.backend.transaction;
 
+import com.bank.backend.bankaccount.BankAccount;
+import com.bank.backend.interfaces.IDepositable;
+import com.bank.backend.interfaces.IWithdrawable;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import javax.persistence.*;
 
 @Entity
@@ -17,21 +22,23 @@ public class Transaction {
     )
     private Long id;
     private Double value;
-    private Long source;
-    private Long destination;
+    private final BankAccount source;
+    private final BankAccount destination;
     private TransactionType type;
 
     public Transaction() {
+
     }
 
-    public Transaction(Double value, Long source, Long destination, TransactionType type) {
+    @Autowired
+    public Transaction(Double value, BankAccount source, BankAccount destination, TransactionType type) {
         this.value = value;
         this.source = source;
         this.destination = destination;
         this.type = type;
     }
 
-    public Transaction(Long id, Double value, Long source, Long destination, TransactionType type) {
+    public Transaction(Long id, Double value, BankAccount source, BankAccount destination, TransactionType type) {
         this.id = id;
         this.value = value;
         this.source = source;
