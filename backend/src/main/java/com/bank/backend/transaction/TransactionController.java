@@ -18,12 +18,12 @@ public class TransactionController {
     }
 
     @GetMapping
-    public List<Transaction> getUsers() {
+    public List<Transaction> getTransaction() {
         return transactionService.getTransactions();
     }
 
     @PostMapping
-    public void registerNewUser(@RequestBody Transaction transaction) {
+    public void registerNewTransaction(@RequestBody Transaction transaction) {
         transactionService.addNewTransaction(transaction);
     }
 }

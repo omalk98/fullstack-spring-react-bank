@@ -1,4 +1,6 @@
 package com.bank.backend.customer;
 
-public class Customer {
+import com.bank.backend.useraccount.UserAccount;
+
+public class Customer extends UserAccount {
 }
