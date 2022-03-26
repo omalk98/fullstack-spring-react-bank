@@ -2,7 +2,6 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import Paper from '@mui/material/Paper';
-import Logout from '../Logout/Logout';
 
 export default function Customer() {
   const styleForHorizontalCenter = {
@@ -42,7 +41,6 @@ export default function Customer() {
             </Button>{' '}
             <br />
             <br />
-            <Logout />
           </Paper>
         </Col>
       </Row>
