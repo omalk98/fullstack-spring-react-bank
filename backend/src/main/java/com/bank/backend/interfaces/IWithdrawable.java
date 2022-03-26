@@ -1,6 +1,7 @@
-package com.bank.backend.interfaces;
-
-@FunctionalInterface
-public interface IWithdrawable {
-    void withdraw(IDepositable bankAccount);
-}
+//package com.bank.backend.interfaces;
+//
+//import com.bank.backend.bankaccount.BankAccount;
+//
+//public interface IWithdrawable {
+//    void withdraw(BankAccount bankAccount);
+//}

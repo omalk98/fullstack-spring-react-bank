@@ -1,6 +1,6 @@
-package com.bank.backend.transaction;
-
-public enum TransactionType {
-    DEPOSIT,
-    WITHDRAW
-}
+//package com.bank.backend.transaction;
+//
+//public enum TransactionType {
+//    DEPOSIT,
+//    WITHDRAW
+//}
