@@ -1,4 +1,4 @@
-package com.bank.backend.userAccountTest;
+package com.bank.backend.useraccount;
 
 class UserAccountRepositoryTest {
     //@Test

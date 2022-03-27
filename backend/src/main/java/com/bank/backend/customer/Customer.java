@@ -1,10 +1,18 @@
 package com.bank.backend.customer;
 import com.bank.backend.bankaccount.BankAccount;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
+@Setter
+@EqualsAndHashCode
+@NoArgsConstructor
 @Entity
 @Table
 public class Customer {
@@ -33,41 +41,9 @@ public class Customer {
         this.bankAccounts = bankAccounts;
     }
 
-    public Customer(){}
 
     public Customer(String firstName, String lastName) {
         this.firstName = firstName;
-        this.lastName = lastName;
-    }
-
-    public void somerandom() {
-        System.out.println("fuck this");
-    }
-    public void TestFunction(){
-        System.out.println("Hello Soham");
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getFirstName() {
-        return this.firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
