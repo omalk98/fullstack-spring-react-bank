@@ -5,10 +5,7 @@ package com.bank.backend.bankaccount;
 //import com.bank.backend.transaction.Transaction;
 
 import com.bank.backend.customer.Customer;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -16,6 +13,7 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @EqualsAndHashCode
+@ToString
 @Entity
 @Table
 public /*abstract*/ class BankAccount /*implements IWithdrawable, IDepositable*/ {

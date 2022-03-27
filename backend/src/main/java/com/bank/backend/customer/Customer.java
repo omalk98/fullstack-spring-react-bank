@@ -1,9 +1,6 @@
 package com.bank.backend.customer;
 import com.bank.backend.bankaccount.BankAccount;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -13,6 +10,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @EqualsAndHashCode
+@ToString
 @Entity
 @Table
 public class Customer {

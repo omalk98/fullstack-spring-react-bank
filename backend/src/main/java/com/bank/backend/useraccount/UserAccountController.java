@@ -24,7 +24,7 @@ public class UserAccountController {
 
     @PostMapping
     public void registerNewUser(@RequestBody UserAccount user) {
-        userService.addNewUser(user);
+        userService.signupNewUser(user);
     }
 
     @DeleteMapping( path = "{studentID}")

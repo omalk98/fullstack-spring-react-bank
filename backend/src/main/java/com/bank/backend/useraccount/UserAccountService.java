@@ -1,38 +1,44 @@
 package com.bank.backend.useraccount;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @Service
-public class UserAccountService {
-    private final UserAccountRepository userRepository;
+@AllArgsConstructor
+public class UserAccountService /*implements UserDetailsService*/ {
 
-    @Autowired
-    public UserAccountService(UserAccountRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    private final static String USER_NOT_FOUND = "User <<%s>> does NOT Exist";
+    private final static String USER_ID_NOT_FOUND ="User with ID: %d does NOT Exist";
+    private final static String EMAIL_IN_USE = "The E-mail <<%s>> is already is Use";
+    private final UserAccountRepository userRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public List<UserAccount> getUsers() {
         return userRepository.findAll();
 
     }
 
-    public void addNewUser(UserAccount user) {
-        Optional<UserAccount> userByEmail = userRepository
-                .findUserAccountByEmail(user.getEmail());
-        if(userByEmail.isPresent())
-            throw new IllegalStateException("Email Already in Use");
+    public String signupNewUser(UserAccount user) {
+        if(userRepository.findUserAccountByEmail(user.getEmail()).isPresent())
+            throw new IllegalStateException(String.format(EMAIL_IN_USE, user.getEmail()));
+
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+
         userRepository.save(user);
+        return "";
     }
 
     public void deleteUser(Long id) {
         if(!userRepository.existsById(id))
-            throw new IllegalStateException("User with id: " + id + " does not exist");
+            throw new IllegalStateException();
     }
 
     public boolean authenticateUser(String username, String password) {
@@ -42,16 +48,20 @@ public class UserAccountService {
     @Transactional
     public void updateUser(Long id, String username, String email) {
         UserAccount user = userRepository.findById(id)
-                .orElseThrow(()->new IllegalStateException("User with id: " + id + " does not exist"));
+                .orElseThrow(()->new IllegalStateException(String.format(USER_ID_NOT_FOUND, id)));
 
         if(username != null && username.length() > 0 && !Objects.equals(user.getUsername(), username))
             user.setUsername(username);
 
         if(email != null && email.length() > 0 && !Objects.equals(user.getEmail(), email)) {
             if(userRepository.findUserAccountByEmail(email).isPresent())
-                throw new IllegalStateException("Email Already in Use");
+                throw new IllegalStateException(String.format(EMAIL_IN_USE, email));
             user.setEmail(username);
         }
-
     }
+
+//    @Override
+//    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+//        return userRepository.findUserAccountByEmail(username).orElseThrow(()->new UsernameNotFoundException(String.format(USER_NOT_FOUND, username)));
+//    }
 }

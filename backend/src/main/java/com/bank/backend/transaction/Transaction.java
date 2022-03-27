@@ -1,9 +1,6 @@
 package com.bank.backend.transaction;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -11,6 +8,7 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @EqualsAndHashCode
+@ToString
 @Entity
 @Table
 public class Transaction {
@@ -28,6 +26,7 @@ public class Transaction {
     private Double value;
     private Long source;
     private Long destination;
+    @Enumerated(EnumType.STRING)
     private TransactionType type;
 
     public Transaction(Double value, Long source, Long destination, TransactionType type) {

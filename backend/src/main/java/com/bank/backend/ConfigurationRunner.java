@@ -5,9 +5,11 @@
 //import com.bank.backend.transaction.TransactionType;
 //import com.bank.backend.useraccount.UserAccount;
 //import com.bank.backend.useraccount.UserAccountRepository;
+//import com.bank.backend.useraccount.UserAccountRole;
 //import org.springframework.boot.CommandLineRunner;
 //import org.springframework.context.annotation.Bean;
 //import org.springframework.context.annotation.Configuration;
+//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 //
 //import java.time.LocalDate;
 //import java.util.List;
@@ -18,9 +20,9 @@
 //    @Bean
 //    CommandLineRunner commandLineRunner(UserAccountRepository repository, TransactionRepository repository2) {
 //        return args -> {
-//            UserAccount x = new UserAccount("Omar", "Hussein", "ohussein2@myseneca.ca", "binAdmin", "12345", LocalDate.of(2020, 2, 25));
-//            UserAccount y = new UserAccount("Soham", "Thaker", "sthaker@myseneca.ca", "belFast", "12345", LocalDate.of(2020, 2, 25));
-//            UserAccount z = new UserAccount("Philippe", "Cormier", "pcormier3@myseneca.ca", "bigBrain", "12345", LocalDate.of(2020, 2, 25));
+//            UserAccount x = new UserAccount("Omar", "Hussein", "ohussein2@myseneca.ca", "binAdmin", new BCryptPasswordEncoder().encode("12345"), LocalDate.of(2020, 2, 25), UserAccountRole.ADMIN);
+//            UserAccount y = new UserAccount("Soham", "Thaker", "sthaker@myseneca.ca", "belFast", new BCryptPasswordEncoder().encode("12345"), LocalDate.of(2020, 2, 25), UserAccountRole.ADMIN);
+//            UserAccount z = new UserAccount("Philippe", "Cormier", "pcormier3@myseneca.ca", "bigBrain", new BCryptPasswordEncoder().encode("12345"), LocalDate.of(2020, 2, 25), UserAccountRole.ADMIN);
 //
 //            Transaction a = new Transaction(44.44, 1L, 2L, TransactionType.WITHDRAW);
 //            Transaction b = new Transaction(66.34, 2L, 3L, TransactionType.DEPOSIT);
