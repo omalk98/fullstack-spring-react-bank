@@ -39,7 +39,11 @@ public class Customer {
         this.firstName = firstName;
         this.lastName = lastName;
     }
-    
+
+    public void somerandom() {
+        System.out.println("fuck this");
+    }
+
     public Long getId() {
         return id;
     }
