@@ -1,24 +1,37 @@
-package com.bank.backend.bankaccount.customer;
-import javax.persistence.*;
+package com.bank.backend.customerTest;
+import com.bank.backend.bankaccount.BankAccount;
 
-import com.bank.backend.useraccount.UserAccount;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table
 public class Customer {
     @Id
     @SequenceGenerator(
-            name = "bankAccount_sequence",
-            sequenceName = "bankAccount_sequence",
+            name = "customer_sequence",
+            sequenceName = "customer_sequence",
             allocationSize = 1
     )
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
-            generator = "bankAccount_sequence"
+            generator = "customer_sequence"
     )
     private Long id;
     private String firstName;
     private String lastName;
+
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<BankAccount> bankAccounts = new ArrayList<>();
+
+    public List<BankAccount> getBankAccounts() {
+        return bankAccounts;
+    }
+
+    public void setBankAccounts(List<BankAccount> bankAccounts) {
+        this.bankAccounts = bankAccounts;
+    }
 
     public Customer(){}
 

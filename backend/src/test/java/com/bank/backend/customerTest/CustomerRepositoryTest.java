@@ -1,7 +1,5 @@
-package com.bank.backend.customer;
+package com.bank.backend.customerTest;
 
-import com.bank.backend.bankaccount.customer.Customer;
-import com.bank.backend.bankaccount.customer.CustomerRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,6 +19,8 @@ class CustomerRepositoryTest {
 
         customerRepository.saveAll(List.of(customer1, customer2, customer3));
     }
+
+    //find a customer, create a new account, pass that acc to that cx, save that cx to the db
 
     @Test
     public void printAllCustomers(){
