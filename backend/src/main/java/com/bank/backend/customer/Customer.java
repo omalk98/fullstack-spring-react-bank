@@ -43,6 +43,9 @@ public class Customer {
     public void somerandom() {
         System.out.println("fuck this");
     }
+    public void TestFunction(){
+        System.out.println("Hello Soham");
+    }
 
     public Long getId() {
         return id;
