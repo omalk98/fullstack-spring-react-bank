@@ -41,7 +41,11 @@ public class Customer {
     }
 
     public void OmarFunction() {
-        System.out.println("Hello Phil");
+        System.out.println("Hello Soham");
+    }
+
+    public void TestFunction(){
+        System.out.println("Hello Omar");
     }
 
     public Long getId() {
