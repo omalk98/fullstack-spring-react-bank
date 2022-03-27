@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 package com.bank.backend.useraccount;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +42,6 @@ public class UserAccountController {
 
     }
 }
-=======
 //package com.bank.backend.useraccount;
 //
 //import org.springframework.beans.factory.annotation.Autowired;
@@ -88,4 +86,3 @@ public class UserAccountController {
 //
 //    }
 //}
->>>>>>> 5cf0f54221d5e4870bc1c29cf2d99317eec7e8b2

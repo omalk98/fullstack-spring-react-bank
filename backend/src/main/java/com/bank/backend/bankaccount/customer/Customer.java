@@ -1,11 +1,8 @@
-package com.bank.backend.customer;
+package com.bank.backend.bankaccount.customer;
 import javax.persistence.*;
 
-<<<<<<< HEAD
 import com.bank.backend.useraccount.UserAccount;
 
-public class Customer extends UserAccount {
-=======
 @Entity
 @Table
 public class Customer {
@@ -62,5 +59,4 @@ public class Customer {
                 ", lastName='" + lastName + '\'' +
                 '}';
     }
->>>>>>> 5cf0f54221d5e4870bc1c29cf2d99317eec7e8b2
 }
