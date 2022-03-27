@@ -40,6 +40,10 @@ public class Customer {
         this.lastName = lastName;
     }
 
+    public void OmarFunction() {
+        System.out.println("Hello Phil");
+    }
+
     public Long getId() {
         return id;
     }
