@@ -1,4 +1,4 @@
-package com.bank.backend.customerTest;
+package com.bank.backend.customer;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

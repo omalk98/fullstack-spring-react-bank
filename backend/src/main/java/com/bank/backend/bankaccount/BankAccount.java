@@ -4,7 +4,7 @@ package com.bank.backend.bankaccount;
 //import com.bank.backend.interfaces.IWithdrawable;
 //import com.bank.backend.transaction.Transaction;
 
-import com.bank.backend.customerTest.Customer;
+import com.bank.backend.customer.Customer;
 
 import javax.persistence.*;
 

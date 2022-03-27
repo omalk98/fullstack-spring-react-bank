@@ -1,4 +1,4 @@
-package com.bank.backend.customerTest;
+package com.bank.backend.customer;
 import com.bank.backend.bankaccount.BankAccount;
 
 import javax.persistence.*;
