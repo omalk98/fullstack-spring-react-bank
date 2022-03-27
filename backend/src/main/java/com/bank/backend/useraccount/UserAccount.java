@@ -1,5 +1,6 @@
 package com.bank.backend.useraccount;
 
+import com.bank.backend.customer.Customer;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -43,6 +44,10 @@ public class UserAccount /*implements UserDetails */{
     private LocalDate dateOfBirth;
     private Boolean locked = false;
     private Boolean enabled = false;
+
+    @OneToOne(mappedBy = "userAccount", cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    private Customer customer;
 
     public UserAccount(String firstName, String lastName, String email, String username, String password, LocalDate dateOfBirth, UserAccountRole userRole) {
         this.firstName = firstName;

@@ -8,6 +8,8 @@ import com.bank.backend.customer.Customer;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -28,25 +30,25 @@ public /*abstract*/ class BankAccount /*implements IWithdrawable, IDepositable*/
             strategy = GenerationType.SEQUENCE,
             generator = "bankAccount_sequence"
     )
-    private Long id;
+    private Long accountNumber;
 
-    @ManyToOne
-    @JoinColumn(name = "customer_id")
-    private Customer customer;
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @JoinTable(name = "customer_bankAccount",
+            joinColumns = {
+                    @JoinColumn(name = "bank_account_number", referencedColumnName = "accountNumber",
+                            nullable = false, updatable = false)},
+            inverseJoinColumns = {
+                    @JoinColumn(name = "customer_id", referencedColumnName = "id",
+                            nullable = false, updatable = false)})
+    private Set<Customer> customers = new HashSet<>();
 
-    public Customer getCustomer() {
-        return customer;
+    public Set<Customer> getCustomer() {
+        return customers;
     }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
+    public void setCustomer(Set<Customer> customer) {
+        this.customers = customer;
     }
-
-
-    //    @ManyToOne
-//    private Customer customer;
-//    @OneToMany
-//    private List<Transaction> transactions;
 
 //    @Override
 //    public void deposit(BankAccount bankAccount) {

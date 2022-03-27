@@ -13,11 +13,11 @@ class CustomerRepositoryTest {
 
     @Test
     public void saveCustomer(){
-        Customer customer1 = new Customer("Jason", "Cormier");
-        Customer customer2 = new Customer("Omar", "Hussein");
-        Customer customer3 = new Customer("Soham", "Thaker");
+        //Customer customer1 = new Customer("Jason", "Cormier");
+        //Customer customer2 = new Customer("Omar", "Hussein");
+        //Customer customer3 = new Customer("Soham", "Thaker");
 
-        customerRepository.saveAll(List.of(customer1, customer2, customer3));
+        //customerRepository.saveAll(List.of(customer1, customer2, customer3));
     }
 
     //find a customer, create a new account, pass that acc to that cx, save that cx to the db

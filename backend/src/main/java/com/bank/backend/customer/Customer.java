@@ -1,10 +1,13 @@
 package com.bank.backend.customer;
 import com.bank.backend.bankaccount.BankAccount;
+import com.bank.backend.useraccount.UserAccount;
 import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -14,43 +17,24 @@ import java.util.List;
 @Entity
 @Table
 public class Customer {
+
     @Id
-    @SequenceGenerator(
-            name = "customer_sequence",
-            sequenceName = "customer_sequence",
-            allocationSize = 1
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "customer_sequence"
-    )
+    @Column(name = "id")
     private Long id;
-    private String firstName;
-    private String lastName;
 
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<BankAccount> bankAccounts = new ArrayList<>();
+    @OneToOne()
+    @MapsId
+    @JoinColumn(name = "id")
+    private UserAccount userAccount;
 
-    public List<BankAccount> getBankAccounts() {
+    @ManyToMany(mappedBy = "customers", fetch = FetchType.LAZY)
+    private Set<BankAccount> bankAccounts = new HashSet<>();
+
+    public Set<BankAccount> getBankAccounts() {
         return bankAccounts;
     }
 
-    public void setBankAccounts(List<BankAccount> bankAccounts) {
+    public void setBankAccounts(Set<BankAccount> bankAccounts) {
         this.bankAccounts = bankAccounts;
-    }
-
-
-    public Customer(String firstName, String lastName) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-    }
-
-    @Override
-    public String toString() {
-        return "Customer{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                '}';
     }
 }
