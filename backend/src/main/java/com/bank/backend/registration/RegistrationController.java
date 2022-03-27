@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Routes for user registration
+ */
 @RestController
 @RequestMapping(path = "user/registration")
 @AllArgsConstructor

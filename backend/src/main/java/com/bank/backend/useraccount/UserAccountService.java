@@ -11,6 +11,9 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * DB CRUD operations for UserAccount objects
+ */
 @Service
 @AllArgsConstructor
 public class UserAccountService /*implements UserDetailsService*/ {

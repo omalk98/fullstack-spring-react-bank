@@ -10,6 +10,9 @@ import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Collections;
 
+/**
+ * Model for user account
+ */
 @Getter
 @Setter
 @EqualsAndHashCode

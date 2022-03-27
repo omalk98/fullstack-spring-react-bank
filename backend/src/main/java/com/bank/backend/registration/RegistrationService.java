@@ -6,6 +6,9 @@ import com.bank.backend.useraccount.UserAccountService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+/**
+ * Registers new user
+ */
 @AllArgsConstructor
 @Service
 public class RegistrationService {

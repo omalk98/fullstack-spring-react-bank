@@ -7,6 +7,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
+/**
+ *
+ */
 @Repository
 @Transactional(readOnly = true)
 public interface UserAccountRepository extends JpaRepository<UserAccount, Long> {

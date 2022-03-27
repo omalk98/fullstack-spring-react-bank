@@ -5,6 +5,9 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 
+/**
+ * User Registration Model
+ */
 @Getter
 @Setter
 public class RegistrationRequest {
