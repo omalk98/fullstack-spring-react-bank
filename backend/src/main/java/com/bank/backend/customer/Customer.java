@@ -11,8 +11,8 @@ import java.util.List;
 
 @Getter
 @Setter
-@EqualsAndHashCode
 @NoArgsConstructor
+@EqualsAndHashCode
 @Entity
 @Table
 public class Customer {

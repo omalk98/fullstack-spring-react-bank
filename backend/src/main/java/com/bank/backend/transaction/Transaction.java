@@ -9,8 +9,8 @@ import javax.persistence.*;
 
 @Getter
 @Setter
-@EqualsAndHashCode
 @NoArgsConstructor
+@EqualsAndHashCode
 @Entity
 @Table
 public class Transaction {
