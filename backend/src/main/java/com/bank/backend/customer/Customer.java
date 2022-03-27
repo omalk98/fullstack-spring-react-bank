@@ -39,11 +39,7 @@ public class Customer {
         this.firstName = firstName;
         this.lastName = lastName;
     }
-
-    public void TestFunction() {
-        System.out.println("Hello Phil");
-    }
-
+    
     public Long getId() {
         return id;
     }
