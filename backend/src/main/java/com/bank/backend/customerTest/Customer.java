@@ -1,27 +1,37 @@
-package com.bank.backend.customer;
+package com.bank.backend.customerTest;
+import com.bank.backend.bankaccount.BankAccount;
+
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
-<<<<<<< HEAD
-import com.bank.backend.useraccount.UserAccount;
-
-public class Customer extends UserAccount {
-=======
 @Entity
 @Table
 public class Customer {
     @Id
     @SequenceGenerator(
-            name = "bankAccount_sequence",
-            sequenceName = "bankAccount_sequence",
+            name = "customer_sequence",
+            sequenceName = "customer_sequence",
             allocationSize = 1
     )
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
-            generator = "bankAccount_sequence"
+            generator = "customer_sequence"
     )
     private Long id;
     private String firstName;
     private String lastName;
+
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<BankAccount> bankAccounts = new ArrayList<>();
+
+    public List<BankAccount> getBankAccounts() {
+        return bankAccounts;
+    }
+
+    public void setBankAccounts(List<BankAccount> bankAccounts) {
+        this.bankAccounts = bankAccounts;
+    }
 
     public Customer(){}
 
@@ -62,5 +72,4 @@ public class Customer {
                 ", lastName='" + lastName + '\'' +
                 '}';
     }
->>>>>>> 5cf0f54221d5e4870bc1c29cf2d99317eec7e8b2
 }

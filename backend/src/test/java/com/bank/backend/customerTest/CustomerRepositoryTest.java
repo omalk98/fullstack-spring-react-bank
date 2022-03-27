@@ -1,13 +1,10 @@
-package com.bank.backend.customer;
+package com.bank.backend.customerTest;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class CustomerRepositoryTest {
@@ -22,6 +19,8 @@ class CustomerRepositoryTest {
 
         customerRepository.saveAll(List.of(customer1, customer2, customer3));
     }
+
+    //find a customer, create a new account, pass that acc to that cx, save that cx to the db
 
     @Test
     public void printAllCustomers(){
