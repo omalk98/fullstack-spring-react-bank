@@ -39,7 +39,6 @@ public class BankAccount /*implements IWithdrawable, IDepositable*/ {
     }
 
     //private Customer owner;
-    //private AccountType accountType;
 
     //for withdraw
     //private Integer dailyLimit;
