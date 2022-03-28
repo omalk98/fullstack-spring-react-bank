@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
+import java.util.Optional;
 
 @SpringBootTest
 class BankAccountRepositoryTest {
@@ -14,17 +15,40 @@ class BankAccountRepositoryTest {
     private BankAccountRepository bankAccountRepository;
 
     @Test
-    public void saveBankAccount(){
-        BankAccount bc1 = new BankAccount();
-        BankAccount bc2 = new BankAccount();
-        BankAccount bc3 = new BankAccount();
+    public void createBankAccount(){
+        BankAccount bc1 = new BankAccount(53.2);
+        BankAccount bc2 = new BankAccount(34.2);
+        BankAccount bc3 = new BankAccount(23.4);
 
         bankAccountRepository.saveAll(List.of(bc1, bc2, bc3));
     }
 
     @Test
-    public void printBankAccount(){
+    public void updateBalance() {
+        int updated = bankAccountRepository.updateBalance(1L, 23.23);
+        if(updated > 0){
+            System.out.println("Updated balance!");
+        }
+        else{
+            System.out.println("Provided account number was not found!");
+        }
+    }
+
+    @Test
+    public void deleteBankAccount() {
+        bankAccountRepository.deleteById(1L);
+        System.out.println("User Account deleted!");
+    }
+
+    @Test
+    public void readAllBankAccount(){
         List<BankAccount> bankAccountList = bankAccountRepository.findAll();
+        System.out.println(bankAccountList);
+    }
+
+    @Test
+    public void readOneBankAccount(){
+        Optional<BankAccount> bankAccountList = bankAccountRepository.findById(1L);
         System.out.println(bankAccountList);
     }
 }
