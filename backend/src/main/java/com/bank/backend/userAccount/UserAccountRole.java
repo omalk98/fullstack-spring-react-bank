@@ -1,4 +1,4 @@
-package com.bank.backend.useraccount;
+package com.bank.backend.userAccount;
 
 /**
  * Enum mentioning roles of the user

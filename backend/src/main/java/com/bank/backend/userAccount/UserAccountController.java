@@ -1,4 +1,4 @@
-package com.bank.backend.useraccount;
+package com.bank.backend.userAccount;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

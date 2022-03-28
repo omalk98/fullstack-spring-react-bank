@@ -1,15 +1,9 @@
-package com.bank.backend.useraccount;
+package com.bank.backend.userAccount;
 
-import com.bank.backend.customer.Customer;
 import lombok.*;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.Collections;
 
 /**
  * Model for user account
@@ -44,10 +38,6 @@ public class UserAccount /*implements UserDetails */{
     private LocalDate dateOfBirth;
     private Boolean locked = false;
     private Boolean enabled = false;
-
-    @OneToOne(mappedBy = "userAccount", cascade = CascadeType.ALL)
-    @PrimaryKeyJoinColumn
-    private Customer customer;
 
     public UserAccount(String firstName, String lastName, String email, String username, String password, LocalDate dateOfBirth, UserAccountRole userRole) {
         this.firstName = firstName;

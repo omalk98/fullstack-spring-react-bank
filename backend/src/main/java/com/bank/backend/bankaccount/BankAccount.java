@@ -4,7 +4,6 @@ package com.bank.backend.bankaccount;
 //import com.bank.backend.interfaces.IWithdrawable;
 //import com.bank.backend.transaction.Transaction;
 
-import com.bank.backend.customer.Customer;
 import lombok.*;
 
 import javax.persistence.*;
@@ -32,23 +31,23 @@ public /*abstract*/ class BankAccount /*implements IWithdrawable, IDepositable*/
     )
     private Long accountNumber;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    @JoinTable(name = "customer_bankAccount",
-            joinColumns = {
-                    @JoinColumn(name = "bank_account_number", referencedColumnName = "accountNumber",
-                            nullable = false, updatable = false)},
-            inverseJoinColumns = {
-                    @JoinColumn(name = "customer_id", referencedColumnName = "id",
-                            nullable = false, updatable = false)})
-    private Set<Customer> customers = new HashSet<>();
+//    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+//    @JoinTable(name = "customer_bankAccount",
+//            joinColumns = {
+//                    @JoinColumn(name = "bank_account_number", referencedColumnName = "accountNumber",
+//                            nullable = false, updatable = false)},
+//            inverseJoinColumns = {
+//                    @JoinColumn(name = "customer_id", referencedColumnName = "id",
+//                            nullable = false, updatable = false)})
+//    private Set<Customer> customers = new HashSet<>();
 
-    public Set<Customer> getCustomer() {
-        return customers;
-    }
+//    public Set<Customer> getCustomer() {
+//        return customers;
+//    }
 
-    public void setCustomer(Set<Customer> customer) {
-        this.customers = customer;
-    }
+//    public void setCustomer(Set<Customer> customer) {
+//        this.customers = customer;
+//    }
 
 //    @Override
 //    public void deposit(BankAccount bankAccount) {

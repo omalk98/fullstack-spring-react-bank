@@ -1,8 +1,8 @@
 package com.bank.backend.registration;
 
-import com.bank.backend.useraccount.UserAccount;
-import com.bank.backend.useraccount.UserAccountRole;
-import com.bank.backend.useraccount.UserAccountService;
+import com.bank.backend.userAccount.UserAccount;
+import com.bank.backend.userAccount.UserAccountRole;
+import com.bank.backend.userAccount.UserAccountService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
