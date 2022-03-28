@@ -13,13 +13,15 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode
 @ToString
 @Entity
 @Table
-public /*abstract*/ class BankAccount /*implements IWithdrawable, IDepositable*/ {
+public class BankAccount /*implements IWithdrawable, IDepositable*/ {
 
     @Id
+    //@Column(name = "account_number")
     @SequenceGenerator(
             name = "bankAccount_sequence",
             sequenceName = "bankAccount_sequence",
@@ -30,30 +32,30 @@ public /*abstract*/ class BankAccount /*implements IWithdrawable, IDepositable*/
             generator = "bankAccount_sequence"
     )
     private Long accountNumber;
+    private Double balance;
 
-//    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-//    @JoinTable(name = "customer_bankAccount",
-//            joinColumns = {
-//                    @JoinColumn(name = "bank_account_number", referencedColumnName = "accountNumber",
-//                            nullable = false, updatable = false)},
-//            inverseJoinColumns = {
-//                    @JoinColumn(name = "customer_id", referencedColumnName = "id",
-//                            nullable = false, updatable = false)})
-//    private Set<Customer> customers = new HashSet<>();
+    public BankAccount(Double balance){
+        this.balance = balance;
+    }
 
-//    public Set<Customer> getCustomer() {
-//        return customers;
-//    }
+    //private Customer owner;
+    //private AccountType accountType;
 
-//    public void setCustomer(Set<Customer> customer) {
-//        this.customers = customer;
-//    }
+    //for withdraw
+    //private Integer dailyLimit;
+
+    //for withdraw
+    //private Integer MonthlyLimit;
+
+    //decide all the attributes & functions that you need for BankAccount
+    //perform crud operations for the BankAccount in JUnit Tests
+    //define relationships between Transaction and UserAccount classes
 
 //    @Override
 //    public void deposit(BankAccount bankAccount) {
 //        System.out.println("Withdrawing from BankAccount..." + bankAccount.id);
 //    }
-
+//
 //    @Override
 //    public void withdraw(BankAccount bankAccount) {
 //        System.out.println("Withdrawing from BankAccount..." + bankAccount.id);
