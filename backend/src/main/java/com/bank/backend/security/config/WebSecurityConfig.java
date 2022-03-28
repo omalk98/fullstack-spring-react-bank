@@ -1,6 +1,6 @@
 //package com.bank.backend.security.config;
 //
-//import com.bank.backend.useraccount.UserAccountService;
+//import com.bank.backend.userAccount.UserAccountService;
 //import lombok.AllArgsConstructor;
 //import org.springframework.context.annotation.Bean;
 //import org.springframework.context.annotation.Configuration;
