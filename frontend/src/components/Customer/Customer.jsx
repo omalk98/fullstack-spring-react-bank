@@ -43,8 +43,14 @@ export default function Customer() {
               Deposit
             </Button>{' '}
             <Button href={`/customer/withdraw`} variant='primary' size='lg'>
-              Withdraw
+              Withdraw/Deposit
             </Button>{' '}
+            <Button href={`/customer/transfer`} variant='primary' size='lg'>
+              Transfer
+            </Button>{' '}
+            <Button href={`/customer/balance`} variant='primary' size='lg'>
+              Check Balance
+            </Button>
             <br />
             <br />
             <Button

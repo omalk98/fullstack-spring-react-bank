@@ -17,6 +17,9 @@ const paperStyle = {
   backgroundColor: '#9fa09e',
 };
 
+//if user is logged in(check local storage) then take them to
+//customer page else take them to login page
+
 export default function NotFound() {
   return (
     <>
@@ -25,9 +28,15 @@ export default function NotFound() {
           <Col>
             <Paper elevation={24} style={paperStyle}>
               <Alert variant='danger'>404 - Page not found!</Alert>
-              <Button href='/' variant='primary'>
-                Go Home
-              </Button>
+              {localStorage.getItem('isAuthenticated') === 'true' ? (
+                <Button href='/customer' variant='primary' size='lg'>
+                  Go to Customer Page
+                </Button>
+              ) : (
+                <Button href='/' variant='primary' size='lg'>
+                  Go to Login Page
+                </Button>
+              )}
             </Paper>
           </Col>
         </Row>
