@@ -2,6 +2,8 @@ package com.bank.backend.bankAccountTest;
 
 import com.bank.backend.bankaccount.BankAccount;
 import com.bank.backend.bankaccount.BankAccountRepository;
+import com.bank.backend.transaction.Transaction;
+import com.bank.backend.transaction.TransactionType;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,6 +23,21 @@ class BankAccountRepositoryTest {
         BankAccount bc3 = new BankAccount(23.4);
 
         bankAccountRepository.saveAll(List.of(bc1, bc2, bc3));
+    }
+
+    @Test
+    public void createBankAccountWithTransactions(){
+        BankAccount bankAccount = new BankAccount(2000.0,
+            List.of(
+                new Transaction(500.0, TransactionType.WITHDRAW),
+                new Transaction(700.0, TransactionType.WITHDRAW),
+                new Transaction(440.0, TransactionType.WITHDRAW),
+                new Transaction(1200.0, TransactionType.DEPOSIT),
+                new Transaction(80.0, TransactionType.DEPOSIT)
+            )
+        );
+
+        bankAccountRepository.save(bankAccount);
     }
 
     @Test

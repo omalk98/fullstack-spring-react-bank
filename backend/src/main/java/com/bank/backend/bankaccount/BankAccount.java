@@ -4,10 +4,12 @@ package com.bank.backend.bankaccount;
 //import com.bank.backend.interfaces.IWithdrawable;
 //import com.bank.backend.transaction.Transaction;
 
+import com.bank.backend.transaction.Transaction;
 import lombok.*;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -34,8 +36,22 @@ public class BankAccount /*implements IWithdrawable, IDepositable*/ {
     private Long accountNumber;
     private Double balance;
 
+    @OneToMany(
+            cascade = CascadeType.ALL
+    )
+    @JoinColumn(
+            name="bank_account",
+            referencedColumnName = "accountNumber"
+    )
+    private List<Transaction> transactions;
+
     public BankAccount(Double balance){
         this.balance = balance;
+    }
+
+    public BankAccount(Double balance, List<Transaction> transactions){
+        this.balance = balance;
+        this.transactions = transactions;
     }
 
     //private Customer owner;
