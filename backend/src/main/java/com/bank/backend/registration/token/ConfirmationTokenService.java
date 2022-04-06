@@ -1,5 +1,6 @@
 package com.bank.backend.registration.token;
 
+import com.bank.backend.interfaces.ConfirmationTokenRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

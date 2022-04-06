@@ -20,9 +20,6 @@
 //    @Bean
 //    CommandLineRunner commandLineRunner(UserAccountRepository repository, TransactionRepository repository2) {
 //        return args -> {
-//            UserAccount x = new UserAccount("Omar", "Hussein", "ohussein2@myseneca.ca", "binAdmin", new BCryptPasswordEncoder().encode("12345"), LocalDate.of(2020, 2, 25), UserAccountRole.ADMIN);
-//            UserAccount y = new UserAccount("Soham", "Thaker", "sthaker@myseneca.ca", "belFast", new BCryptPasswordEncoder().encode("12345"), LocalDate.of(2020, 2, 25), UserAccountRole.ADMIN);
-//            UserAccount z = new UserAccount("Philippe", "Cormier", "pcormier3@myseneca.ca", "bigBrain", new BCryptPasswordEncoder().encode("12345"), LocalDate.of(2020, 2, 25), UserAccountRole.ADMIN);
 //
 //            Transaction a = new Transaction(44.44, 1L, 2L, TransactionType.WITHDRAW);
 //            Transaction b = new Transaction(66.34, 2L, 3L, TransactionType.DEPOSIT);
