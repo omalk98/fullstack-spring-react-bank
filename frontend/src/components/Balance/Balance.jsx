@@ -24,8 +24,6 @@ export default function Balance() {
       .catch((err) => console.log(err));
   }, []);
 
-  //className='m-auto'
-  //fluid to Container
   return (
     <Container fuild style={{ ...styleForHorizontalCenter }}>
       <Row>
@@ -60,7 +58,4 @@ export default function Balance() {
       </Row>
     </Container>
   );
-
-  // for Col
-  //
 }
