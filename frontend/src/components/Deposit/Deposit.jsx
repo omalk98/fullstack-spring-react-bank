@@ -10,7 +10,6 @@ import {
 } from 'react-bootstrap';
 
 //validate if the input is a number
-
 export default function Deposit() {
   const paperStyle = {
     padding: '50px 20px',

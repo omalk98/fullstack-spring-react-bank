@@ -9,6 +9,7 @@ import {
   Card,
 } from 'react-bootstrap';
 
+
 //validate if the input is a number
 //validate if customer has enough money to withdraw
 //validate if the amount is not greater than the balance

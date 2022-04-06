@@ -24,15 +24,11 @@ public class Transaction {
     )
     private Long id;
     private Double value;
-    private Long source;
-    private Long destination;
     @Enumerated(EnumType.STRING)
     private TransactionType type;
 
-    public Transaction(Double value, Long source, Long destination, TransactionType type) {
+    public Transaction(Double value, TransactionType type) {
         this.value = value;
-        this.source = source;
-        this.destination = destination;
         this.type = type;
     }
 
@@ -41,8 +37,6 @@ public class Transaction {
         return "Transaction{" +
                 "id=" + id +
                 ", value=" + value +
-                ", from=" + source +
-                ", to=" + destination +
                 ", type=" + type +
                 '}';
     }

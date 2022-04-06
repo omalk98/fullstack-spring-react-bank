@@ -4,6 +4,8 @@ import NotFound from './components/Not Found/NotFound';
 import Login from './components/Login/Login';
 import Deposit from './components/Deposit/Deposit';
 import Withdraw from './components/Withdraw/Withdraw';
+import Transfer from './components/Transfer/Transfer';
+import Balance from './components/Balance/Balance';
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 import Transfer from './components/Transfer/Transfer';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
