@@ -1,7 +1,6 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import { Container, Row, Col, Button, Card } from 'react-bootstrap';
-import Paper from '@mui/material/Paper';
 import { useNavigate } from 'react-router-dom';
 
 export default function Customer() {
@@ -57,12 +56,6 @@ export default function Customer() {
             >
               Withdraw
             </Button>{' '}
-            <Button href={`/customer/transfer`} variant='primary' size='lg'>
-              Transfer
-            </Button>{' '}
-            <Button href={`/customer/balance`} variant='primary' size='lg'>
-              Check Balance
-            </Button>
             <br />
             <Button
               href={`/customer/transfer`}
