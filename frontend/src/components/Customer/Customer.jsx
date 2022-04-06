@@ -1,6 +1,6 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
-import { Container, Row, Col, Button } from 'react-bootstrap';
+import { Container, Row, Col, Button, Card } from 'react-bootstrap';
 import Paper from '@mui/material/Paper';
 import { useNavigate } from 'react-router-dom';
 
@@ -32,35 +32,60 @@ export default function Customer() {
     <Container fluid style={{ ...styleForHorizontalCenter }}>
       <Row>
         <Col>
-          <Paper elevation={24} style={paperStyle}>
+          {/* <Paper elevation={24} style={paperStyle}> */}
+          <Card style={paperStyle}>
             <h1>Hello {user}!</h1>
             <br />
             <h2>Welcome to our banking app!</h2>
             <br />
             <h3>What has brought you here!</h3>
             <br />
-            <Button href={`/customer/deposit`} variant='primary' size='lg'>
+            <Button
+              href={`/customer/deposit`}
+              variant='primary'
+              size='lg'
+              style={{ width: '10rem', margin: '0 auto' }}
+            >
               Deposit
             </Button>{' '}
-            <Button href={`/customer/withdraw`} variant='primary' size='lg'>
-              Withdraw/Deposit
+            <br />
+            <Button
+              href={`/customer/withdraw`}
+              variant='primary'
+              size='lg'
+              style={{ width: '10rem', margin: '0 auto' }}
+            >
+              Withdraw
             </Button>{' '}
-            <Button href={`/customer/transfer`} variant='primary' size='lg'>
+            <br />
+            <Button
+              href={`/customer/transfer`}
+              variant='primary'
+              size='lg'
+              style={{ width: '10rem', margin: '0 auto' }}
+            >
               Transfer
             </Button>{' '}
-            <Button href={`/customer/balance`} variant='primary' size='lg'>
+            <br />
+            <Button
+              href={`/customer/balance`}
+              variant='primary'
+              size='lg'
+              style={{ width: '11rem', margin: '0 auto' }}
+            >
               Check Balance
             </Button>
-            <br />
             <br />
             <Button
               onClick={(e) => handleSubmit(e)}
               variant='success'
               size='lg'
+              style={{ width: '15rem', margin: '0 auto' }}
             >
               Logout
             </Button>
-          </Paper>
+            {/* </Paper> */}
+          </Card>
         </Col>
       </Row>
     </Container>
