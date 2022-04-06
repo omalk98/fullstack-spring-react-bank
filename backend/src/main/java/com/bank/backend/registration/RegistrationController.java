@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
  * Routes for user registration
  */
 @RestController
-@RequestMapping(path = "user/registration")
+@RequestMapping(path = "api/user/registration")
 @AllArgsConstructor
 public class RegistrationController {
 

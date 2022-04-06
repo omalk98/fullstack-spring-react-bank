@@ -1,5 +1,6 @@
-package com.bank.backend.userAccount;
+package com.bank.backend.interfaces;
 
+import com.bank.backend.userAccount.UserAccount;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

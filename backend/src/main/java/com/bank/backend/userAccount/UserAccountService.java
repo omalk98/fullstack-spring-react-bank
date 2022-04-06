@@ -1,5 +1,6 @@
 package com.bank.backend.userAccount;
 
+import com.bank.backend.interfaces.UserAccountRepository;
 import com.bank.backend.registration.token.ConfirmationTokenService;
 import com.bank.backend.registration.token.ConformationToken;
 import lombok.AllArgsConstructor;

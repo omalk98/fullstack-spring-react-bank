@@ -1,6 +1,5 @@
-package com.bank.backend.registration;
+package com.bank.backend.registration.email;
 
-import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.function.Predicate;
