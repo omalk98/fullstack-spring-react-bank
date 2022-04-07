@@ -1,7 +1,7 @@
 //package com.bank.backend;
 //
 //import com.bank.backend.transaction.Transaction;
-//import com.bank.backend.transaction.TransactionRepository;
+//import com.bank.backend.interfaces.TransactionRepository;
 //import com.bank.backend.transaction.TransactionType;
 //import com.bank.backend.useraccount.UserAccount;
 //import com.bank.backend.useraccount.UserAccountRepository;

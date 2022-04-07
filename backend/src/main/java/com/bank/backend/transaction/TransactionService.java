@@ -1,5 +1,6 @@
 package com.bank.backend.transaction;
 
+import com.bank.backend.interfaces.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
