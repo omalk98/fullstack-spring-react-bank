@@ -3,7 +3,7 @@ package com.bank.backend.registration;
 import com.bank.backend.registration.email.EmailValidator;
 import com.bank.backend.interfaces.EmailSender;
 import com.bank.backend.registration.token.ConfirmationTokenService;
-import com.bank.backend.registration.token.ConformationToken;
+import com.bank.backend.registration.token.ConfirmationToken;
 import com.bank.backend.userAccount.UserAccount;
 import com.bank.backend.userAccount.UserAccountRole;
 import com.bank.backend.userAccount.UserAccountService;
@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -52,7 +53,7 @@ public class RegistrationService {
 
     @Transactional
     public String confirmToken(String token) {
-        ConformationToken conformationToken = confirmationTokenService
+        ConfirmationToken conformationToken = confirmationTokenService
                 .getToken(token).orElseThrow(()->new IllegalStateException("Token not Found"));
 
         if(conformationToken.getConfirmedAt() != null)

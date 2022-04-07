@@ -1,7 +1,6 @@
 package com.bank.backend.registration;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 
@@ -9,7 +8,9 @@ import java.time.LocalDate;
  * User Registration Model
  */
 @Getter
-@Setter
+@AllArgsConstructor
+@EqualsAndHashCode
+@ToString
 public class RegistrationRequest {
     private String firstName;
     private String lastName;
