@@ -21,6 +21,4 @@ public class BankAccountController {
     public Double getBalance() {
         return bankAccountService.getBalance();
     }
-
-
 }

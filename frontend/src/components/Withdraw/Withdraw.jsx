@@ -7,79 +7,118 @@ import {
   Button,
   Container,
   Card,
+  DropdownButton,
+  Dropdown,
+  Alert,
 } from 'react-bootstrap';
 
+const paperStyle = {
+  padding: '50px 20px',
+  width: 600,
+  margin: '20px auto',
+  backgroundColor: '#9fa09e',
+};
+
+const styleForHorizontalCenter = {
+  position: 'absolute',
+  top: '50%',
+  transform: 'translateY(-50%)',
+  textAlign: 'center',
+};
 
 //validate if the input is a number
 //validate if customer has enough money to withdraw
 //validate if the amount is not greater than the balance
 //validate if the amount is not greater than the max withdraw amount
 export default function Withdraw() {
-  const paperStyle = {
-    padding: '50px 20px',
-    width: 600,
-    margin: '20px auto',
-    backgroundColor: '#9fa09e',
-  };
-
-  const styleForHorizontalCenter = {
-    position: 'absolute',
-    top: '50%',
-    transform: 'translateY(-50%)',
-    textAlign: 'center',
-  };
-
-  const [validated, setValidated] = useState(false);
+  const [amount, setAmount] = useState(0.0);
+  const [accountNumbers, setAccountNumbers] = useState([123, 456, 789]);
+  const [error, setError] = useState('');
+  const [variant, setVariant] = useState('danger');
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const form = event.currentTarget;
-    console.log(event.target[0].value);
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
+
+    if (isNaN(event.target[0].value)) {
+      setVariant('danger');
+      setError('Please enter a number for deposit amount.');
+    } else {
+      //make an api call to deposit
+      //depending on the response, show a message
+      //saying that the deposit was successful
+      //setError('Deposit Successful');
+      setError('Deposit Successful');
+      setVariant('success');
+      setAmount(event.target[0].value);
     }
-    setValidated(true);
   };
 
   return (
     <Container fluid style={{ ...styleForHorizontalCenter }}>
-      <Row>
-        <Col>
-          <Card style={{ ...paperStyle }}>
-            <Form noValidate validated={validated} onSubmit={handleSubmit}>
-              <Form.Group md='3' controlId='validationCustomWithdrawalAmount'>
-                <Form.Label style={{ fontSize: '25px' }}>
-                  Withdrawal Amount
-                </Form.Label>
-                <InputGroup hasValidation>
-                  <div style={{ width: '20rem' }} className='m-auto'>
-                    <Form.Control
-                      type='text'
-                      placeholder='0.00'
-                      aria-describedby='inputGroupPrepend'
-                      required
-                    />
-                    <Form.Control.Feedback
-                      type='invalid'
-                      style={{ fontSize: '25px' }}
-                    >
-                      Please enter a withdrawal amount.
-                    </Form.Control.Feedback>
-                  </div>
-                </InputGroup>
-              </Form.Group>
-              <br />
-              <Button variant='primary' type='submit' size='lg'>
-                Withdraw
-              </Button>{' '}
-              <Button href={`/customer`} variant='success' size='lg'>
-                Go Back
-              </Button>
-            </Form>
-          </Card>
-        </Col>
-      </Row>
+      <Card style={{ ...paperStyle }}>
+        <Form onSubmit={handleSubmit}>
+          <Form.Group md='3'>
+            <Form.Label style={{ fontSize: '25px', color: 'black' }}>
+              Withdrawal Amount
+            </Form.Label>
+            <br />
+            <br />
+            <InputGroup>
+              <Row style={{ paddingLeft: '15%' }}>
+                <Col>
+                  <Form.Control
+                    type='text'
+                    placeholder='0.00'
+                    aria-describedby='inputGroupPrepend'
+                    required
+                    value={amount}
+                    onChange={(e) => {
+                      setAmount(e.target.value);
+                      setError('');
+                    }}
+                  />
+                  <br />
+                </Col>
+                <Col>
+                  <DropdownButton
+                    key='primary'
+                    id={`dropdown-variants-secondary`}
+                    variant='success'
+                    title='Account number'
+                    style={{ textAlign: 'right' }}
+                  >
+                    {accountNumbers.map((accountNumber) => (
+                      <Dropdown.Item
+                        eventKey={accountNumber}
+                        key={accountNumber}
+                      >
+                        {accountNumber}
+                      </Dropdown.Item>
+                    ))}
+                  </DropdownButton>
+                </Col>
+              </Row>
+            </InputGroup>
+          </Form.Group>
+          {error && (
+            <Alert
+              style={{ width: '23rem' }}
+              className='m-auto'
+              variant={variant}
+            >
+              {error}
+            </Alert>
+          )}
+          <br />
+          <Button variant='primary' type='submit' size='lg'>
+            Withdraw
+          </Button>{' '}
+          &nbsp; &nbsp; &nbsp;
+          <Button href={`/customer`} variant='success' size='lg'>
+            Go Back
+          </Button>
+        </Form>
+      </Card>
     </Container>
   );
 }
