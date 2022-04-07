@@ -1,6 +1,8 @@
 package com.bank.backend.userAccount;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,8 +23,8 @@ public class UserAccountController {
     }
 
     @GetMapping
-    public List<UserAccount> getUsers() {
-        return userService.getUsers();
+    public ResponseEntity<List<UserAccount>> getUsers() {
+        return new ResponseEntity<>(userService.getUsers(), HttpStatus.OK);
     }
 
     @PostMapping

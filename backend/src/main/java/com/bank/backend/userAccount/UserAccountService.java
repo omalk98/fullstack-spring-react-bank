@@ -2,7 +2,7 @@ package com.bank.backend.userAccount;
 
 import com.bank.backend.interfaces.UserAccountRepository;
 import com.bank.backend.registration.token.ConfirmationTokenService;
-import com.bank.backend.registration.token.ConformationToken;
+import com.bank.backend.registration.token.ConfirmationToken;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -36,6 +36,8 @@ public class UserAccountService implements UserDetailsService {
 
     }
 
+    // TODO: if email not confirmed send confirmation email
+
     public String signupNewUser(UserAccount user) {
         if (userRepository.findUserAccountByEmail(user.getEmail()).isPresent())
             throw new IllegalStateException(String.format(EMAIL_IN_USE, user.getEmail()));
@@ -45,7 +47,7 @@ public class UserAccountService implements UserDetailsService {
         userRepository.save(user);
 
         String token = UUID.randomUUID().toString();
-        confirmationTokenService.saveConfirmationToken(new ConformationToken(
+        confirmationTokenService.saveConfirmationToken(new ConfirmationToken(
                 token,
                 LocalDateTime.now(),
                 LocalDateTime.now().plusMinutes(15),
@@ -58,10 +60,6 @@ public class UserAccountService implements UserDetailsService {
     public void deleteUser(Long id) {
         if (!userRepository.existsById(id))
             throw new IllegalStateException();
-    }
-
-    public boolean authenticateUser(String username, String password) {
-        return false;
     }
 
     @Transactional

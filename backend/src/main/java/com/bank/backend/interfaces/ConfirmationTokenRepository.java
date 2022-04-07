@@ -1,6 +1,6 @@
 package com.bank.backend.interfaces;
 
-import com.bank.backend.registration.token.ConformationToken;
+import com.bank.backend.registration.token.ConfirmationToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -12,14 +12,14 @@ import java.util.Optional;
 
 @Repository
 @Transactional(readOnly = true)
-public interface ConfirmationTokenRepository extends JpaRepository<ConformationToken, Long> {
+public interface ConfirmationTokenRepository extends JpaRepository<ConfirmationToken, Long> {
 
-    @Query("SELECT c FROM ConformationToken c WHERE c.token = ?1")
-    Optional<ConformationToken> findByToken(String token);
+    @Query("SELECT c FROM ConfirmationToken c WHERE c.token = ?1")
+    Optional<ConfirmationToken> findByToken(String token);
 
     @Transactional
     @Modifying
-    @Query("UPDATE ConformationToken c " +
+    @Query("UPDATE ConfirmationToken c " +
             "SET c.confirmedAt = ?2 " +
             "WHERE c.token = ?1")
     int updateConfirmedAt(String token, LocalDateTime confirmedAt);

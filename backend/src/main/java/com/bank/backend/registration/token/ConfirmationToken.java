@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @Entity
-public class ConformationToken {
+public class ConfirmationToken {
     @Id
     @SequenceGenerator(
             name = "confirmation_token_sequence",
@@ -33,7 +33,7 @@ public class ConformationToken {
 
     private LocalDateTime expiresAt;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private LocalDateTime confirmedAt;
 
     @ManyToOne
@@ -43,7 +43,7 @@ public class ConformationToken {
     )
     private UserAccount user;
 
-    public ConformationToken(String token, LocalDateTime createdAt, LocalDateTime expiresAt, UserAccount user) {
+    public ConfirmationToken(String token, LocalDateTime createdAt, LocalDateTime expiresAt, UserAccount user) {
         this.token = token;
         this.createdAt = createdAt;
         this.expiresAt = expiresAt;

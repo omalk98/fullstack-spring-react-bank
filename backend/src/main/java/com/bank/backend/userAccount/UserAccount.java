@@ -1,5 +1,6 @@
 package com.bank.backend.userAccount;
 
+import com.bank.backend.bankaccount.BankAccount;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -9,6 +10,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * Model for user account
@@ -24,13 +26,13 @@ public class UserAccount implements UserDetails {
 
     @Id
     @SequenceGenerator(
-            name = "user_sequence",
-            sequenceName = "user_sequence",
+            name = "user_account_sequence",
+            sequenceName = "user_account_sequence",
             allocationSize = 1
     )
     @GeneratedValue (
             strategy = GenerationType.SEQUENCE,
-            generator = "user_sequence"
+            generator = "user_account_sequence"
     )
     private Long id;
     private String firstName;
@@ -43,6 +45,14 @@ public class UserAccount implements UserDetails {
     private LocalDate dateOfBirth;
     private Boolean locked = false;
     private Boolean enabled = false;
+    @OneToMany(
+            cascade = CascadeType.ALL
+    )
+    @JoinColumn(
+            name="user_account",
+            referencedColumnName = "id"
+    )
+    private List<BankAccount> list;
 
     public UserAccount(String firstName, String lastName, String email, String username, String password, LocalDate dateOfBirth, UserAccountRole userRole) {
         this.firstName = firstName;
