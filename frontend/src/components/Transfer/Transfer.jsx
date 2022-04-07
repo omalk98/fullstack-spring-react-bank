@@ -11,40 +11,52 @@ import {
   Dropdown,
   Alert,
 } from 'react-bootstrap';
-//add a button to go back to customer page
+
+const paperStyle = {
+  padding: '50px 20px',
+  width: 600,
+  margin: '20px auto',
+  backgroundColor: '#9fa09e',
+};
+
+const styleForHorizontalCenter = {
+  position: 'absolute',
+  top: '50%',
+  transform: 'translateY(-50%)',
+  // textAlign: 'center',
+};
 
 //validate the input
 export default function Transfer() {
   const [validated, setValidated] = useState(false);
+  const [amount, setAmount] = useState(0.0);
+
+  //the below variable could be an object of acct number and balance
+  const [accountNumbers, setAccountNumbers] = useState([123, 456, 789]);
+  const [error, setError] = useState('');
+  const [variant, setVariant] = useState('danger');
+  const [selectedAccountNo, setSelectedAccountNo] = useState(123);
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const form = event.currentTarget;
-    console.log(event.target[0].value);
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
+
+    if (isNaN(event.target[0].value)) {
+      setVariant('danger');
+      setError('Please enter a number for transfer amount.');
+    } else {
+      //make an api call to deposit
+      //depending on the response, show a message
+      //saying that the deposit was successful
+
+      console.log(selectedAccountNo);
+      setError('Transfer Successful');
+      setVariant('success');
+      setAmount(event.target[0].value);
     }
-    setValidated(true);
-  };
-
-  const paperStyle = {
-    padding: '50px 20px',
-    width: 600,
-    margin: '20px auto',
-    backgroundColor: '#9fa09e',
-  };
-
-  const styleForHorizontalCenter = {
-    position: 'absolute',
-    top: '50%',
-    transform: 'translateY(-50%)',
-    // textAlign: 'center',
   };
 
   return (
     <Container fluid style={{ ...styleForHorizontalCenter }}>
-      {/* <Col> */}
       <Card style={{ ...paperStyle }}>
         <Row className='m-auto'>
           <Col style={{}}>
@@ -68,26 +80,21 @@ export default function Transfer() {
               title='Account number'
               size='lg'
               style={{ textAlign: 'right' }}
+              onSelect={(e) => {
+                setSelectedAccountNo(e);
+              }}
             >
-              <Dropdown.Item eventKey='1'>123</Dropdown.Item>
-              <Dropdown.Item eventKey='2'>012</Dropdown.Item>
-              <Dropdown.Item eventKey='3' /*active*/>345</Dropdown.Item>
-              <Dropdown.Item eventKey='4'>453</Dropdown.Item>
+              {accountNumbers.map((accountNumber) => (
+                <Dropdown.Item eventKey={accountNumber} key={accountNumber}>
+                  {accountNumber}
+                </Dropdown.Item>
+              ))}
             </DropdownButton>
           </Col>
         </Row>
-        <Form
-          noValidate
-          validated={validated}
-          onSubmit={handleSubmit}
-          className='m-auto'
-        >
+        <Form onSubmit={handleSubmit} className='m-auto'>
           <Row>
-            <Form.Group
-              md='3'
-              controlId='validationCustomWithdrawalAmount'
-              style={{ textAlign: 'center' }}
-            >
+            <Form.Group md='3' style={{ textAlign: 'center' }}>
               <Form.Label style={{ fontSize: '25px', color: 'black' }}>
                 Transfer Amount
               </Form.Label>
@@ -98,17 +105,26 @@ export default function Transfer() {
                     placeholder='0.00'
                     aria-describedby='inputGroupPrepend'
                     required
+                    value={amount}
+                    onChange={(e) => {
+                      setAmount(e.target.value);
+                      setError('');
+                    }}
                   />
-                  <Form.Control.Feedback
-                    type='invalid'
-                    style={{ fontSize: '25px' }}
-                  >
-                    Please enter a deposit amount.
-                  </Form.Control.Feedback>
                 </div>
               </InputGroup>
             </Form.Group>
           </Row>
+          &nbsp;
+          {error && (
+            <Alert
+              style={{ width: '20rem' }}
+              className='m-auto'
+              variant={variant}
+            >
+              {error}
+            </Alert>
+          )}
           <br />
           <Row>
             <Button
@@ -131,7 +147,6 @@ export default function Transfer() {
           </Row>
         </Form>
       </Card>
-      {/* </Col> */}
     </Container>
   );
 }

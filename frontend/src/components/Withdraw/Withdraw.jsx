@@ -32,21 +32,24 @@ const styleForHorizontalCenter = {
 //validate if the amount is not greater than the max withdraw amount
 export default function Withdraw() {
   const [amount, setAmount] = useState(0.0);
+
+  //the below variable could be an object of acct number and balance
   const [accountNumbers, setAccountNumbers] = useState([123, 456, 789]);
+
   const [error, setError] = useState('');
   const [variant, setVariant] = useState('danger');
+  const [selectedAccountNo, setSelectedAccountNo] = useState(123);
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
     if (isNaN(event.target[0].value)) {
       setVariant('danger');
-      setError('Please enter a number for deposit amount.');
+      setError('Please enter a number for withdrawal amount.');
     } else {
       //make an api call to deposit
       //depending on the response, show a message
       //saying that the deposit was successful
-      //setError('Deposit Successful');
       setError('Deposit Successful');
       setVariant('success');
       setAmount(event.target[0].value);
@@ -86,6 +89,9 @@ export default function Withdraw() {
                     variant='success'
                     title='Account number'
                     style={{ textAlign: 'right' }}
+                    onSelect={(e) => {
+                      setSelectedAccountNo(e);
+                    }}
                   >
                     {accountNumbers.map((accountNumber) => (
                       <Dropdown.Item
@@ -102,7 +108,7 @@ export default function Withdraw() {
           </Form.Group>
           {error && (
             <Alert
-              style={{ width: '23rem' }}
+              style={{ width: '24rem' }}
               className='m-auto'
               variant={variant}
             >
