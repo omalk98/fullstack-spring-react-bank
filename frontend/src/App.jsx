@@ -9,6 +9,12 @@ import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 import Transfer from './components/Transfer/Transfer';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
+//the login page will make an api call to
+//obtain all the customer data like name, username, account numbers,
+//and balance
+//we will set the state(loggedInCustomer)
+//of App component to the
+
 //add nav bar if necessary
 function App() {
   return (
