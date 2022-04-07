@@ -13,7 +13,9 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 //obtain all the customer data like name, username, account numbers,
 //and balance
 //we will set the state(loggedInCustomer)
-//of App component to the
+//of App component to the one set within the login page
+//by passing a function as a prop to the login page
+//and then pass all the customer data to all the components
 
 //add nav bar if necessary
 function App() {
