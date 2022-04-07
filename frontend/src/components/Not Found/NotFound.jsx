@@ -1,7 +1,6 @@
 import React from 'react';
-import { Button, Container, Row, Col, Alert } from 'react-bootstrap';
+import { Button, Container, Row, Col, Alert, Card } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
-import Paper from '@mui/material/Paper';
 
 const styleForHorizontalCenter = {
   position: 'absolute',
@@ -26,18 +25,30 @@ export default function NotFound() {
       <Container fluid style={{ ...styleForHorizontalCenter }}>
         <Row>
           <Col>
-            <Paper elevation={24} style={paperStyle}>
+            <Card style={paperStyle}>
               <Alert variant='danger'>404 - Page not found!</Alert>
               {localStorage.getItem('isAuthenticated') === 'true' ? (
-                <Button href='/customer' variant='primary' size='lg'>
+                <Button
+                  href='/customer'
+                  variant='primary'
+                  size='lg'
+                  style={{ width: '15rem', textAlign: 'center' }}
+                  className='m-auto'
+                >
                   Go to Customer Page
                 </Button>
               ) : (
-                <Button href='/' variant='primary' size='lg'>
+                <Button
+                  href='/'
+                  variant='primary'
+                  size='lg'
+                  style={{ width: '15rem', textAlign: 'center' }}
+                  className='m-auto'
+                >
                   Go to Login Page
                 </Button>
               )}
-            </Paper>
+            </Card>
           </Col>
         </Row>
       </Container>
