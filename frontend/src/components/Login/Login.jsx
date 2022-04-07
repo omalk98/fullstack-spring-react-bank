@@ -14,7 +14,6 @@ function LoginComponent(props) {
 
   function submitLogin(e) {
     e.preventDefault();
-    console.log('login works');
 
     // use spring route to get credential validation
     //axios.get("http://localhost:8080/api").then(res=>console.log(res.data));

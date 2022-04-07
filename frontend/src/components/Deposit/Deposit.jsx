@@ -29,7 +29,11 @@ const styleForHorizontalCenter = {
 //validate if the input is a number
 export default function Deposit() {
   const [amount, setAmount] = useState(0.0);
+
+  //the below variable could be an object of acct number and balance
   const [accountNumbers, setAccountNumbers] = useState([123, 456, 789]);
+
+  const [selectedAccountNo, setSelectedAccountNo] = useState(123);
   const [error, setError] = useState('');
   const [variant, setVariant] = useState('danger');
 
@@ -43,7 +47,6 @@ export default function Deposit() {
       //make an api call to deposit
       //depending on the response, show a message
       //saying that the deposit was successful
-      //setError('Deposit Successful');
       setError('Deposit Successful');
       setVariant('success');
       setAmount(event.target[0].value);
@@ -82,6 +85,9 @@ export default function Deposit() {
                     variant='success'
                     title='Account number'
                     style={{ textAlign: 'right' }}
+                    onSelect={(e) => {
+                      setSelectedAccountNo(e);
+                    }}
                   >
                     {accountNumbers.map((accountNumber) => (
                       <Dropdown.Item
