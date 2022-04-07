@@ -31,14 +31,15 @@ export default function Customer() {
     <Container fluid style={{ ...styleForHorizontalCenter }}>
       <Row>
         <Col>
-          {/* <Paper elevation={24} style={paperStyle}> */}
           <Card style={paperStyle}>
-            <h1>Hello {user}!</h1>
-            <br />
-            <h2>Welcome to our banking app!</h2>
-            <br />
-            <h3>What has brought you here!</h3>
-            <br />
+            <div style={{ color: 'black' }}>
+              <h1>Hello {user}!</h1>
+              <br />
+              <h2>Welcome to our banking app!</h2>
+              <br />
+              <h3>What has brought you here!</h3>
+              <br />
+            </div>
             <Button
               href={`/customer/deposit`}
               variant='primary'
@@ -83,7 +84,6 @@ export default function Customer() {
             >
               Logout
             </Button>
-            {/* </Paper> */}
           </Card>
         </Col>
       </Row>
