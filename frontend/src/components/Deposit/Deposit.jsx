@@ -26,12 +26,18 @@ const styleForHorizontalCenter = {
   textAlign: 'center',
 };
 
-//validate if the input is a number
-export default function Deposit() {
+//calls a route in the backend server that requires currently
+//logged in user's id, so Balance needs a currently logged in user's id
+//to be passed in as props
+export default function Deposit(props) {
   const [amount, setAmount] = useState(0.0);
+  const [selected, setSelected] = useState({});
 
-  //the below variable could be an object of acct number and balance
-  const [accountNumbers, setAccountNumbers] = useState([123, 456, 789]);
+  const [accountNumbers, setAccountNumbers] = useState([
+    { acctNo: 123, balance: 50_000 },
+    { acctNo: 456, balance: 40_000 },
+    { acctNo: 789, balance: 30_000 },
+  ]);
 
   const [selectedAccountNo, setSelectedAccountNo] = useState(123);
   const [error, setError] = useState('');
@@ -44,14 +50,29 @@ export default function Deposit() {
       setVariant('danger');
       setError('Please enter a number for deposit amount.');
     } else {
-      //make an api call to deposit
-      //depending on the response, show a message
-      //saying that the deposit was successful
-      setError('Deposit Successful');
-      setVariant('success');
-      setAmount(event.target[0].value);
+      // axios
+      //   .put('http://localhost:8080/bankAccount/deposit?acctNum={selectedAccountNo}&amount={amount}')
+      //   .then((res) => {
+      //setError('Deposit Successful');
+      //setVariant('success');
+      //setAmount(event.target[0].value);
+      //})
+      //   .catch((err) => {
+      //setError('Deposit UnSuccessful');
+      //setVariant('danger');
+      //});
     }
   };
+
+  //the moment the component gets mounted
+  //api should be called which respond with an array of bank account numbers +
+  //balance for the each of the bank account number
+  useEffect(() => {
+    // axios
+    //   .get('http://localhost:8080/bankAccount/getAllBankAccount?userId={props.id}')
+    //   .then((res) => setAccountNumbers(res))
+    //   .catch((err) => console.log(err));
+  }, []);
 
   return (
     <Container fluid style={{ ...styleForHorizontalCenter }}>
@@ -85,16 +106,17 @@ export default function Deposit() {
                     variant='success'
                     title='Account number'
                     style={{ textAlign: 'right' }}
-                    onSelect={(e) => {
-                      setSelectedAccountNo(e);
-                    }}
                   >
-                    {accountNumbers.map((accountNumber) => (
+                    {accountNumbers.map((accountNumber, index) => (
                       <Dropdown.Item
                         eventKey={accountNumber}
-                        key={accountNumber}
+                        key={index}
+                        active={selectedAccountNo === accountNumber.acctNo}
+                        onClick={(e) => {
+                          setSelectedAccountNo(parseInt(e.target.innerText));
+                        }}
                       >
-                        {accountNumber}
+                        {accountNumber.acctNo}
                       </Dropdown.Item>
                     ))}
                   </DropdownButton>
@@ -104,7 +126,7 @@ export default function Deposit() {
           </Form.Group>
           {error && (
             <Alert
-              style={{ width: '23rem' }}
+              style={{ width: '23rem', textAlign: 'center' }}
               className='m-auto'
               variant={variant}
             >

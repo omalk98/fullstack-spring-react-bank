@@ -1,13 +1,18 @@
 package com.bank.backend.bankAccountTest;
 
 import com.bank.backend.bankaccount.BankAccount;
-import com.bank.backend.bankaccount.BankAccountRepository;
+import com.bank.backend.interfaces.BankAccountRepository;
+import com.bank.backend.interfaces.UserAccountRepository;
 import com.bank.backend.transaction.Transaction;
 import com.bank.backend.transaction.TransactionType;
+import com.bank.backend.userAccount.UserAccount;
+import com.bank.backend.userAccount.UserAccountRole;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,13 +21,37 @@ class BankAccountRepositoryTest {
     @Autowired
     private BankAccountRepository bankAccountRepository;
 
+    @Autowired
+    UserAccountRepository userAccountRepository;
+
     @Test
     public void createBankAccount(){
         BankAccount bc1 = new BankAccount(53.2);
         BankAccount bc2 = new BankAccount(34.2);
         BankAccount bc3 = new BankAccount(23.4);
 
-        bankAccountRepository.saveAll(List.of(bc1, bc2, bc3));
+        BankAccount bc4 = new BankAccount(100000.0);
+
+        BankAccount bc5 = new BankAccount(200000.0);
+
+        UserAccount ua1 = new UserAccount("Omar", "Hussein",
+                "ohussein2@myseneca.ca", "binAdmin",
+                new BCryptPasswordEncoder().encode("12345"),
+                LocalDate.of(2020, 2, 25),
+                UserAccountRole.ADMIN, List.of(bc1, bc2, bc3));
+        UserAccount ua2 = new UserAccount("Soham", "Thaker",
+                "sthaker@myseneca.ca", "belFast",
+                new BCryptPasswordEncoder().encode("12345"),
+                LocalDate.of(2020, 2, 25),
+                UserAccountRole.ADMIN, List.of(bc4));
+        UserAccount ua3 = new UserAccount("Philippe", "Cormier",
+                "pcormier3@myseneca.ca", "bigBrain",
+                new BCryptPasswordEncoder().encode("12345"),
+                LocalDate.of(2020, 2, 25),
+                UserAccountRole.ADMIN, List.of(bc5));
+
+        userAccountRepository.saveAll(List.of(ua1, ua2, ua3));
+        //bankAccountRepository.saveAll(List.of(bc1, bc2, bc3));
     }
 
     @Test
@@ -36,7 +65,6 @@ class BankAccountRepositoryTest {
                 new Transaction(80.0, TransactionType.DEPOSIT)
             )
         );
-
         bankAccountRepository.save(bankAccount);
     }
 

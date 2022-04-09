@@ -54,7 +54,9 @@ public class UserAccount implements UserDetails {
     )
     private List<BankAccount> list;
 
-    public UserAccount(String firstName, String lastName, String email, String username, String password, LocalDate dateOfBirth, UserAccountRole userRole) {
+    public UserAccount(String firstName, String lastName, String email,
+                       String username, String password, LocalDate dateOfBirth,
+                       UserAccountRole userRole) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -62,6 +64,25 @@ public class UserAccount implements UserDetails {
         this.password = password;
         this.dateOfBirth = dateOfBirth;
         this.userRole = userRole;
+    }
+
+    //added this
+    public UserAccount(String firstName, String lastName, String email,
+                       String username, String password, LocalDate dateOfBirth,
+                       UserAccountRole userRole, List<BankAccount> bankAccounts) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.username = username;
+        this.password = password;
+        this.dateOfBirth = dateOfBirth;
+        this.userRole = userRole;
+        this.list = bankAccounts;
+    }
+
+    //added this
+    public Long getId() {
+        return id;
     }
 
     @Override

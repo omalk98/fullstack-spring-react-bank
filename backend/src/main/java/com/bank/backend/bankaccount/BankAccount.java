@@ -40,16 +40,16 @@ public class BankAccount /*implements IWithdrawable, IDepositable*/ {
             cascade = CascadeType.ALL
     )
     @JoinColumn(
-            name="bank_account",
+            name = "bank_account",
             referencedColumnName = "accountNumber"
     )
     private List<Transaction> transactions;
 
-    public BankAccount(Double balance){
+    public BankAccount(Double balance) {
         this.balance = balance;
     }
 
-    public BankAccount(Double balance, List<Transaction> transactions){
+    public BankAccount(Double balance, List<Transaction> transactions) {
         this.balance = balance;
         this.transactions = transactions;
     }
@@ -65,16 +65,5 @@ public class BankAccount /*implements IWithdrawable, IDepositable*/ {
     //decide all the attributes & functions that you need for BankAccount
     //perform crud operations for the BankAccount in JUnit Tests
     //define relationships between Transaction and UserAccount classes
-
-//    @Override
-//    public void deposit(BankAccount bankAccount) {
-//        System.out.println("Withdrawing from BankAccount..." + bankAccount.id);
-//    }
-//
-//    @Override
-//    public void withdraw(BankAccount bankAccount) {
-//        System.out.println("Withdrawing from BankAccount..." + bankAccount.id);
-//    }
-
 }
 
