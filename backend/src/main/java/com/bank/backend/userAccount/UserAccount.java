@@ -1,6 +1,7 @@
 package com.bank.backend.userAccount;
 
 import com.bank.backend.bankaccount.BankAccount;
+import com.bank.backend.security.access.UserAccountRole;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -46,7 +47,8 @@ public class UserAccount implements UserDetails {
     private Boolean locked = false;
     private Boolean enabled = false;
     @OneToMany(
-            cascade = CascadeType.ALL
+            cascade = CascadeType.ALL,
+            fetch = FetchType.EAGER
     )
     @JoinColumn(
             name="user_account",

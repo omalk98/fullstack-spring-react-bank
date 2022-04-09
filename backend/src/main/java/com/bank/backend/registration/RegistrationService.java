@@ -5,13 +5,12 @@ import com.bank.backend.interfaces.EmailSender;
 import com.bank.backend.registration.token.ConfirmationTokenService;
 import com.bank.backend.registration.token.ConfirmationToken;
 import com.bank.backend.userAccount.UserAccount;
-import com.bank.backend.userAccount.UserAccountRole;
+import com.bank.backend.security.access.UserAccountRole;
 import com.bank.backend.userAccount.UserAccountService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**

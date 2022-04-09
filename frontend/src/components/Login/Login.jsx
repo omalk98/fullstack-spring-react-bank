@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
+import qs from 'qs';
 import './Login.scss';
 
 const mode = 'login';
@@ -15,8 +16,27 @@ function LoginComponent(props) {
   function submitLogin(e) {
     e.preventDefault();
 
-    // use spring route to get credential validation
-    //axios.get("http://localhost:8080/api").then(res=>console.log(res.data));
+    let data = qs.stringify({
+      username: "binAdmin",
+      password: "12345"
+    })
+    var config = {
+      method: 'post',
+      url: 'http://localhost:8080/login',
+      headers: {
+        'Authorization': 'Basic Og==',
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      data: data
+    };
+
+    axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
 
     //api call returns 200, credentials are valid
     if (e.target[0].value === 'admin' && e.target[1].value === '123456') {

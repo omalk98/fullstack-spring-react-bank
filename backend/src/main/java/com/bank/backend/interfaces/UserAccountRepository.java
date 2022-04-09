@@ -19,6 +19,9 @@ public interface UserAccountRepository extends JpaRepository<UserAccount, Long> 
     @Query("SELECT u FROM UserAccount u WHERE u.email = ?1")
     Optional<UserAccount> findUserAccountByEmail(String email);
 
+    @Query("SELECT u FROM UserAccount u WHERE u.username = ?1")
+    Optional<UserAccount> findUserAccountByUsername(String username);
+
     @Transactional
     @Modifying
     @Query("""
