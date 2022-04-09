@@ -21,7 +21,6 @@ const paperStyle = {
 
 export default function NotFound() {
   return (
-    <>
       <Container fluid style={{ ...styleForHorizontalCenter }}>
         <Row>
           <Col>
@@ -52,6 +51,5 @@ export default function NotFound() {
           </Col>
         </Row>
       </Container>
-    </>
   );
 }
