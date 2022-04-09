@@ -53,11 +53,17 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
                 .withIssuer(request.getRequestURL().toString())
                 .sign(algorithm);
 
-        Map<String, String> tokens = new HashMap<>();
+        Map<String, Object> tokens = new HashMap<>();
         tokens.put("access_token", accessToken);
         tokens.put("refresh_token", refreshToken);
+        tokens.put("user", user);
         response.setContentType(APPLICATION_JSON_VALUE);
-        new ObjectMapper().writeValue(response.getOutputStream(), tokens);
+        try {
+            new ObjectMapper().writeValue(response.getOutputStream(), tokens);
+        }
+        catch (Exception e) {
+            System.out.println("removed date of birth");
+        }
     }
 
     @Override

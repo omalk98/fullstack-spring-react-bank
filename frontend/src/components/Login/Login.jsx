@@ -16,38 +16,9 @@ function LoginComponent(props) {
   function submitLogin(e) {
     e.preventDefault();
 
-    let data = qs.stringify({
-      username: "binAdmin",
-      password: "12345"
-    })
-    var config = {
-      method: 'post',
-      url: 'http://localhost:8080/login',
-      headers: {
-        'Authorization': 'Basic Og==',
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      data: data
-    };
 
-    axios(config)
-      .then(function (response) {
-        console.log(JSON.stringify(response.data));
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-
-    //api call returns 200, credentials are valid
-    if (e.target[0].value === 'admin' && e.target[1].value === '123456') {
-      localStorage.setItem('isAuthenticated', 'true');
-      navigate('/customer');
-    }
-    //else show error on frontend
-    else {
-      setErrorMessage('Invalid username/password');
-      return;
-    }
+    //var data = 
+    
   }
 
   function submitSignup(e) {
@@ -80,10 +51,7 @@ function LoginComponent(props) {
             <label htmlFor='form-toggler'></label>
           </div>
         </header>
-        <LoginForm
-          mode={mode}
-          onSubmit={mode === 'login' ? submitLogin : submitSignup}
-        />
+        <LoginForm setErrorMessage={setErrorMessage} />
         {errorMessage.length > 0 ? <p>{errorMessage}</p> : null}
       </section>
     </div>
@@ -91,6 +59,9 @@ function LoginComponent(props) {
 }
 
 function LoginForm(props) {
+
+  const navigate = useNavigate();
+
   const formik = useFormik({
     initialValues: {
       username: '',
@@ -103,17 +74,46 @@ function LoginForm(props) {
       createPassword: '',
       repeatPassword: '',
     },
+    onSubmit: (values) =>{
+      var config = {
+        method: 'post',
+        url: 'http://localhost:8080/login',
+        headers: { 
+          'Authorization': 'Basic Og==', 
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        data : qs.stringify({
+          'username': values.username,
+          'password': values.password 
+        })
+      };
+      
+       axios(config)
+        //api call returns 200, credentials are valid
+        .then((response) => {
+          console.log(response.data);
+          //localStorage.setItem('isAuthenticated', 'true');
+          props.setErrorMessage('');
+          navigate('/customer');
+        })
+        //else show error on frontend
+        .catch((error) => {
+          console.log(error);
+          props.setErrorMessage('Invalid username/password');
+        });
+  
+    }
   });
 
   return (
-    <form onSubmit={props.onSubmit}>
+    <form onSubmit={formik.handleSubmit}>
       <div className='form-block__input-wrapper'>
         <div className='form-group form-group--login'>
           <Input
             type='text'
             id='username'
             label='username'
-            disabled={props.mode === 'signup'}
+            disabled={mode === 'signup'}
             onChange={formik.handleChange}
             value={formik.values.username}
           />
@@ -121,7 +121,7 @@ function LoginForm(props) {
             type='password'
             id='password'
             label='password'
-            disabled={props.mode === 'signup'}
+            disabled={mode === 'signup'}
             onChange={formik.handleChange}
             value={formik.values.password}
           />
@@ -131,7 +131,7 @@ function LoginForm(props) {
             type='text'
             id='firstName'
             label='first name'
-            disabled={props.mode === 'login'}
+            disabled={mode === 'login'}
             onChange={formik.handleChange}
             value={formik.values.firstName}
           />
@@ -139,7 +139,7 @@ function LoginForm(props) {
             type='text'
             id='lastName'
             label='last name'
-            disabled={props.mode === 'login'}
+            disabled={mode === 'login'}
             onChange={formik.handleChange}
             value={formik.values.lastName}
           />
@@ -147,7 +147,7 @@ function LoginForm(props) {
             type='date'
             id='dob'
             label='date of birth'
-            disabled={props.mode === 'login'}
+            disabled={mode === 'login'}
             onChange={formik.handleChange}
             value={formik.values.dob}
           />
@@ -155,7 +155,7 @@ function LoginForm(props) {
             type='email'
             id='email'
             label='email'
-            disabled={props.mode === 'login'}
+            disabled={mode === 'login'}
             onChange={formik.handleChange}
             value={formik.values.email}
           />
@@ -163,7 +163,7 @@ function LoginForm(props) {
             type='password'
             id='createPassword'
             label='password'
-            disabled={props.mode === 'login'}
+            disabled={mode === 'login'}
             onChange={formik.handleChange}
             value={formik.values.createPassword}
           />
@@ -171,7 +171,7 @@ function LoginForm(props) {
             type='password'
             id='repeatPassword'
             label='repeat password'
-            disabled={props.mode === 'login'}
+            disabled={mode === 'login'}
             onChange={formik.handleChange}
             value={formik.values.repeatPassword}
           />
@@ -181,7 +181,7 @@ function LoginForm(props) {
         className='custom-button custom-button--primary full-width'
         type='submit'
       >
-        {props.mode === 'login' ? 'Log In' : 'Sign Up'}
+        {mode === 'login' ? 'Log In' : 'Sign Up'}
       </button>
       <div></div>
     </form>

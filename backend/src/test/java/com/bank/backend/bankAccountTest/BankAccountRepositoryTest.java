@@ -6,7 +6,7 @@ import com.bank.backend.interfaces.UserAccountRepository;
 import com.bank.backend.transaction.Transaction;
 import com.bank.backend.transaction.TransactionType;
 import com.bank.backend.userAccount.UserAccount;
-import com.bank.backend.userAccount.UserAccountRole;
+import com.bank.backend.security.access.UserAccountRole;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

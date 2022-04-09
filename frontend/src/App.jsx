@@ -20,7 +20,6 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 //add nav bar if necessary
 function App() {
   return (
-    <>
       <Router>
         {/* <NavBar/> */}
         <Routes>
@@ -72,7 +71,6 @@ function App() {
           <Route path='*' element={<NotFound />} />
         </Routes>
       </Router>
-    </>
   );
 }
 
