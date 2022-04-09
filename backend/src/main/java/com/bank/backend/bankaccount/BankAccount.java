@@ -41,7 +41,8 @@ public class BankAccount /*implements IWithdrawable, IDepositable*/ {
     )
     @JoinColumn(
             name = "bank_account",
-            referencedColumnName = "accountNumber"
+            referencedColumnName = "accountNumber",
+            nullable = true
     )
     private List<Transaction> transactions;
 

@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 //need to add a view/button that allows a user to
 //open a new account
-export default function Customer() {
+export default function Customer(props) {
   const navigate = useNavigate();
   const styleForHorizontalCenter = {
     position: 'absolute',
@@ -84,7 +84,7 @@ export default function Customer() {
               size='lg'
               style={{ width: '15rem', margin: '0 auto' }}
             >
-              Logout
+              Logout{props.user.id}
             </Button>
           </Card>
         </Col>

@@ -13,14 +13,6 @@ function LoginComponent(props) {
 
   const navigate = useNavigate();
 
-  function submitLogin(e) {
-    e.preventDefault();
-
-
-    //var data = 
-    
-  }
-
   function submitSignup(e) {
     e.preventDefault();
     console.log('signup works');
@@ -51,7 +43,7 @@ function LoginComponent(props) {
             <label htmlFor='form-toggler'></label>
           </div>
         </header>
-        <LoginForm setErrorMessage={setErrorMessage} />
+        <LoginForm setErrorMessage={setErrorMessage} user={props.user} />
         {errorMessage.length > 0 ? <p>{errorMessage}</p> : null}
       </section>
     </div>
@@ -74,8 +66,8 @@ function LoginForm(props) {
       createPassword: '',
       repeatPassword: '',
     },
-    onSubmit: (values) =>{
-      var config = {
+    onSubmit: (values) =>{      
+       axios({
         method: 'post',
         url: 'http://localhost:8080/login',
         headers: { 
@@ -86,13 +78,24 @@ function LoginForm(props) {
           'username': values.username,
           'password': values.password 
         })
-      };
-      
-       axios(config)
+      })
         //api call returns 200, credentials are valid
-        .then((response) => {
-          console.log(response.data);
-          //localStorage.setItem('isAuthenticated', 'true');
+        .then((res) => {
+          //data = JSON.parse(res.data);
+          console.log(res.data);
+          localStorage.setItem('isAuthenticated', 'true');
+
+          props.user.setter({
+            id : res.data?.user?.id,
+            firstName : res.data?.user?.firstName,
+            lastName : res.data?.user?.lastName,
+            email : res.data?.user?.email,
+            username : res.data?.user?.username,
+            userRole : res.data?.user?.userRole,
+            access_token : res.data?.access_token,
+            refresh_token : res.data?.refresh_token
+          })
+
           props.setErrorMessage('');
           navigate('/customer');
         })
@@ -203,7 +206,7 @@ const Input = ({ id, type, label, disabled, onChange, value }) => (
 function Login(props) {
   return (
     <div className={`custom-login app--is-${mode}`}>
-      <LoginComponent mode={mode} />
+      <LoginComponent mode={mode} user={props.user} />
     </div>
   );
 }

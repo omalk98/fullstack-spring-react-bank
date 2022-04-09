@@ -8,6 +8,7 @@ import Balance from './components/Balance/Balance';
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 import Transfer from './components/Transfer/Transfer';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { useState } from 'react';
 
 //the login page will make an api call to
 //obtain all the customer data like name, username, account numbers,
@@ -19,16 +20,28 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 //add nav bar if necessary
 function App() {
+
+  const[user, setUser] = useState({
+    id : 0,
+    firstName : '',
+    lastName : '',
+    email : '',
+    username : '',
+    userRole : "",
+    access_token : "",
+    refresh_token : ""
+  });
+
   return (
       <Router>
         {/* <NavBar/> */}
         <Routes>
-          <Route path='/' element={<Login />} />
+          <Route path='/' element={<Login user={{details : user, setter : setUser}} />} />
           <Route
             path='/customer'
             element={
               <ProtectedRoute>
-                <Customer />
+                <Customer user={user} />
               </ProtectedRoute>
             }
           />

@@ -3,6 +3,7 @@ package com.bank.backend.security.filter;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.bank.backend.userAccount.UserAccount;
+import com.bank.backend.userAccount.UserResponseObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -56,14 +57,17 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         Map<String, Object> tokens = new HashMap<>();
         tokens.put("access_token", accessToken);
         tokens.put("refresh_token", refreshToken);
-        tokens.put("user", user);
+        tokens.put("user", new UserResponseObject(
+                user.getId(),
+                user.getFirstName(),
+                user.getLastName(),
+                user.getEmail(),
+                user.getUsername(),
+                user.getUserRole(),
+                user.getList())
+        );
         response.setContentType(APPLICATION_JSON_VALUE);
-        try {
-            new ObjectMapper().writeValue(response.getOutputStream(), tokens);
-        }
-        catch (Exception e) {
-            System.out.println("removed date of birth");
-        }
+        new ObjectMapper().writeValue(response.getOutputStream(), tokens);
     }
 
     @Override
