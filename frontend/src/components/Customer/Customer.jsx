@@ -3,6 +3,8 @@ import 'bootstrap/dist/css/bootstrap.css';
 import { Container, Row, Col, Button, Card } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
+//need to add a view/button that allows a user to
+//open a new account
 export default function Customer() {
   const navigate = useNavigate();
   const styleForHorizontalCenter = {
