@@ -5,8 +5,11 @@ import NavbarCollapse from 'react-bootstrap/esm/NavbarCollapse';
 
 //fetch the balance from the server and display it
 //a customer can have more than one account
-export default function Balance() {
-  //the below variable could be an object of acct number and balance
+
+//calls a route in the backend server that requires currently
+//logged in user's id, so Balance needs a currently logged in user's id
+//to be passed in as props
+export default function Balance(props) {
   const [customerData, setCustomerData] = useState([
     { acctNo: 123, balance: 50_000 },
     { acctNo: 456, balance: 40_000 },
@@ -21,12 +24,13 @@ export default function Balance() {
     width: '18rem',
   };
 
+  //the moment the component gets mounted
   //api should respond with an array of bank account numbers +
   //balance for the each of the bank account number
   useEffect(() => {
     // axios
-    //   .get('http://localhost:8080/api')
-    //   .then((res) => setBalance(res.data))
+    //   .get('http://localhost:8080/bankAccount/getAllBankAccount?userId={props.id}')
+    //   .then((res) => setCustomerData(res))
     //   .catch((err) => console.log(err));
   }, []);
 
