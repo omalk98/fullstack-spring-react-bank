@@ -37,7 +37,8 @@ public class BankAccount /*implements IWithdrawable, IDepositable*/ {
     private Double balance;
 
     @OneToMany(
-            cascade = CascadeType.ALL
+            cascade = CascadeType.ALL,
+            fetch = FetchType.EAGER
     )
     @JoinColumn(
             name = "bank_account",

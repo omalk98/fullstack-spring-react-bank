@@ -13,7 +13,6 @@ public class BankAccountService {
         this.bankAccountRepository = bankAccountRepository;
     }
 
-    //not used
     public Double getBalance(Long acctNum) {
         Optional<BankAccount> bankAccount =
                 bankAccountRepository.findById(acctNum);
@@ -44,6 +43,10 @@ public class BankAccountService {
     public boolean deposit(Long acctNum, Float amount) {
         double updatedBalance = getBalance(acctNum) + amount;
         int updatedRows = bankAccountRepository.updateBalance(acctNum, updatedBalance);
+
+        //if updatedRows > 0, create a transaction, and pass necessary details to it
+        //same for withdraw, transfer as well
+
         return updatedRows > 0;
     }
 
