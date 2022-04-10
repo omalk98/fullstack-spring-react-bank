@@ -47,7 +47,7 @@ function App() {
           path='/customer/deposit'
           element={
             <ProtectedRoute>
-              <Deposit user={user} />
+              <Deposit user={user} setUser={setUser} />
             </ProtectedRoute>
           }
         />

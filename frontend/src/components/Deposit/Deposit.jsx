@@ -76,6 +76,33 @@ export default function Deposit(props) {
           if (selectedAccountNo === null) {
             setVariant('danger');
             setError('Please select an account.');
+          } else if (error.response.status === 403) {
+            var config = {
+              method: 'get',
+              url: 'http://localhost:8080/api/users/token/refresh',
+              headers: {
+                Authorization: props.user.refresh_token,
+              },
+              data: '',
+            };
+
+            axios(config)
+              .then(function (response) {
+                let updateUser = props.user;
+                updateUser.access_token = response.data.access_token;
+                updateUser.refresh_token = response.data.refresh_token;
+
+                props.setUser(updateUser);
+
+                setError('Deposit unsuccessful. Please try again.');
+                setVariant('danger');
+              })
+              .catch(function (error) {
+                console.log(error);
+
+                navigate('/');
+                localStorage.setItem('isAuthenticated', false);
+              });
           } else {
             setError('API error.');
             setVariant('danger');
@@ -107,9 +134,38 @@ export default function Deposit(props) {
         }
       })
       .catch(function (error) {
-        console.log(error);
-        setVariant('danger');
-        setError('Error in API Call.');
+        if (error.response.status === 403) {
+          var config = {
+            method: 'get',
+            url: 'http://localhost:8080/api/users/token/refresh',
+            headers: {
+              Authorization: props.user.refresh_token,
+            },
+            data: '',
+          };
+
+          axios(config)
+            .then(function (response) {
+              let updateUser = props.user;
+              updateUser.access_token = response.data.access_token;
+              updateUser.refresh_token = response.data.refresh_token;
+
+              props.setUser(updateUser);
+
+              setError('Token expired. Please try again.');
+              setVariant('danger');
+            })
+            .catch(function (error) {
+              console.log(error);
+
+              navigate('/');
+              localStorage.setItem('isAuthenticated', false);
+            });
+        } else {
+          console.log(error);
+          setVariant('danger');
+          setError('Error in API Call.');
+        }
       });
   }, []);
 
