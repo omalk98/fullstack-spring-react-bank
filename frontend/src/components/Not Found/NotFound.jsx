@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, Container, Row, Col, Alert, Card } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
+import { useNavigate } from 'react-router-dom';
 
 const styleForHorizontalCenter = {
   position: 'absolute',
@@ -20,36 +21,42 @@ const paperStyle = {
 //customer page else take them to login page
 
 export default function NotFound() {
+  const navigate = useNavigate();
+
   return (
-      <Container fluid style={{ ...styleForHorizontalCenter }}>
-        <Row>
-          <Col>
-            <Card style={paperStyle}>
-              <Alert variant='danger'>404 - Page not found!</Alert>
-              {localStorage.getItem('isAuthenticated') === 'true' ? (
-                <Button
-                  href='/customer'
-                  variant='primary'
-                  size='lg'
-                  style={{ width: '15rem', textAlign: 'center' }}
-                  className='m-auto'
-                >
-                  Go to Customer Page
-                </Button>
-              ) : (
-                <Button
-                  href='/'
-                  variant='primary'
-                  size='lg'
-                  style={{ width: '15rem', textAlign: 'center' }}
-                  className='m-auto'
-                >
-                  Go to Login Page
-                </Button>
-              )}
-            </Card>
-          </Col>
-        </Row>
-      </Container>
+    <Container fluid style={{ ...styleForHorizontalCenter }}>
+      <Row>
+        <Col>
+          <Card style={paperStyle}>
+            <Alert variant='danger'>404 - Page not found!</Alert>
+            {localStorage.getItem('isAuthenticated') === 'true' ? (
+              <Button
+                onClick={() => {
+                  navigate('/customer');
+                }}
+                variant='primary'
+                size='lg'
+                style={{ width: '15rem', textAlign: 'center' }}
+                className='m-auto'
+              >
+                Go to Customer Page
+              </Button>
+            ) : (
+              <Button
+                variant='primary'
+                size='lg'
+                onClick={() => {
+                  navigate('/');
+                }}
+                style={{ width: '15rem', textAlign: 'center' }}
+                className='m-auto'
+              >
+                Go to Login Page
+              </Button>
+            )}
+          </Card>
+        </Col>
+      </Row>
+    </Container>
   );
 }

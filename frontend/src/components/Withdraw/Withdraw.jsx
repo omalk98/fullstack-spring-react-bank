@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { useState, useEffect } from 'react';
 import {
   Row,
@@ -11,6 +12,7 @@ import {
   Dropdown,
   Alert,
 } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 
 const paperStyle = {
   padding: '50px 20px',
@@ -34,17 +36,13 @@ const styleForHorizontalCenter = {
 //logged in user's id, so Balance needs a currently logged in user's id
 //to be passed in as props
 export default function Withdraw(props) {
+  const navigate = useNavigate();
+
   const [amount, setAmount] = useState(0.0);
-
-  const [accountNumbers, setAccountNumbers] = useState([
-    { acctNo: 123, balance: 50_000 },
-    { acctNo: 456, balance: 40_000 },
-    { acctNo: 789, balance: 30_000 },
-  ]);
-
+  const [selectedAccountNo, setSelectedAccountNo] = useState(null);
+  const [accountNumbers, setAccountNumbers] = useState([]);
   const [error, setError] = useState('');
   const [variant, setVariant] = useState('danger');
-  const [selectedAccountNo, setSelectedAccountNo] = useState(123);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -54,27 +52,42 @@ export default function Withdraw(props) {
       setError('Please enter a number for withdrawal amount.');
     } else {
       const balance = accountNumbers.find(
-        (account) => account.acctNo === selectedAccountNo
+        ({ accountNumber }) => accountNumber === selectedAccountNo
       )?.balance;
 
       if (balance < event.target[0].value) {
         setVariant('danger');
-        setError('Insufficient funds.');
+        setError('Insufficient funds. Balance is $' + balance);
       } else {
-        setVariant('success');
-        setError('Withdrawal Successful');
+        var config = {
+          method: 'put',
+          url: `http://localhost:8080/api/bankAccount/withdraw?acctNum=${selectedAccountNo}&amount=${amount}`,
+          headers: {
+            Authorization: props.user.access_token,
+          },
+        };
 
-        // axios
-        //   .put('http://localhost:8080/bankAccount/withdraw?acctNum={selectedAccountNo}&amount={amount}')
-        //   .then((res) => {
-        //setError('Withdrawal Successful');
-        //setVariant('success');
-        //setAmount(event.target[0].value);
-        //})
-        //   .catch((err) => {
-        //setError('Withdrawal UnSuccessful');
-        //setVariant('danger');
-        //});
+        axios(config)
+          .then(function (response) {
+            if (response.data) {
+              setVariant('success');
+              setError('Withdraw successful.');
+            } else {
+              setVariant('danger');
+              setError(
+                'Withdrawal unsuccessful, possibly because you dont have enough money in your account.'
+              );
+            }
+          })
+          .catch(function (error) {
+            if (selectedAccountNo === null) {
+              setVariant('danger');
+              setError('Please select an account.');
+            } else {
+              setError('API error.');
+              setVariant('danger');
+            }
+          });
       }
     }
   };
@@ -83,10 +96,30 @@ export default function Withdraw(props) {
   //api should be called which respond with an array of bank account numbers +
   //balance for the each of the bank account number
   useEffect(() => {
-    // axios
-    //   .get('http://localhost:8080/bankAccount/getAllBankAccount?userId={props.id}')
-    //   .then((res) => setAccountNumbers(res))
-    //   .catch((err) => console.log(err));
+    var config = {
+      method: 'get',
+      url: `http://localhost:8080/api/bankAccount/getAllBankAccount?userId=${props.user.id}`,
+      headers: {
+        Authorization: props.user.access_token,
+      },
+      data: '',
+    };
+
+    axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+        if (response.data.length === 0) {
+          setVariant('danger');
+          setError('You do not have any bank accounts.');
+        } else {
+          setAccountNumbers(response.data);
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+        setVariant('danger');
+        setError('Error in API Call.');
+      });
   }, []);
 
   return (
@@ -123,16 +156,16 @@ export default function Withdraw(props) {
                     title='Account number'
                     style={{ textAlign: 'right' }}
                   >
-                    {accountNumbers.map((accountNumber, index) => (
+                    {accountNumbers.map(({ accountNumber }, index) => (
                       <Dropdown.Item
                         eventKey={accountNumber}
                         key={index}
-                        active={selectedAccountNo === accountNumber.acctNo}
+                        active={selectedAccountNo === accountNumber}
                         onClick={(e) => {
                           setSelectedAccountNo(parseInt(e.target.innerText));
                         }}
                       >
-                        {accountNumber.acctNo}
+                        {accountNumber}
                       </Dropdown.Item>
                     ))}
                   </DropdownButton>
@@ -154,7 +187,13 @@ export default function Withdraw(props) {
             Withdraw
           </Button>{' '}
           &nbsp; &nbsp; &nbsp;
-          <Button href={`/customer`} variant='success' size='lg'>
+          <Button
+            onClick={() => {
+              navigate('/customer');
+            }}
+            variant='success'
+            size='lg'
+          >
             Go Back
           </Button>
         </Form>

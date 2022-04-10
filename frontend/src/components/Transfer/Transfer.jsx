@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 import React, { useState, useEffect } from 'react';
 import {
   Row,
@@ -11,6 +13,7 @@ import {
   Dropdown,
   Alert,
 } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 
 const paperStyle = {
   padding: '50px 20px',
@@ -28,18 +31,14 @@ const styleForHorizontalCenter = {
 //validate the input
 //validate if the 'from' bank account has enough money to transfer else show error
 export default function Transfer(props) {
-  const [amount, setAmount] = useState(0.0);
+  const navigate = useNavigate();
 
-  //the below variable could be an object of acct number and balance
-  const [accountNumbers, setAccountNumbers] = useState([
-    { acctNo: 123, balance: 50_000 },
-    { acctNo: 456, balance: 40_000 },
-    { acctNo: 789, balance: 30_000 },
-  ]);
+  const [amount, setAmount] = useState(0.0);
+  const [accountNumbers, setAccountNumbers] = useState([]);
   const [error, setError] = useState('');
   const [variant, setVariant] = useState('danger');
-  const [from, setFrom] = useState(123);
-  const [to, setTo] = useState(456);
+  const [from, setFrom] = useState(null);
+  const [to, setTo] = useState(null);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -53,30 +52,46 @@ export default function Transfer(props) {
         setError('Please select different account numbers.');
       } else {
         const fromBalance = accountNumbers.find(
-          (account) => account.acctNo === from
+          ({ accountNumber }) => accountNumber === from
         )?.balance;
 
         if (fromBalance < amount) {
           setVariant('danger');
-          setError('Insufficient funds.');
+          setError('Insufficient funds. Balance is $' + fromBalance);
         } else {
-          // axios
-          //   .put(
-          //     `http://localhost:8080/bankAccount/transfer?from=${from}&to=${to}&amount=${amount}`
-          //   )
-          //   .then((response) => {
-          //     if (response) {
-          //       setVariant('success');
-          //       setError('Transfer Successful');
-          //     } else {
-          //       setVariant('danger');
-          //       setError('Transfer Failed');
-          //     }
-          //   })
-          //   .catch((err) => {
-          //     setError('Transfer Failed');
-          //     setVariant('danger');
-          //   });
+          var config = {
+            method: 'put',
+            url: `http://localhost:8080/api/bankAccount/transfer?from=${from}&to=${to}&amount=${amount}`,
+            headers: {
+              Authorization: props.user.access_token,
+            },
+          };
+
+          axios(config)
+            .then(function (response) {
+              setBalanceUpdated(true);
+              if (response.data) {
+                setVariant('success');
+                setError('Transfer successful.');
+              } else {
+                setVariant('danger');
+                setError(
+                  "Transfer unsuccessful, possibly because you dont have enough money in the 'from' account."
+                );
+              }
+            })
+            .catch(function (error) {
+              if (to === null) {
+                setVariant('danger');
+                setError("Please select an account for 'To'.");
+              } else if (from === null) {
+                setVariant('danger');
+                setError("Please select an account for 'From'.");
+              } else {
+                setError('API error.');
+                setVariant('danger');
+              }
+            });
         }
       }
     }
@@ -86,10 +101,30 @@ export default function Transfer(props) {
   //api should be called which respond with an array of bank account numbers +
   //balance for the each of the bank account number
   useEffect(() => {
-    // axios
-    //   .get('http://localhost:8080/bankAccount/getAllBankAccount?userId={props.id}')
-    //   .then((res) => setAccountNumbers(res))
-    //   .catch((err) => console.log(err));
+    var config = {
+      method: 'get',
+      url: `http://localhost:8080/api/bankAccount/getAllBankAccount?userId=${props.user.id}`,
+      headers: {
+        Authorization: props.user.access_token,
+      },
+      data: '',
+    };
+
+    axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+        if (response.data.length === 0) {
+          setVariant('danger');
+          setError('You do not have any bank accounts.');
+        } else {
+          setAccountNumbers(response.data);
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+        setVariant('danger');
+        setError('Error in API Call.');
+      });
   }, []);
 
   return (
@@ -103,7 +138,7 @@ export default function Transfer(props) {
           className='m-auto'
         >
           <Alert.Heading style={{ marginTop: '-7px' }}>
-            Hello User abc!
+            Hello {props.user.firstName} {props.user.lastName}!
           </Alert.Heading>
         </Alert>
         <br></br>
@@ -117,17 +152,17 @@ export default function Transfer(props) {
               size='lg'
               style={{ textAlign: 'right' }}
             >
-              {accountNumbers.map((accountNumber, index) => (
+              {accountNumbers.map(({ accountNumber }, index) => (
                 <Dropdown.Item
                   eventKey={index}
                   key={index}
-                  active={from === accountNumber.acctNo}
+                  active={from === accountNumber}
                   onClick={(e) => {
                     setFrom(parseInt(e.target.innerText));
                     setError('');
                   }}
                 >
-                  {accountNumber.acctNo}
+                  {accountNumber}
                 </Dropdown.Item>
               ))}
             </DropdownButton>
@@ -141,17 +176,17 @@ export default function Transfer(props) {
               size='lg'
               style={{ textAlign: 'right' }}
             >
-              {accountNumbers.map((accountNumber, index) => (
+              {accountNumbers.map(({ accountNumber }, index) => (
                 <Dropdown.Item
                   eventKey={index}
                   key={index}
-                  active={to === accountNumber.acctNo}
+                  active={to === accountNumber}
                   onClick={(e) => {
                     setTo(parseInt(e.target.innerText));
                     setError('');
                   }}
                 >
-                  {accountNumber.acctNo}
+                  {accountNumber}
                 </Dropdown.Item>
               ))}
             </DropdownButton>
@@ -203,7 +238,7 @@ export default function Transfer(props) {
             </Button>{' '}
             &nbsp; &nbsp; &nbsp;
             <Button
-              href={`/customer`}
+              onClick={() => navigate('/customer')}
               variant='success'
               size='lg'
               style={{ width: '10rem' }}

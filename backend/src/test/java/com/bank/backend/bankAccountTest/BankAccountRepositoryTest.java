@@ -26,31 +26,39 @@ class BankAccountRepositoryTest {
 
     @Test
     public void createBankAccount(){
-        BankAccount bc1 = new BankAccount(53.2);
-        BankAccount bc2 = new BankAccount(34.2);
-        BankAccount bc3 = new BankAccount(23.4);
+        BankAccount bc1 = new BankAccount(53.2, null);
+        BankAccount bc2 = new BankAccount(34.2, null);
+        BankAccount bc3 = new BankAccount(23.4, null);
 
-        BankAccount bc4 = new BankAccount(100000.0);
+        BankAccount bc4 = new BankAccount(100000.0, List.of(new Transaction(23.34, TransactionType.WITHDRAW)));
 
-        BankAccount bc5 = new BankAccount(200000.0);
+        BankAccount bc5 = new BankAccount(200000.0, null);
 
         UserAccount ua1 = new UserAccount("Omar", "Hussein",
                 "ohussein2@myseneca.ca", "binAdmin",
                 new BCryptPasswordEncoder().encode("12345"),
                 LocalDate.of(2020, 2, 25),
                 UserAccountRole.ADMIN, List.of(bc1, bc2, bc3));
+
         UserAccount ua2 = new UserAccount("Soham", "Thaker",
                 "sthaker@myseneca.ca", "belFast",
                 new BCryptPasswordEncoder().encode("12345"),
                 LocalDate.of(2020, 2, 25),
                 UserAccountRole.ADMIN, List.of(bc4));
+
         UserAccount ua3 = new UserAccount("Philippe", "Cormier",
                 "pcormier3@myseneca.ca", "bigBrain",
                 new BCryptPasswordEncoder().encode("12345"),
                 LocalDate.of(2020, 2, 25),
                 UserAccountRole.ADMIN, List.of(bc5));
 
-        userAccountRepository.saveAll(List.of(ua1, ua2, ua3));
+        UserAccount ua4 = new UserAccount("Sam", "Tucker",
+                "sam@email.ca", "bigBrain",
+                new BCryptPasswordEncoder().encode("12345"),
+                LocalDate.of(2020, 2, 25),
+                UserAccountRole.ADMIN, null);
+
+        userAccountRepository.saveAll(List.of(ua1, ua2, ua3, ua4));
         //bankAccountRepository.saveAll(List.of(bc1, bc2, bc3));
     }
 
@@ -93,7 +101,13 @@ class BankAccountRepositoryTest {
 
     @Test
     public void readOneBankAccount(){
-        Optional<BankAccount> bankAccountList = bankAccountRepository.findById(1L);
+        Optional<BankAccount> bankAccountList = bankAccountRepository.findById(4L);
         System.out.println(bankAccountList);
     }
+
+//    @Test
+//    public void getAllBankAccounts(){
+//        List<BankAccount> bankAccountList = bankAccountRepository.getAllBankAccountsByID(1);
+//        System.out.println(bankAccountList);
+//    }
 }

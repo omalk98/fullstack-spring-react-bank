@@ -32,12 +32,12 @@ public class Transaction {
         this.type = type;
     }
 
-    @Override
-    public String toString() {
-        return "Transaction{" +
-                "id=" + id +
-                ", value=" + value +
-                ", type=" + type +
-                '}';
-    }
+//    @Override
+//    public String toString() {
+//        return "Transaction{" +
+//                "id=" + id +
+//                ", value=" + value +
+//                ", type=" + type +
+//                '}';
+//    }
 }

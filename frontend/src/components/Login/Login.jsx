@@ -51,7 +51,6 @@ function LoginComponent(props) {
 }
 
 function LoginForm(props) {
-
   const navigate = useNavigate();
 
   const formik = useFormik({
@@ -66,18 +65,18 @@ function LoginForm(props) {
       createPassword: '',
       repeatPassword: '',
     },
-    onSubmit: (values) =>{      
-       axios({
+    onSubmit: (values) => {
+      axios({
         method: 'post',
         url: 'http://localhost:8080/login',
-        headers: { 
-          'Authorization': 'Basic Og==', 
-          'Content-Type': 'application/x-www-form-urlencoded'
+        headers: {
+          Authorization: 'Basic Og==',
+          'Content-Type': 'application/x-www-form-urlencoded',
         },
-        data : qs.stringify({
-          'username': values.username,
-          'password': values.password 
-        })
+        data: qs.stringify({
+          username: values.username,
+          password: values.password,
+        }),
       })
         //api call returns 200, credentials are valid
         .then((res) => {
@@ -86,15 +85,29 @@ function LoginForm(props) {
           localStorage.setItem('isAuthenticated', 'true');
 
           props.user.setter({
-            id : res.data?.user?.id,
-            firstName : res.data?.user?.firstName,
-            lastName : res.data?.user?.lastName,
-            email : res.data?.user?.email,
-            username : res.data?.user?.username,
-            userRole : res.data?.user?.userRole,
-            access_token : res.data?.access_token,
-            refresh_token : res.data?.refresh_token
-          })
+            id: res.data?.user?.id,
+            firstName: res.data?.user?.firstName,
+            lastName: res.data?.user?.lastName,
+            email: res.data?.user?.email,
+            username: res.data?.user?.username,
+            userRole: res.data?.user?.userRole,
+            access_token: res.data?.access_token,
+            refresh_token: res.data?.refresh_token,
+          });
+
+          localStorage.setItem(
+            'user',
+            JSON.stringify({
+              id: res.data?.user?.id,
+              firstName: res.data?.user?.firstName,
+              lastName: res.data?.user?.lastName,
+              email: res.data?.user?.email,
+              username: res.data?.user?.username,
+              userRole: res.data?.user?.userRole,
+              access_token: res.data?.access_token,
+              refresh_token: res.data?.refresh_token,
+            })
+          );
 
           props.setErrorMessage('');
           navigate('/customer');
@@ -104,8 +117,7 @@ function LoginForm(props) {
           console.log(error);
           props.setErrorMessage('Invalid username/password');
         });
-  
-    }
+    },
   });
 
   return (

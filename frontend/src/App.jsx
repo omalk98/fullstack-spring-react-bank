@@ -20,70 +20,72 @@ import { useState } from 'react';
 
 //add nav bar if necessary
 function App() {
-
-  const[user, setUser] = useState({
-    id : 0,
-    firstName : '',
-    lastName : '',
-    email : '',
-    username : '',
-    userRole : "",
-    access_token : "",
-    refresh_token : ""
+  const [user, setUser] = useState({
+    id: 0,
+    firstName: '',
+    lastName: '',
+    email: '',
+    username: '',
+    userRole: '',
+    access_token: '',
+    refresh_token: '',
   });
 
   return (
-      <Router>
-        {/* <NavBar/> */}
-        <Routes>
-          <Route path='/' element={<Login user={{details : user, setter : setUser}} />} />
-          <Route
-            path='/customer'
-            element={
-              <ProtectedRoute>
-                <Customer user={user} />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            exact
-            path='/customer/deposit'
-            element={
-              <ProtectedRoute>
-                <Deposit />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            exact
-            path='/customer/withdraw'
-            element={
-              <ProtectedRoute>
-                <Withdraw />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            exact
-            path='/customer/transfer'
-            element={
-              <ProtectedRoute>
-                <Transfer />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            exact
-            path='/customer/balance'
-            element={
-              <ProtectedRoute>
-                <Balance />
-              </ProtectedRoute>
-            }
-          />
-          <Route path='*' element={<NotFound />} />
-        </Routes>
-      </Router>
+    <Router>
+      {/* <NavBar/> */}
+      <Routes>
+        <Route
+          path='/'
+          element={<Login user={{ details: user, setter: setUser }} />}
+        />
+        <Route
+          path='/customer'
+          element={
+            <ProtectedRoute>
+              <Customer user={user} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          exact
+          path='/customer/deposit'
+          element={
+            <ProtectedRoute>
+              <Deposit user={user} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          exact
+          path='/customer/withdraw'
+          element={
+            <ProtectedRoute>
+              <Withdraw user={user} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          exact
+          path='/customer/transfer'
+          element={
+            <ProtectedRoute>
+              <Transfer user={user} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          exact
+          path='/customer/balance'
+          element={
+            <ProtectedRoute>
+              <Balance user={user} />
+            </ProtectedRoute>
+          }
+        />
+        <Route path='*' element={<NotFound />} />
+      </Routes>
+    </Router>
   );
 }
 

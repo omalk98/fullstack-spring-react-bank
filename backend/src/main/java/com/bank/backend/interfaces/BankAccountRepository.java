@@ -18,7 +18,7 @@ public interface BankAccountRepository extends JpaRepository<BankAccount, Long> 
     int updateBalance(Long accountNumber, Double balance);
 
     @Query(value = "select * from bank_account b where b.user_account = ?1", nativeQuery = true)
-    List<BankAccount> getAllBankAccountsByID(Long id);
+    List<BankAccount> getAllBankAccountsByID(Long userId);
 
     @Query(value = "select balance from bank_account b where b.account_number = ?1", nativeQuery = true)
     Double getAllBalanceByAccountNumber(Long id);

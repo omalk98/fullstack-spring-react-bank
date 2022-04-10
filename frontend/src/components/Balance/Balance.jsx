@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
-import { Row, Col, Button, Card, Container } from 'react-bootstrap';
-import NavbarCollapse from 'react-bootstrap/esm/NavbarCollapse';
+import { Row, Col, Button, Card, Container, Alert } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 
 //fetch the balance from the server and display it
 //a customer can have more than one account
@@ -10,11 +10,11 @@ import NavbarCollapse from 'react-bootstrap/esm/NavbarCollapse';
 //logged in user's id, so Balance needs a currently logged in user's id
 //to be passed in as props
 export default function Balance(props) {
-  const [customerData, setCustomerData] = useState([
-    { acctNo: 123, balance: 50_000 },
-    { acctNo: 456, balance: 40_000 },
-    { acctNo: 789, balance: 30_000 },
-  ]);
+  const navigate = useNavigate();
+  const [error, setError] = useState('');
+  const [variant, setVariant] = useState('danger');
+
+  const [customerData, setCustomerData] = useState([]);
 
   const styleForHorizontalCenter = {
     position: 'relative',
@@ -25,34 +25,60 @@ export default function Balance(props) {
   };
 
   //the moment the component gets mounted
-  //api should respond with an array of bank account numbers +
+  //api should be called which respond with an array of bank account numbers +
   //balance for the each of the bank account number
   useEffect(() => {
-    // axios
-    //   .get('http://localhost:8080/bankAccount/getAllBankAccount?userId={props.id}')
-    //   .then((res) => setCustomerData(res))
-    //   .catch((err) => console.log(err));
+    var config = {
+      method: 'get',
+      url: `http://localhost:8080/api/bankAccount/getAllBankAccount?userId=${props.user.id}`,
+      headers: {
+        Authorization: props.user.access_token,
+      },
+      data: '',
+    };
+
+    axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+        if (response.data.length === 0) {
+          setVariant('danger');
+          setError('You do not have any bank accounts.');
+        } else {
+          setCustomerData(response.data);
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+        setVariant('danger');
+        setError('Error in API Call.');
+      });
   }, []);
 
   return (
     <Container fuild='true' style={{ ...styleForHorizontalCenter }}>
       <Row>
         <Col>
-          {/* loop through the array of bank account numbers and balance and show each card*/}
-          {customerData.map((cData, index) => (
+          {error && <Alert variant='danger'>{error}</Alert>}
+          {customerData.map(({ accountNumber, balance }, index) => (
             <Card key={index}>
               <Card.Body>
                 <Card.Title style={{ color: 'black' }}>
-                  Account Number: <strong>{cData.acctNo}</strong>
+                  Account Number: <strong>{accountNumber}</strong>
                 </Card.Title>
                 <Card.Text style={{ color: 'black' }}>
-                  Balance: <strong>${cData.balance}</strong>
+                  Balance: <strong>${balance}</strong>
                 </Card.Text>
               </Card.Body>
             </Card>
           ))}
           <br />
-          <Button href={`/customer`} variant='success' size='lg'>
+          <Button
+            variant='success'
+            size='lg'
+            onClick={() => {
+              navigate('/customer');
+            }}
+          >
             Go Back
           </Button>
         </Col>
