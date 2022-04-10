@@ -18,4 +18,14 @@ public class UserResponseObject implements Serializable {
     private String username;
     private UserAccountRole userRole;
     private List<BankAccount> list;
+
+    public UserResponseObject(UserAccount user) {
+        this.id = user.getId();
+        this.firstName = user.getFirstName();
+        this.lastName = user.getLastName();
+        this.email = user.getEmail();
+        this.username = user.getUsername();
+        this.userRole = user.getUserRole();
+        this.list = user.getList();
+    }
 }

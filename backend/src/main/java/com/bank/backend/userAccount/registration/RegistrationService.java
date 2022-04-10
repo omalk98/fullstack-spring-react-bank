@@ -1,9 +1,10 @@
-package com.bank.backend.registration;
+package com.bank.backend.userAccount.registration;
 
-import com.bank.backend.registration.email.EmailValidator;
+import com.bank.backend.bankaccount.BankAccount;
+import com.bank.backend.userAccount.registration.email.EmailValidator;
 import com.bank.backend.interfaces.EmailSender;
-import com.bank.backend.registration.token.ConfirmationTokenService;
-import com.bank.backend.registration.token.ConfirmationToken;
+import com.bank.backend.userAccount.registration.token.ConfirmationTokenService;
+import com.bank.backend.userAccount.registration.token.ConfirmationToken;
 import com.bank.backend.userAccount.UserAccount;
 import com.bank.backend.security.access.UserAccountRole;
 import com.bank.backend.userAccount.UserAccountService;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * Registers new user
@@ -37,7 +39,8 @@ public class RegistrationService {
                         request.getUsername(),
                         request.getPassword(),
                         request.getDateOfBirth(),
-                        UserAccountRole.USER
+                        UserAccountRole.USER,
+                        List.of(new BankAccount(0.0))
                 )
         );
         emailSender.send(

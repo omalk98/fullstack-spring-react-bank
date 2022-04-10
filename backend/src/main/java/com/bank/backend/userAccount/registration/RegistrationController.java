@@ -1,4 +1,4 @@
-package com.bank.backend.registration;
+package com.bank.backend.userAccount.registration;
 
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;

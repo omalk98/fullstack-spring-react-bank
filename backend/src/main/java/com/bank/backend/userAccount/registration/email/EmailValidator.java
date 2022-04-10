@@ -1,4 +1,4 @@
-package com.bank.backend.registration.email;
+package com.bank.backend.userAccount.registration.email;
 
 import org.springframework.stereotype.Service;
 
