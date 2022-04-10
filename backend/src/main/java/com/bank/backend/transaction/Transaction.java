@@ -1,8 +1,11 @@
 package com.bank.backend.transaction;
 
+import com.bank.backend.bankaccount.BankAccount;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.List;
 
 @Getter
 @Setter
@@ -11,7 +14,7 @@ import javax.persistence.*;
 @ToString
 @Entity
 @Table
-public class Transaction {
+public class Transaction implements Serializable {
     @Id
     @SequenceGenerator(
             name = "transaction_sequence",
@@ -24,20 +27,29 @@ public class Transaction {
     )
     private Long id;
     private Double value;
-    @Enumerated(EnumType.STRING)
-    private TransactionType type;
+    private String transactionType;
 
-    public Transaction(Double value, TransactionType type) {
+    @ManyToOne
+    @JoinColumn(name = "source")
+    private BankAccount source = new BankAccount();
+
+    @ManyToOne
+    @JoinColumn(name = "destination")
+    private BankAccount destination = new BankAccount();
+
+    public Transaction(Double value, BankAccount source,
+                       BankAccount destination, TransactionType transactionType) {
         this.value = value;
-        this.type = type;
+        this.source = source;
+        this.destination = destination;
+        if(transactionType == TransactionType.TRANSFER){
+            this.transactionType = "Transfer";
+        }
+        else if(transactionType == TransactionType.DEPOSIT){
+            this.transactionType = "Deposit";
+        }
+        else{
+            this.transactionType = "Withdraw";
+        }
     }
-
-//    @Override
-//    public String toString() {
-//        return "Transaction{" +
-//                "id=" + id +
-//                ", value=" + value +
-//                ", type=" + type +
-//                '}';
-//    }
 }
