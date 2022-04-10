@@ -16,6 +16,13 @@ export default function Balance(props) {
 
   const [customerData, setCustomerData] = useState([]);
 
+  useEffect(() => {
+    if (props.user.id === 0) {
+      navigate('/');
+      localStorage.setItem('isAuthenticated', false);
+    }
+  }, [props.user]);
+
   const styleForHorizontalCenter = {
     position: 'relative',
     top: '50%',
@@ -39,7 +46,6 @@ export default function Balance(props) {
 
     axios(config)
       .then(function (response) {
-        console.log(JSON.stringify(response.data));
         if (response.data.length === 0) {
           setVariant('danger');
           setError('You do not have any bank accounts.');

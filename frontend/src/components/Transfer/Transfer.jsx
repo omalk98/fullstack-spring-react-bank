@@ -40,6 +40,13 @@ export default function Transfer(props) {
   const [from, setFrom] = useState(null);
   const [to, setTo] = useState(null);
 
+  useEffect(() => {
+    if (props.user.id === 0) {
+      navigate('/');
+      localStorage.setItem('isAuthenticated', false);
+    }
+  }, [props.user]);
+
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -69,7 +76,6 @@ export default function Transfer(props) {
 
           axios(config)
             .then(function (response) {
-              setBalanceUpdated(true);
               if (response.data) {
                 setVariant('success');
                 setError('Transfer successful.');
@@ -112,7 +118,6 @@ export default function Transfer(props) {
 
     axios(config)
       .then(function (response) {
-        console.log(JSON.stringify(response.data));
         if (response.data.length === 0) {
           setVariant('danger');
           setError('You do not have any bank accounts.');

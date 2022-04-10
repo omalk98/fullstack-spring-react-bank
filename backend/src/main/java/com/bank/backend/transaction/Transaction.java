@@ -31,11 +31,11 @@ public class Transaction implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "source")
-    private BankAccount source = new BankAccount();
+    private BankAccount source;
 
     @ManyToOne
     @JoinColumn(name = "destination")
-    private BankAccount destination = new BankAccount();
+    private BankAccount destination;
 
     public Transaction(Double value, BankAccount source,
                        BankAccount destination, TransactionType transactionType) {

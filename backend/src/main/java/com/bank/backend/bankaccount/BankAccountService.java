@@ -2,6 +2,7 @@ package com.bank.backend.bankaccount;
 import com.bank.backend.interfaces.BankAccountRepository;
 import com.bank.backend.interfaces.TransactionRepository;
 import com.bank.backend.transaction.Transaction;
+import com.bank.backend.transaction.TransactionService;
 import com.bank.backend.transaction.TransactionType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -49,10 +50,9 @@ public class BankAccountService {
 
                 Transaction tr = new Transaction(amount, fromBA.get(),
                         toBA.get(), TransactionType.TRANSFER);
-                transactionRepository.save(tr);
 
-                fromBA.get().setSourceTransactions(tr);
-                toBA.get().setDestinationTransactions(tr);
+                TransactionService ts = new TransactionService(transactionRepository);
+                ts.addTransaction(tr);
             }
 
             return (updatedToRows + updatedFromRows) > 0;
@@ -67,12 +67,12 @@ public class BankAccountService {
         Optional<BankAccount> ba = bankAccountRepository.findById(acctNum);
 
         if(updatedRows > 0 && ba.isPresent()) {
+            System.out.println("inside deposit");
+            Transaction tr = new Transaction(amount, null,
+                    ba.get(), TransactionType.DEPOSIT);
 
-            Transaction tr = new Transaction(amount, ba.get(),
-                    null, TransactionType.DEPOSIT);
-            transactionRepository.save(tr);
-
-            ba.get().setSourceTransactions(tr);
+            TransactionService ts = new TransactionService(transactionRepository);
+            ts.addTransaction(tr);
         }
 
         return updatedRows > 0;
@@ -88,11 +88,11 @@ public class BankAccountService {
             Optional<BankAccount> ba = bankAccountRepository.findById(acctNum);
 
             if(updatedRows > 0 && ba.isPresent()) {
-                Transaction tr = new Transaction(amount, null,
-                        ba.get(), TransactionType.WITHDRAW);
-                transactionRepository.save(tr);
+                Transaction tr = new Transaction(amount, ba.get(),
+                        null, TransactionType.WITHDRAW);
 
-                ba.get().setDestinationTransactions(tr);
+                TransactionService ts = new TransactionService(transactionRepository);
+                ts.addTransaction(tr);
             }
 
             return updatedRows > 0;
