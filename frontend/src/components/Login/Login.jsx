@@ -103,7 +103,6 @@ function LoginForm(props) {
           })
           //else show error on frontend
           .catch((error) => {
-            console.log(error);
             props.setErrorMessage('Invalid username/password');
           });
       }
