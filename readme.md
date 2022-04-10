@@ -8,10 +8,10 @@ The backend was developed using the Java EE sdk with the Spring Boot framework w
 The frontend was developed using node.js and ReactJS which communicates with the backend, which in turn communicates with the database
 
 ### Technologies used
--Java J2EE sdk 17.0.1
--ReactJS 17.0.2
--Node.js 16.14.2
--Spring Boot 2.6.6
+- Java J2EE sdk 17.0.1
+- ReactJS 17.0.2
+- Node.js 16.14.2
+- Spring Boot 2.6.6
 
 ### Developed By:
 1. [Omar Hussein](https://github.com/omalk98)
