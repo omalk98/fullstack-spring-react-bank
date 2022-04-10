@@ -18,7 +18,6 @@ import { useState } from 'react';
 //by passing a function as a prop to the login page
 //and then pass all the customer data to all the components
 
-//add nav bar if necessary
 function App() {
   const [user, setUser] = useState({
     id: 0,
@@ -33,12 +32,8 @@ function App() {
 
   return (
     <Router>
-      {/* <NavBar/> */}
       <Routes>
-        <Route
-          path='/'
-          element={<Login setUser={setUser} />}
-        />
+        <Route path='/' element={<Login setUser={setUser} />} />
         <Route
           path='/customer'
           element={
@@ -52,7 +47,7 @@ function App() {
           path='/customer/deposit'
           element={
             <ProtectedRoute>
-              <Deposit user={user} />
+              <Deposit user={user} setUser={setUser} />
             </ProtectedRoute>
           }
         />

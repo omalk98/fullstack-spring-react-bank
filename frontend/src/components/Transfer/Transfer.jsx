@@ -40,6 +40,13 @@ export default function Transfer(props) {
   const [from, setFrom] = useState(null);
   const [to, setTo] = useState(null);
 
+  useEffect(() => {
+    if (props.user.id === 0) {
+      navigate('/');
+      localStorage.setItem('isAuthenticated', false);
+    }
+  }, [props.user]);
+
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -69,7 +76,6 @@ export default function Transfer(props) {
 
           axios(config)
             .then(function (response) {
-              setBalanceUpdated(true);
               if (response.data) {
                 setVariant('success');
                 setError('Transfer successful.');
@@ -87,6 +93,33 @@ export default function Transfer(props) {
               } else if (from === null) {
                 setVariant('danger');
                 setError("Please select an account for 'From'.");
+              } else if (error.response.status === 403) {
+                var config = {
+                  method: 'get',
+                  url: 'http://localhost:8080/api/users/token/refresh',
+                  headers: {
+                    Authorization: props.user.refresh_token,
+                  },
+                  data: '',
+                };
+
+                axios(config)
+                  .then(function (response) {
+                    let updateUser = props.user;
+                    updateUser.access_token = response.data.access_token;
+                    updateUser.refresh_token = response.data.refresh_token;
+
+                    props.setUser(updateUser);
+
+                    setError('Deposit unsuccessful. Please try again.');
+                    setVariant('danger');
+                  })
+                  .catch(function (error) {
+                    console.log(error);
+
+                    navigate('/');
+                    localStorage.setItem('isAuthenticated', false);
+                  });
               } else {
                 setError('API error.');
                 setVariant('danger');
@@ -112,7 +145,6 @@ export default function Transfer(props) {
 
     axios(config)
       .then(function (response) {
-        console.log(JSON.stringify(response.data));
         if (response.data.length === 0) {
           setVariant('danger');
           setError('You do not have any bank accounts.');
@@ -121,9 +153,38 @@ export default function Transfer(props) {
         }
       })
       .catch(function (error) {
-        console.log(error);
-        setVariant('danger');
-        setError('Error in API Call.');
+        if (error.response.status === 403) {
+          var config = {
+            method: 'get',
+            url: 'http://localhost:8080/api/users/token/refresh',
+            headers: {
+              Authorization: props.user.refresh_token,
+            },
+            data: '',
+          };
+
+          axios(config)
+            .then(function (response) {
+              let updateUser = props.user;
+              updateUser.access_token = response.data.access_token;
+              updateUser.refresh_token = response.data.refresh_token;
+
+              props.setUser(updateUser);
+
+              setError('Token expired. Please try again.');
+              setVariant('danger');
+            })
+            .catch(function (error) {
+              console.log(error);
+
+              navigate('/');
+              localStorage.setItem('isAuthenticated', false);
+            });
+        } else {
+          console.log(error);
+          setVariant('danger');
+          setError('Error in API Call.');
+        }
       });
   }, []);
 

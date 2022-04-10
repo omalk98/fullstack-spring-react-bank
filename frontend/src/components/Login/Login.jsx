@@ -37,12 +37,18 @@ function LoginComponent(props) {
             <input
               id='form-toggler'
               type='checkbox'
-              onClick={() => props.setMode(props.mode === 'login' ? 'signup' : 'login')}
+              onClick={() =>
+                props.setMode(props.mode === 'login' ? 'signup' : 'login')
+              }
             />
             <label htmlFor='form-toggler'></label>
           </div>
         </header>
-        <LoginForm mode={props.mode} setErrorMessage={setErrorMessage} setUser={props.setUser} />
+        <LoginForm
+          mode={props.mode}
+          setErrorMessage={setErrorMessage}
+          setUser={props.setUser}
+        />
         {errorMessage.length > 0 ? <p>{errorMessage}</p> : null}
       </section>
     </div>
@@ -105,22 +111,21 @@ function LoginForm(props) {
           .catch((error) => {
             props.setErrorMessage('Invalid username/password');
           });
-      }
-      else if (props.mode === 'signup') {
+      } else if (props.mode === 'signup') {
         axios({
           method: 'post',
           url: 'http://localhost:8080/api/user/registration/register',
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
           },
           data: JSON.stringify({
-            "firstName": values.firstName,
-            "lastName": values.lastName,
-            "email": values.email,
-            "username": values.username,
-            "password": values.createPassword,
-            "dateOfBirth": values.dob
-          })
+            firstName: values.firstName,
+            lastName: values.lastName,
+            email: values.email,
+            username: values.username,
+            password: values.createPassword,
+            dateOfBirth: values.dob,
+          }),
         })
           .then((res) => {
             console.log(res.data);
@@ -231,7 +236,11 @@ function Login(props) {
   const [currentMode, setMode] = useState(mode);
   return (
     <div className={`custom-login app--is-${currentMode}`}>
-      <LoginComponent mode={currentMode} setMode={setMode} setUser={props.setUser} />
+      <LoginComponent
+        mode={currentMode}
+        setMode={setMode}
+        setUser={props.setUser}
+      />
     </div>
   );
 }

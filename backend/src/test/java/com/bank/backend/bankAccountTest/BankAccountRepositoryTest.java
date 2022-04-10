@@ -3,8 +3,10 @@ package com.bank.backend.bankAccountTest;
 import com.bank.backend.bankaccount.BankAccount;
 import com.bank.backend.bankaccount.BankAccountService;
 import com.bank.backend.interfaces.BankAccountRepository;
+import com.bank.backend.interfaces.TransactionRepository;
 import com.bank.backend.interfaces.UserAccountRepository;
 import com.bank.backend.transaction.Transaction;
+import com.bank.backend.transaction.TransactionService;
 import com.bank.backend.transaction.TransactionType;
 import com.bank.backend.userAccount.UserAccount;
 import com.bank.backend.security.access.UserAccountRole;
@@ -28,6 +30,12 @@ class BankAccountRepositoryTest {
     @Autowired
     BankAccountService bankAccountService;
 
+    @Autowired
+    private TransactionRepository transactionRepository;
+
+    @Autowired
+    private TransactionService transactionService = new TransactionService(transactionRepository);
+
     @Test
     public void createBankAccount(){
 
@@ -41,19 +49,11 @@ class BankAccountRepositoryTest {
 
         Transaction tr1 = new Transaction(34.23, bc1, bc2, TransactionType.TRANSFER);
         Transaction tr2 = new Transaction(45.45, bc2, null, TransactionType.DEPOSIT);
-        Transaction tr3 = new Transaction(12.12, null, null, TransactionType.WITHDRAW);
+        Transaction tr3 = new Transaction(12.12, null, bc3, TransactionType.WITHDRAW);
 
-//        bc1.setSourceTransactions(tr1);
-//        bc2.setDestinationTransactions(tr1);
-//
-//        bc2.setSourceTransactions(tr2);
-//
-//        bc3.setDestinationTransactions(tr3);
-//        Transaction tr4 = new Transaction(2300.0);
-//        Transaction tr5 = new Transaction(2500.0);
-//
-//        Transaction tr6 = new Transaction(10000.0);
-//        Transaction tr7 = new Transaction(11000.0);
+        transactionService.addTransaction(tr1);
+        transactionService.addTransaction(tr2);
+        transactionService.addTransaction(tr3);
 
         UserAccount ua1 = new UserAccount("Omar", "Hussein",
                 "ohussein2@myseneca.ca", "binAdmin",
@@ -80,21 +80,6 @@ class BankAccountRepositoryTest {
                 UserAccountRole.ADMIN, null);
 
         userAccountRepository.saveAll(List.of(ua1, ua2, ua3, ua4));
-        //bankAccountRepository.saveAll(List.of(bc1, bc2, bc3));
-    }
-
-    @Test
-    public void createBankAccountWithTransactions(){
-//        BankAccount bankAccount = new BankAccount(2000.0,
-//            List.of(
-//                new Transaction(500.0, TransactionType.WITHDRAW),
-//                new Transaction(700.0, TransactionType.WITHDRAW),
-//                new Transaction(440.0, TransactionType.WITHDRAW),
-//                new Transaction(1200.0, TransactionType.DEPOSIT),
-//                new Transaction(80.0, TransactionType.DEPOSIT)
-//            )
-//        );
-//        bankAccountRepository.save(bankAccount);
     }
 
     @Test
@@ -126,9 +111,9 @@ class BankAccountRepositoryTest {
         System.out.println(bankAccountList);
     }
 
-//    @Test
-//    public void getAllBankAccounts(){
-//        List<BankAccount> bankAccountList = bankAccountRepository.getAllBankAccountsByID(1);
-//        System.out.println(bankAccountList);
-//    }
+    @Test
+    public void getAllBankAccounts(){
+        List<BankAccount> bankAccountList = bankAccountRepository.getAllBankAccountsByID(1L);
+        System.out.println(bankAccountList);
+    }
 }
