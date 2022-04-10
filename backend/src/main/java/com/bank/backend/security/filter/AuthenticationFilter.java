@@ -43,13 +43,13 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         UserAccount user = (UserAccount) authResult.getPrincipal();
         Algorithm algorithm = Algorithm.HMAC256("SECRET".getBytes());
         String accessToken = JWT.create()
-                .withSubject(user.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000))
+                .withSubject(user.getEmail())
+                .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 1000))
                 .withIssuer(request.getRequestURL().toString())
                 .sign(algorithm);
 
         String refreshToken = JWT.create()
-                .withSubject(user.getUsername())
+                .withSubject(user.getEmail())
                 .withExpiresAt(new Date(System.currentTimeMillis() + 30 * 60 * 1000))
                 .withIssuer(request.getRequestURL().toString())
                 .sign(algorithm);
