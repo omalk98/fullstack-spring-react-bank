@@ -37,7 +37,7 @@ function App() {
       <Routes>
         <Route
           path='/'
-          element={<Login user={{ details: user, setter: setUser }} />}
+          element={<Login setUser={setUser} />}
         />
         <Route
           path='/customer'

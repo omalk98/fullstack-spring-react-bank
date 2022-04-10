@@ -43,7 +43,7 @@ function LoginComponent(props) {
             <label htmlFor='form-toggler'></label>
           </div>
         </header>
-        <LoginForm setErrorMessage={setErrorMessage} user={props.user} />
+        <LoginForm setErrorMessage={setErrorMessage} setUser={props.setUser} />
         {errorMessage.length > 0 ? <p>{errorMessage}</p> : null}
       </section>
     </div>
@@ -84,7 +84,7 @@ function LoginForm(props) {
           console.log(res.data);
           localStorage.setItem('isAuthenticated', 'true');
 
-          props.user.setter({
+          props.setUser({
             id: res.data?.user?.id,
             firstName: res.data?.user?.firstName,
             lastName: res.data?.user?.lastName,
@@ -218,7 +218,7 @@ const Input = ({ id, type, label, disabled, onChange, value }) => (
 function Login(props) {
   return (
     <div className={`custom-login app--is-${mode}`}>
-      <LoginComponent mode={mode} user={props.user} />
+      <LoginComponent mode={mode} setUser={props.setUser} />
     </div>
   );
 }
