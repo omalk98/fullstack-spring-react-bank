@@ -1,4 +1,4 @@
-package com.bank.backend.registration.token;
+package com.bank.backend.userAccount.registration.token;
 
 import com.bank.backend.interfaces.ConfirmationTokenRepository;
 import lombok.AllArgsConstructor;

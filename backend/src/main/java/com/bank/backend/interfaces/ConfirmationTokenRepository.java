@@ -1,6 +1,6 @@
 package com.bank.backend.interfaces;
 
-import com.bank.backend.registration.token.ConfirmationToken;
+import com.bank.backend.userAccount.registration.token.ConfirmationToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

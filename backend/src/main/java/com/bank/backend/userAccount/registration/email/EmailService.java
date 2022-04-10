@@ -1,4 +1,4 @@
-package com.bank.backend.registration.email;
+package com.bank.backend.userAccount.registration.email;
 
 import com.bank.backend.interfaces.EmailSender;
 import lombok.AllArgsConstructor;

@@ -1,8 +1,8 @@
 package com.bank.backend.userAccount;
 
 import com.bank.backend.interfaces.UserAccountRepository;
-import com.bank.backend.registration.token.ConfirmationToken;
-import com.bank.backend.registration.token.ConfirmationTokenService;
+import com.bank.backend.userAccount.registration.token.ConfirmationToken;
+import com.bank.backend.userAccount.registration.token.ConfirmationTokenService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -77,7 +77,7 @@ public class UserAccountService implements UserDetailsService {
         if (email != null && email.length() > 0 && !Objects.equals(user.getEmail(), email)) {
             if (userRepository.findUserAccountByEmail(email).isPresent())
                 throw new IllegalStateException(String.format(EMAIL_IN_USE, email));
-            user.setEmail(username);
+            user.setEmail(email);
         }
     }
 

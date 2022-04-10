@@ -22,7 +22,7 @@ import java.util.List;
 @NoArgsConstructor
 @ToString
 @Entity
-@Table
+@Table(name="user_account",uniqueConstraints=@UniqueConstraint(columnNames={"id","username","email"}))
 public class UserAccount implements UserDetails {
 
     @Id

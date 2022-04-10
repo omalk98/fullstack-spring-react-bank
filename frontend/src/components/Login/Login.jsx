@@ -8,7 +8,6 @@ import './Login.scss';
 const mode = 'login';
 
 function LoginComponent(props) {
-  const [mode, setMode] = useState(props.mode);
   const [errorMessage, setErrorMessage] = useState('');
 
   const navigate = useNavigate();
@@ -25,9 +24,9 @@ function LoginComponent(props) {
   return (
     <div>
       <div
-        className={`form-block-wrapper form-block-wrapper--is-${mode}`}
+        className={`form-block-wrapper form-block-wrapper--is-${props.mode}`}
       ></div>
-      <section className={`form-block form-block--is-${mode}`}>
+      <section className={`form-block form-block--is-${props.mode}`}>
         <header className='form-block__header'>
           <h1>{mode === 'login' ? 'Welcome back!' : 'Sign up'}</h1>
           <div className='form-block__toggle-block'>
@@ -38,12 +37,12 @@ function LoginComponent(props) {
             <input
               id='form-toggler'
               type='checkbox'
-              onClick={() => setMode(mode === 'login' ? 'signup' : 'login')}
+              onClick={() => props.setMode(props.mode === 'login' ? 'signup' : 'login')}
             />
             <label htmlFor='form-toggler'></label>
           </div>
         </header>
-        <LoginForm setErrorMessage={setErrorMessage} user={props.user} />
+        <LoginForm mode={props.mode} setErrorMessage={setErrorMessage} setUser={props.setUser} />
         {errorMessage.length > 0 ? <p>{errorMessage}</p> : null}
       </section>
     </div>
@@ -66,38 +65,25 @@ function LoginForm(props) {
       repeatPassword: '',
     },
     onSubmit: (values) => {
-      axios({
-        method: 'post',
-        url: 'http://localhost:8080/login',
-        headers: {
-          Authorization: 'Basic Og==',
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        data: qs.stringify({
-          username: values.username,
-          password: values.password,
-        }),
-      })
-        //api call returns 200, credentials are valid
-        .then((res) => {
-          //data = JSON.parse(res.data);
-          console.log(res.data);
-          localStorage.setItem('isAuthenticated', 'true');
+      if (props.mode === 'login') {
+        axios({
+          method: 'post',
+          url: 'http://localhost:8080/login',
+          headers: {
+            Authorization: 'Basic Og==',
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          data: qs.stringify({
+            username: values.username,
+            password: values.password,
+          }),
+        })
+          //api call returns 200, credentials are valid
+          .then((res) => {
+            console.log(res.data);
+            localStorage.setItem('isAuthenticated', 'true');
 
-          props.user.setter({
-            id: res.data?.user?.id,
-            firstName: res.data?.user?.firstName,
-            lastName: res.data?.user?.lastName,
-            email: res.data?.user?.email,
-            username: res.data?.user?.username,
-            userRole: res.data?.user?.userRole,
-            access_token: res.data?.access_token,
-            refresh_token: res.data?.refresh_token,
-          });
-
-          localStorage.setItem(
-            'user',
-            JSON.stringify({
+            let user = {
               id: res.data?.user?.id,
               firstName: res.data?.user?.firstName,
               lastName: res.data?.user?.lastName,
@@ -106,17 +92,44 @@ function LoginForm(props) {
               userRole: res.data?.user?.userRole,
               access_token: res.data?.access_token,
               refresh_token: res.data?.refresh_token,
-            })
-          );
+            };
 
-          props.setErrorMessage('');
-          navigate('/customer');
+            props.setUser(user);
+
+            localStorage.setItem('user', JSON.stringify(user));
+
+            props.setErrorMessage('');
+            navigate('/customer');
+          })
+          //else show error on frontend
+          .catch((error) => {
+            console.log(error);
+            props.setErrorMessage('Invalid username/password');
+          });
+      }
+      else if (props.mode === 'signup') {
+        axios({
+          method: 'post',
+          url: 'http://localhost:8080/api/user/registration/register',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          data: JSON.stringify({
+            "firstName": values.firstName,
+            "lastName": values.lastName,
+            "email": values.email,
+            "username": values.username,
+            "password": values.createPassword,
+            "dateOfBirth": values.dob
+          })
         })
-        //else show error on frontend
-        .catch((error) => {
-          console.log(error);
-          props.setErrorMessage('Invalid username/password');
-        });
+          .then((res) => {
+            console.log(res.data);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
     },
   });
 
@@ -128,7 +141,7 @@ function LoginForm(props) {
             type='text'
             id='username'
             label='username'
-            disabled={mode === 'signup'}
+            disabled={props.mode === 'signup'}
             onChange={formik.handleChange}
             value={formik.values.username}
           />
@@ -136,7 +149,7 @@ function LoginForm(props) {
             type='password'
             id='password'
             label='password'
-            disabled={mode === 'signup'}
+            disabled={props.mode === 'signup'}
             onChange={formik.handleChange}
             value={formik.values.password}
           />
@@ -146,7 +159,7 @@ function LoginForm(props) {
             type='text'
             id='firstName'
             label='first name'
-            disabled={mode === 'login'}
+            disabled={props.mode === 'login'}
             onChange={formik.handleChange}
             value={formik.values.firstName}
           />
@@ -154,7 +167,7 @@ function LoginForm(props) {
             type='text'
             id='lastName'
             label='last name'
-            disabled={mode === 'login'}
+            disabled={props.mode === 'login'}
             onChange={formik.handleChange}
             value={formik.values.lastName}
           />
@@ -162,7 +175,7 @@ function LoginForm(props) {
             type='date'
             id='dob'
             label='date of birth'
-            disabled={mode === 'login'}
+            disabled={props.mode === 'login'}
             onChange={formik.handleChange}
             value={formik.values.dob}
           />
@@ -170,7 +183,7 @@ function LoginForm(props) {
             type='email'
             id='email'
             label='email'
-            disabled={mode === 'login'}
+            disabled={props.mode === 'login'}
             onChange={formik.handleChange}
             value={formik.values.email}
           />
@@ -178,7 +191,7 @@ function LoginForm(props) {
             type='password'
             id='createPassword'
             label='password'
-            disabled={mode === 'login'}
+            disabled={props.mode === 'login'}
             onChange={formik.handleChange}
             value={formik.values.createPassword}
           />
@@ -186,7 +199,7 @@ function LoginForm(props) {
             type='password'
             id='repeatPassword'
             label='repeat password'
-            disabled={mode === 'login'}
+            disabled={props.mode === 'login'}
             onChange={formik.handleChange}
             value={formik.values.repeatPassword}
           />
@@ -196,7 +209,7 @@ function LoginForm(props) {
         className='custom-button custom-button--primary full-width'
         type='submit'
       >
-        {mode === 'login' ? 'Log In' : 'Sign Up'}
+        {props.mode === 'login' ? 'Log In' : 'Sign Up'}
       </button>
       <div></div>
     </form>
@@ -216,9 +229,10 @@ const Input = ({ id, type, label, disabled, onChange, value }) => (
 );
 
 function Login(props) {
+  const [currentMode, setMode] = useState(mode);
   return (
-    <div className={`custom-login app--is-${mode}`}>
-      <LoginComponent mode={mode} user={props.user} />
+    <div className={`custom-login app--is-${currentMode}`}>
+      <LoginComponent mode={currentMode} setMode={setMode} setUser={props.setUser} />
     </div>
   );
 }
