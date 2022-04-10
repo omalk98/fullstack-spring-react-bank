@@ -68,7 +68,6 @@ public class UserAccount implements UserDetails {
         this.userRole = userRole;
     }
 
-    //added this
     public UserAccount(String firstName, String lastName, String email,
                        String username, String password, LocalDate dateOfBirth,
                        UserAccountRole userRole, List<BankAccount> bankAccounts) {
@@ -82,7 +81,6 @@ public class UserAccount implements UserDetails {
         this.list = bankAccounts;
     }
 
-    //added this
     public Long getId() {
         return id;
     }

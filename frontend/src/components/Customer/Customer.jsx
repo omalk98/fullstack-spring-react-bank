@@ -23,6 +23,13 @@ export default function Customer(props) {
   const navigate = useNavigate();
   let user = JSON.parse(localStorage.getItem('user'));
 
+  useEffect(() => {
+    if (props.user.id === 0) {
+      navigate('/');
+      localStorage.setItem('isAuthenticated', false);
+    }
+  }, [props.user]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     localStorage.setItem('isAuthenticated', false);
