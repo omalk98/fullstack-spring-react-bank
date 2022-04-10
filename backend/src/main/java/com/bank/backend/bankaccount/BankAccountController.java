@@ -36,20 +36,20 @@ public class BankAccountController {
     //http://localhost:8080/api/bankAccount/deposit?acctNum=1&amount=23.23
     //change acctNum and amount accordingly and make sure it's a Put request
     @PutMapping(path = "deposit")
-    public boolean deposit(Long acctNum, Float amount){
+    public boolean deposit(Long acctNum, Double amount){
         return bankAccountService.deposit(acctNum,amount);
     }
 
     //http://localhost:8080/api/bankAccount/withdraw?acctNum=1&amount=23.23
     //change acctNum and amount accordingly and make sure it's a Put request
     @PutMapping(path = "withdraw")
-    public boolean withdraw(Long acctNum, Float amount){
+    public boolean withdraw(Long acctNum, Double amount){
         return bankAccountService.withdraw(acctNum, amount);
     }
 
     //http://localhost:8080/api/bankAccount/transfer?from=4&to=5&amount=35000
     @PutMapping(path = "transfer")
-    public boolean transfer(Long from, Long to, Float amount){
+    public boolean transfer(Long from, Long to, Double amount){
         return bankAccountService.transfer(from, to, amount);
     }
 }

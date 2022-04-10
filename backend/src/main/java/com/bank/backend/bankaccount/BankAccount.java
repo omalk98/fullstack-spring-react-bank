@@ -8,6 +8,8 @@ import com.bank.backend.transaction.Transaction;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -20,7 +22,7 @@ import java.util.Set;
 @ToString
 @Entity
 @Table
-public class BankAccount /*implements IWithdrawable, IDepositable*/ {
+public class BankAccount implements Serializable {
 
     @Id
     //@Column(name = "account_number")
@@ -38,34 +40,36 @@ public class BankAccount /*implements IWithdrawable, IDepositable*/ {
 
     @OneToMany(
             cascade = CascadeType.ALL,
-            fetch = FetchType.EAGER
+            fetch = FetchType.EAGER,
+            mappedBy = "source"
     )
-    @JoinColumn(
-            name = "bank_account",
-            referencedColumnName = "accountNumber",
-            nullable = true
+    private List<Transaction> sourceTransactions = new ArrayList<>();
+
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            fetch = FetchType.EAGER,
+            mappedBy = "destination"
     )
-    private List<Transaction> transactions;
+    private List<Transaction> destinationTransactions = new ArrayList<>();
 
     public BankAccount(Double balance) {
         this.balance = balance;
     }
 
-    public BankAccount(Double balance, List<Transaction> transactions) {
-        this.balance = balance;
-        this.transactions = transactions;
+    public List<Transaction> getSourceTransactions() {
+        return sourceTransactions;
     }
 
-    //private Customer owner;
+    public void setSourceTransactions(Transaction sourceTransactions) {
+        this.sourceTransactions.add(sourceTransactions);
+    }
 
-    //for withdraw
-    //private Integer dailyLimit;
+    public List<Transaction> getDestinationTransactions() {
+        return destinationTransactions;
+    }
 
-    //for withdraw
-    //private Integer MonthlyLimit;
-
-    //decide all the attributes & functions that you need for BankAccount
-    //perform crud operations for the BankAccount in JUnit Tests
-    //define relationships between Transaction and UserAccount classes
+    public void setDestinationTransactions(Transaction destinationTransactions) {
+        this.destinationTransactions.add(destinationTransactions);
+    }
 }
 
