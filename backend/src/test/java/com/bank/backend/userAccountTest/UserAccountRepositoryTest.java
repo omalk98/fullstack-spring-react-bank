@@ -23,8 +23,6 @@ class UserAccountRepositoryTest {
         UserAccount ua2 = new UserAccount("Soham", "Thaker", "sthaker@myseneca.ca", "belFast", new BCryptPasswordEncoder().encode("12345"), LocalDate.of(2020, 2, 25), UserAccountRole.ADMIN);
         UserAccount ua3 = new UserAccount("Philippe", "Cormier", "pcormier3@myseneca.ca", "bigBrain", new BCryptPasswordEncoder().encode("12345"), LocalDate.of(2020, 2, 25), UserAccountRole.ADMIN);
 
-
-
         userAccountRepository.saveAll(List.of(ua1, ua2, ua3));
     }
 
