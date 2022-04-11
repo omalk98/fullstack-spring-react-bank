@@ -1,5 +1,13 @@
 package com.bank.backend.security.access;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+/**
+ * User permission sets
+ */
+@Getter
+@AllArgsConstructor
 public enum UserAccountPermission {
     USER_ACCOUNT_READ("user_account:read"),
     USER_ACCOUNT_WRITE("user_account:write"),
@@ -9,12 +17,4 @@ public enum UserAccountPermission {
     BANK_ACCOUNT_WRITE("bank_account:write");
 
     private final String permission;
-
-    UserAccountPermission(String permission) {
-        this.permission = permission;
-    }
-
-    public String getPermission() {
-        return permission;
-    }
 }

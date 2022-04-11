@@ -12,6 +12,9 @@ import org.springframework.stereotype.Service;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
+/**
+ * Confirmation email sender
+ */
 @Service
 @AllArgsConstructor
 public class EmailService implements EmailSender {
@@ -20,6 +23,11 @@ public class EmailService implements EmailSender {
 
     private final JavaMailSender mailSender;
 
+    /**
+     * Send email override
+     * @param to send to
+     * @param email email address
+     */
     @Override
     @Async
     public void send(String to, String email) {

@@ -8,7 +8,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 
 /**
- * Routes for user registration
+ * Route controller for Registration.
+ * Controls GET/POST operations
  */
 @RestController
 @RequestMapping(path = "api/user/registration")

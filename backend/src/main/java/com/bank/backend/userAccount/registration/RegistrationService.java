@@ -1,6 +1,5 @@
 package com.bank.backend.userAccount.registration;
 
-import com.bank.backend.bankaccount.BankAccount;
 import com.bank.backend.userAccount.registration.email.EmailValidator;
 import com.bank.backend.interfaces.EmailSender;
 import com.bank.backend.userAccount.registration.token.ConfirmationTokenService;
@@ -13,10 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 /**
- * Registers new user
+ * Registers new user into Database
  */
 @AllArgsConstructor
 @Service
@@ -27,6 +25,11 @@ public class RegistrationService {
     private final EmailValidator emailValidator;
     private final EmailSender emailSender;
 
+    /**
+     * Register new user and send email for confirmation
+     * @param request registration request object
+     * @return conformation token
+     */
     public String register(RegistrationRequest request) {
          if (!emailValidator.test(request.getEmail()))
              throw new IllegalStateException("Invalid Email");
@@ -52,6 +55,11 @@ public class RegistrationService {
         return token;
     }
 
+    /**
+     * Cofirm token in database and enable user
+     * @param token token string
+     * @return confirmed
+     */
     @Transactional
     public String confirmToken(String token) {
         ConfirmationToken conformationToken = confirmationTokenService

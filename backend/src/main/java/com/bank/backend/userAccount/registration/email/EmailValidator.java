@@ -10,8 +10,13 @@ import java.util.function.Predicate;
 @Service
 public class EmailValidator implements Predicate<String> {
 
+    /**
+     * Test email patern
+     * @param email
+     * @return status
+     */
     @Override
-    public boolean test(String s) {
-        return s.matches("(.+)@(.+)\\.(.+)");
+    public boolean test(String email) {
+        return email.matches("(.+)@(.+)\\.(.+)");
     }
 }

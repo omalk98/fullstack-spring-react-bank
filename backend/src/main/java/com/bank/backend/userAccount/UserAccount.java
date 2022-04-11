@@ -14,7 +14,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Model for user account
+ * Model for User Account
  */
 @Getter
 @Setter
@@ -47,6 +47,16 @@ public class UserAccount implements UserDetails {
     private Boolean locked = false;
     private Boolean enabled = false;
 
+    /**
+     * Constructor fpr creating user without as assigned ID
+     * @param firstName first name
+     * @param lastName last name
+     * @param email email
+     * @param username username
+     * @param password password
+     * @param dateOfBirth dateOfBirth
+     * @param userRole userRole
+     */
     public UserAccount(String firstName, String lastName, String email,
                        String username, String password, LocalDate dateOfBirth,
                        UserAccountRole userRole) {
@@ -59,40 +69,64 @@ public class UserAccount implements UserDetails {
         this.userRole = userRole;
     }
 
-    public Long getId() {
-        return id;
-    }
-
+    /**
+     * Override for login functionality
+     * @return status
+     */
     @Override
     public boolean isAccountNonExpired() {
         return true;
     }
 
+    /**
+     * Override for login functionality
+     * @return status
+     */
     @Override
     public boolean isAccountNonLocked() {
         return !locked;
     }
 
+    /**
+     * Override for login functionality
+     * @return status
+     */
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
+    /**
+     * Override for login functionality
+     * @return status
+     */
     @Override
     public boolean isEnabled() {
         return enabled;
     }
 
+    /**
+     * Override for login functionality
+     * @return authorities
+     */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singletonList(new SimpleGrantedAuthority(userRole.name()));
     }
 
+    /**
+     * Override for login functionality
+     * @return password
+     */
     @Override
     public String getPassword() {
         return password;
     }
 
+    /**
+     * Override for login functionality
+     * @return username
+     */
     @Override
     public String getUsername() {
         return username;
