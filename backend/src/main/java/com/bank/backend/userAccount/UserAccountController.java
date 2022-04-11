@@ -107,10 +107,9 @@ public class UserAccountController {
     @PostMapping(path = "createAccount")
     public ResponseEntity<Boolean> addBankAccount(Long userId) {
         ResponseEntity<Boolean> response;
-
         boolean updated = userService.addBankAccount(userId);
 
-        if(userService.addBankAccount(userId))
+        if(updated)
             response = new ResponseEntity<>(updated, HttpStatus.CREATED);
         else
             response = new ResponseEntity<>(updated, HttpStatus.BAD_REQUEST);

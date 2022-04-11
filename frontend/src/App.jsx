@@ -38,7 +38,7 @@ function App() {
           path='/customer'
           element={
             <ProtectedRoute>
-              <Customer user={user} />
+              <Customer user={user} setUser={setUser} />
             </ProtectedRoute>
           }
         />
@@ -56,7 +56,7 @@ function App() {
           path='/customer/withdraw'
           element={
             <ProtectedRoute>
-              <Withdraw user={user} />
+              <Withdraw user={user} setUser={setUser} />
             </ProtectedRoute>
           }
         />
@@ -65,7 +65,7 @@ function App() {
           path='/customer/transfer'
           element={
             <ProtectedRoute>
-              <Transfer user={user} />
+              <Transfer user={user} setUser={setUser} />
             </ProtectedRoute>
           }
         />
@@ -74,7 +74,7 @@ function App() {
           path='/customer/balance'
           element={
             <ProtectedRoute>
-              <Balance user={user} />
+              <Balance user={user} setUser={setUser} />
             </ProtectedRoute>
           }
         />

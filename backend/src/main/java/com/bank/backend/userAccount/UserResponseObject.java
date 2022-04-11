@@ -1,12 +1,10 @@
 package com.bank.backend.userAccount;
 
-import com.bank.backend.bankaccount.BankAccount;
 import com.bank.backend.security.access.UserAccountRole;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.io.Serializable;
-import java.util.List;
 
 @AllArgsConstructor
 @Getter

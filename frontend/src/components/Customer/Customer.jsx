@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react';
-import 'bootstrap/dist/css/bootstrap.css';
+import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Button, Card } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import 'bootstrap/dist/css/bootstrap.css';
 
 const styleForHorizontalCenter = {
   position: 'absolute',
@@ -78,7 +79,41 @@ export default function Customer(props) {
 
   const handleCreate = (e) => {
     e.preventDefault();
-    navigate('/customer/balance');
+    var config = {
+      method: 'post',
+      url: `http://localhost:8080/api/users/createAccount?userId=${props.user?.id}`,
+      headers: { 
+        'Authorization': props.user?.access_token
+      }
+    };
+    
+    axios(config)
+    .then(function (response) {
+      navigate('/customer/balance');
+    })
+    .catch(function (error) {
+      if (error.response.status === 403) {
+        var config = {
+          method: 'get',
+          url: 'http://localhost:8080/api/users/token/refresh',
+          headers: {
+            Authorization: props.user.refresh_token,
+          },
+          data: '',
+        };
+
+        axios(config)
+          .then(function (response) {
+            let updateUser = props.user;
+            updateUser.access_token = response.data.access_token;
+            updateUser.refresh_token = response.data.refresh_token;
+          })
+          .catch(function (error) {
+            navigate('/');
+            localStorage.setItem('isAuthenticated', false);
+          });
+      }
+    });
   }
 
   return (

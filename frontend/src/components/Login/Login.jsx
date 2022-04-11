@@ -70,7 +70,6 @@ function LoginForm(props) {
     })
       //api call returns 200, credentials are valid
       .then((res) => {
-        console.log(res.data);
         localStorage.setItem('isAuthenticated', 'true');
 
         let user = {
@@ -86,8 +85,6 @@ function LoginForm(props) {
         };
 
         props.setUser(user);
-
-        localStorage.setItem('user', JSON.stringify(user));
 
         props.setErrorMessage('');
         setLoading(false);
@@ -122,7 +119,6 @@ function LoginForm(props) {
       })
       .catch((error) => {
         props.setErrorMessage('Invalid username/email');
-        console.log(error);
       });
   }
 
