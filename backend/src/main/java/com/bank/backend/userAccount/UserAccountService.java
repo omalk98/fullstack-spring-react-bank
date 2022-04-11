@@ -33,6 +33,7 @@ public class UserAccountService implements UserDetailsService {
     private final static String USER_NOT_FOUND = "User <<%s>> does NOT Exist";
     private final static String USER_ID_NOT_FOUND = "User with ID: %d does NOT Exist";
     private final static String EMAIL_IN_USE = "The E-mail <<%s>> is already is Use";
+    private final static String USERNAME_IN_USE = "The Username <<%s>> is already is Use";
 
     private final UserAccountRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -64,6 +65,8 @@ public class UserAccountService implements UserDetailsService {
     public String signupNewUser(UserAccount user) {
         if (userRepository.findUserAccountByEmail(user.getEmail()).isPresent())
             throw new IllegalStateException(String.format(EMAIL_IN_USE, user.getEmail()));
+        if (userRepository.findUserAccountByUsername(user.getUsername()).isPresent())
+            throw new IllegalStateException(String.format(USERNAME_IN_USE, user.getUsername()));
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
