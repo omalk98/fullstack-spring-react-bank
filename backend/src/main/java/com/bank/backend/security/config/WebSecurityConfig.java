@@ -32,7 +32,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.authorizeRequests()
-                .antMatchers("/api/user/registration/**", "/api/users/token/refresh/**", "/login/**").permitAll()
+                .antMatchers("/api/user/registration/**", "/api/token/refresh/**", "/login/**").permitAll()
                 .anyRequest()
                 .authenticated().and().formLogin()
                 .and().logout();

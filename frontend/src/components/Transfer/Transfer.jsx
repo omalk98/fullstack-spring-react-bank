@@ -96,7 +96,7 @@ export default function Transfer(props) {
               } else if (error.response.status === 403) {
                 var config = {
                   method: 'get',
-                  url: 'http://localhost:8080/api/users/token/refresh',
+                  url: 'http://localhost:8080/api/token/refresh',
                   headers: {
                     Authorization: props.user.refresh_token,
                   },
@@ -156,7 +156,7 @@ export default function Transfer(props) {
         if (error.response.status === 403) {
           var config = {
             method: 'get',
-            url: 'http://localhost:8080/api/users/token/refresh',
+            url: 'http://localhost:8080/api/token/refresh',
             headers: {
               Authorization: props.user.refresh_token,
             },
