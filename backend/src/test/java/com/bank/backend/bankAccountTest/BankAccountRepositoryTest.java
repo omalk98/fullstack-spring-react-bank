@@ -39,13 +39,37 @@ class BankAccountRepositoryTest {
     @Test
     public void createBankAccount(){
 
-        BankAccount bc1 = new BankAccount(53.2);
-        BankAccount bc2 = new BankAccount(34.2);
-        BankAccount bc3 = new BankAccount(23.4);
+        UserAccount ua1 = new UserAccount("Omar", "Hussein",
+                "ohussein2@myseneca.ca", "binAdmin",
+                new BCryptPasswordEncoder().encode("12345"),
+                LocalDate.of(2020, 2, 25),
+                UserAccountRole.ADMIN);
 
-        BankAccount bc4 = new BankAccount(100000.0);
+        UserAccount ua2 = new UserAccount("Soham", "Thaker",
+                "sthaker@myseneca.ca", "belFast",
+                new BCryptPasswordEncoder().encode("12345"),
+                LocalDate.of(2020, 2, 25),
+                UserAccountRole.ADMIN);
 
-        BankAccount bc5 = new BankAccount(200000.0);
+        UserAccount ua3 = new UserAccount("Philippe", "Cormier",
+                "pcormier3@myseneca.ca", "bigBrain",
+                new BCryptPasswordEncoder().encode("12345"),
+                LocalDate.of(2020, 2, 25),
+                UserAccountRole.ADMIN);
+
+        UserAccount ua4 = new UserAccount("Sam", "Tucker",
+                "sam@email.ca", "bigBrain",
+                new BCryptPasswordEncoder().encode("12345"),
+                LocalDate.of(2020, 2, 25),
+                UserAccountRole.ADMIN);
+
+        BankAccount bc1 = new BankAccount(53.2, ua1);
+        BankAccount bc2 = new BankAccount(34.2, ua1);
+        BankAccount bc3 = new BankAccount(23.4, ua1);
+
+        BankAccount bc4 = new BankAccount(100000.0, ua2);
+
+        BankAccount bc5 = new BankAccount(200000.0, ua3);
 
         Transaction tr1 = new Transaction(34.23, bc1, bc2, TransactionType.TRANSFER);
         Transaction tr2 = new Transaction(45.45, bc2, null, TransactionType.DEPOSIT);
@@ -55,29 +79,6 @@ class BankAccountRepositoryTest {
         transactionService.addTransaction(tr2);
         transactionService.addTransaction(tr3);
 
-        UserAccount ua1 = new UserAccount("Omar", "Hussein",
-                "ohussein2@myseneca.ca", "binAdmin",
-                new BCryptPasswordEncoder().encode("12345"),
-                LocalDate.of(2020, 2, 25),
-                UserAccountRole.ADMIN, List.of(bc1, bc2, bc3));
-
-        UserAccount ua2 = new UserAccount("Soham", "Thaker",
-                "sthaker@myseneca.ca", "belFast",
-                new BCryptPasswordEncoder().encode("12345"),
-                LocalDate.of(2020, 2, 25),
-                UserAccountRole.ADMIN, List.of(bc4));
-
-        UserAccount ua3 = new UserAccount("Philippe", "Cormier",
-                "pcormier3@myseneca.ca", "bigBrain",
-                new BCryptPasswordEncoder().encode("12345"),
-                LocalDate.of(2020, 2, 25),
-                UserAccountRole.ADMIN, List.of(bc5));
-
-        UserAccount ua4 = new UserAccount("Sam", "Tucker",
-                "sam@email.ca", "bigBrain",
-                new BCryptPasswordEncoder().encode("12345"),
-                LocalDate.of(2020, 2, 25),
-                UserAccountRole.ADMIN, null);
 
         userAccountRepository.saveAll(List.of(ua1, ua2, ua3, ua4));
     }

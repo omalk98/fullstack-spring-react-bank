@@ -22,5 +22,4 @@ public interface BankAccountRepository extends JpaRepository<BankAccount, Long> 
 
     @Query(value = "select balance from bank_account b where b.account_number = ?1", nativeQuery = true)
     Double getAllBalanceByAccountNumber(Long id);
-
 }
