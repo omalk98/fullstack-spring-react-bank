@@ -1,14 +1,20 @@
 package com.bank.backend.userAccount;
 
+import com.bank.backend.bankaccount.BankAccount;
+import com.bank.backend.bankaccount.BankAccountService;
+import com.bank.backend.interfaces.BankAccountRepository;
 import com.bank.backend.interfaces.UserAccountRepository;
 import com.bank.backend.userAccount.registration.token.ConfirmationToken;
 import com.bank.backend.userAccount.registration.token.ConfirmationTokenService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
@@ -31,6 +37,7 @@ public class UserAccountService implements UserDetailsService {
     private final UserAccountRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final ConfirmationTokenService confirmationTokenService;
+    private final BankAccountRepository bankRepository;
 
     public List<UserAccount> getUsers() {
         return userRepository.findAll();
@@ -90,5 +97,18 @@ public class UserAccountService implements UserDetailsService {
         return username.contains("@")
                 ? userRepository.findUserAccountByEmail(username).orElseThrow(()->new UsernameNotFoundException(String.format(USER_NOT_FOUND, username)))
                 : userRepository.findUserAccountByUsername(username).orElseThrow(()->new UsernameNotFoundException(String.format(USER_NOT_FOUND, username)));
+    }
+
+    public boolean addBankAccount(Long userId) {
+        Optional<UserAccount> ua = userRepository.findById(userId);
+
+        if(ua.isPresent()) {
+            BankAccount ba = new BankAccount(0.0, ua.get());
+            BankAccountService bas = new BankAccountService(bankRepository,
+                    null ,null);
+            bas.addBankAccount(ba);
+            return true;
+        }
+        return false;
     }
 }

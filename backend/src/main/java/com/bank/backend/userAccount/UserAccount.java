@@ -46,15 +46,6 @@ public class UserAccount implements UserDetails {
     private LocalDate dateOfBirth;
     private Boolean locked = false;
     private Boolean enabled = false;
-    @OneToMany(
-            cascade = CascadeType.ALL,
-            fetch = FetchType.EAGER
-    )
-    @JoinColumn(
-            name="user_account",
-            referencedColumnName = "id"
-    )
-    private List<BankAccount> list;
 
     public UserAccount(String firstName, String lastName, String email,
                        String username, String password, LocalDate dateOfBirth,
@@ -66,19 +57,6 @@ public class UserAccount implements UserDetails {
         this.password = password;
         this.dateOfBirth = dateOfBirth;
         this.userRole = userRole;
-    }
-
-    public UserAccount(String firstName, String lastName, String email,
-                       String username, String password, LocalDate dateOfBirth,
-                       UserAccountRole userRole, List<BankAccount> bankAccounts) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.username = username;
-        this.password = password;
-        this.dateOfBirth = dateOfBirth;
-        this.userRole = userRole;
-        this.list = bankAccounts;
     }
 
     public Long getId() {

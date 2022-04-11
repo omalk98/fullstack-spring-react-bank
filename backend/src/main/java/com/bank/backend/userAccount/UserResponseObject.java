@@ -17,7 +17,6 @@ public class UserResponseObject implements Serializable {
     private String email;
     private String username;
     private UserAccountRole userRole;
-    private List<BankAccount> list;
 
     public UserResponseObject(UserAccount user) {
         this.id = user.getId();
@@ -26,6 +25,5 @@ public class UserResponseObject implements Serializable {
         this.email = user.getEmail();
         this.username = user.getUsername();
         this.userRole = user.getUserRole();
-        this.list = user.getList();
     }
 }

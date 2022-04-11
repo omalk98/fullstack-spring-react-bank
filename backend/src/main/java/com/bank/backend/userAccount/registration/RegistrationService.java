@@ -39,8 +39,7 @@ public class RegistrationService {
                         request.getUsername(),
                         request.getPassword(),
                         request.getDateOfBirth(),
-                        UserAccountRole.USER,
-                        List.of(new BankAccount(0.0))
+                        UserAccountRole.USER
                 )
         );
         emailSender.send(
