@@ -1,5 +1,6 @@
 package com.bank.backend.bankaccount;
 
+import com.bank.backend.userAccount.UserAccount;
 import lombok.*;
 
 import javax.persistence.*;
@@ -28,8 +29,13 @@ public class BankAccount implements Serializable {
     private Long accountNumber;
     private Double balance;
 
-    public BankAccount(Double balance) {
+    @ManyToOne
+    @JoinColumn(name = "user_account")
+    private UserAccount userAccount;
+
+    public BankAccount(Double balance, UserAccount userAccount) {
         this.balance = balance;
+        this.userAccount = userAccount;
     }
 }
 

@@ -1,9 +1,11 @@
 package com.bank.backend.bankaccount;
 import com.bank.backend.interfaces.BankAccountRepository;
 import com.bank.backend.interfaces.TransactionRepository;
+import com.bank.backend.interfaces.UserAccountRepository;
 import com.bank.backend.transaction.Transaction;
 import com.bank.backend.transaction.TransactionService;
 import com.bank.backend.transaction.TransactionType;
+import com.bank.backend.userAccount.UserAccount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +17,7 @@ public class BankAccountService {
     private final TransactionRepository transactionRepository;
 
     @Autowired
-    public BankAccountService(BankAccountRepository bankAccountRepository, TransactionRepository transactionRepository) {
+    public BankAccountService(BankAccountRepository bankAccountRepository, TransactionRepository transactionRepository, UserAccountRepository userAccountRepository) {
         this.bankAccountRepository = bankAccountRepository;
         this.transactionRepository = transactionRepository;
     }
@@ -98,5 +100,10 @@ public class BankAccountService {
             return updatedRows > 0;
         }
         return false;
+    }
+
+    public BankAccount addBankAccount(BankAccount bankAccount)
+    {
+        return bankAccountRepository.save(bankAccount);
     }
 }

@@ -103,4 +103,18 @@ public class UserAccountController {
         userService.updateUser(id, username, email);
         return ResponseEntity.accepted().body("Updated userID: " + id);
     }
+
+    @PostMapping(path = "createAccount")
+    public ResponseEntity<Boolean> addBankAccount(Long userId) {
+        ResponseEntity<Boolean> response;
+
+        boolean updated = userService.addBankAccount(userId);
+
+        if(userService.addBankAccount(userId))
+            response = new ResponseEntity<>(updated, HttpStatus.CREATED);
+        else
+            response = new ResponseEntity<>(updated, HttpStatus.BAD_REQUEST);
+
+        return response;
+    }
 }
