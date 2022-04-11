@@ -37,7 +37,6 @@ public class UserAccountService implements UserDetailsService {
     private final UserAccountRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final ConfirmationTokenService confirmationTokenService;
-    private final BankAccountRepository bankRepository;
     private final BankAccountService bankService;
 
     /**

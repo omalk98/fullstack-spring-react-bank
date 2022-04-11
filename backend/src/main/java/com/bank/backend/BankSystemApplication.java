@@ -1,10 +1,12 @@
 package com.bank.backend;
 
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * Main Server Launcher
+ * Main launcher class
  */
+@SpringBootApplication
 public class BankSystemApplication {
 	/**
 	 * Main launcher function

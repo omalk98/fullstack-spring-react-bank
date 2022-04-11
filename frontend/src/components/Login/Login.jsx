@@ -108,7 +108,7 @@ function LoginForm(props) {
         firstName: values.firstName,
         lastName: values.lastName,
         email: values.email,
-        username: values.username,
+        username: values.usernameSignup,
         password: values.createPassword,
         dateOfBirth: values.dob,
       }),
@@ -130,6 +130,7 @@ function LoginForm(props) {
       firstName: '',
       lastName: '',
       email: '',
+      usernameSignup : '',
       dob: '',
       createPassword: '',
       repeatPassword: '',
@@ -138,9 +139,9 @@ function LoginForm(props) {
       firstName: props.mode === "signup" ? Yup.string().max(30, "Must be less than 30 characters").required("Required") : null,
       lastName: props.mode === "signup" ? Yup.string().max(30, "Must be less than 30 characters").required("Required") : null,
       email: props.mode === "signup" ? Yup.string().email("Invalid email address").max(50, "Must be less than 50 characters").required("Required") : null,
-      username: props.mode === "signup" ? Yup.string().min(4, "Username must be at least 4 characters").max(30, "Must be less than 30 characters").required("Required") : null,
       createPassword: props.mode === "signup" ? Yup.string().min(8, "Password must be at least 8 characters").required("Required") : null,
-      repeatPassword: props.mode === "signup" ? Yup.string().matches(/^${createPassword}$/, "Passwords must match").required("Required") : null,
+      repeatPassword: props.mode === "signup" ? Yup.string().oneOf([Yup.ref('createPassword')], 'Passwords must match').required("Required") : null,
+      usernameSignup: props.mode === "signup" ? Yup.string().min(4, "Username must be at least 4 characters").max(30, "Must be less than 30 characters").required("Required") : null,
       username: props.mode === "login" ? Yup.string().required("Required") : null,
       password: props.mode === "login" ? Yup.string().required("Required") : null
     }),
@@ -160,7 +161,6 @@ function LoginForm(props) {
             type='text'
             id='username'
             label='username'
-            disabled={props.mode === 'signup'}
             onChange={formik.handleChange}
             value={formik.values.username}
           />
@@ -213,6 +213,14 @@ function LoginForm(props) {
             value={formik.values.email}
           />
           {formik.errors.email && <Alert variant="danger" style={errorSignupStyle}>{formik.errors.email}</Alert>}
+          <Input
+            type='text'
+            id='usernameSignup'
+            label='username'
+            onChange={formik.handleChange}
+            value={formik.values.usernameSignup}
+          />
+          {formik.errors.usernameSignup && <Alert variant="danger" style={errorSignupStyle}>{formik.errors.usernameSignup}</Alert>}
           <Input
             type='password'
             id='createPassword'
