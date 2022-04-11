@@ -57,6 +57,9 @@ export default function Withdraw(props) {
     if (isNaN(event.target[0].value)) {
       setVariant('danger');
       setError('Please enter a number for withdrawal amount.');
+    } else if (event.target[0].value < 0) {
+      setVariant('danger');
+      setError('Please enter a positive number for deposit amount.');
     } else {
       const balance = accountNumbers.find(
         ({ accountNumber }) => accountNumber === selectedAccountNo
@@ -108,7 +111,7 @@ export default function Withdraw(props) {
 
                   props.setUser(updateUser);
 
-                  setError('Deposit unsuccessful. Please try again.');
+                  setError('Withdrawal unsuccessful. Please try again.');
                   setVariant('danger');
                 })
                 .catch(function (error) {

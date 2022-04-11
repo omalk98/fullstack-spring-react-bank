@@ -6,6 +6,9 @@ import com.bank.backend.transaction.TransactionService;
 import com.bank.backend.transaction.TransactionType;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,12 +60,18 @@ public class BankAccountService {
         Double fromBalance = bankAccountRepository.getBalanceByAccountNumber(from);
         Double toBalance = bankAccountRepository.getBalanceByAccountNumber(to);
 
-        if(fromBalance > amount) {
+        if(fromBalance >= amount) {
             fromBalance -= amount;
             toBalance += amount;
 
-            int updatedFromRows = bankAccountRepository.updateBalance(from, fromBalance);
-            int updatedToRows = bankAccountRepository.updateBalance(to, toBalance);
+            DecimalFormat df = new DecimalFormat("#.##");
+            df.setRoundingMode(RoundingMode.CEILING);
+
+            int updatedFromRows = bankAccountRepository.updateBalance(from,
+                                Double.valueOf(df.format(fromBalance)));
+            int updatedToRows = bankAccountRepository.updateBalance(to,
+                                Double.valueOf(df.format(toBalance)));
+
             Optional<BankAccount> fromBA = bankAccountRepository.findById(from);
             Optional<BankAccount> toBA = bankAccountRepository.findById(to);
 
@@ -92,7 +101,12 @@ public class BankAccountService {
      */
     public boolean deposit(Long acctNum, Double amount) {
         double updatedBalance = getBalance(acctNum) + amount;
-        int updatedRows = bankAccountRepository.updateBalance(acctNum, updatedBalance);
+
+        DecimalFormat df = new DecimalFormat("#.##");
+        df.setRoundingMode(RoundingMode.CEILING);
+
+        int updatedRows = bankAccountRepository.updateBalance(acctNum,
+                                    Double.valueOf(df.format(updatedBalance)));
         Optional<BankAccount> ba = bankAccountRepository.findById(acctNum);
 
         if(updatedRows > 0 && ba.isPresent()) {
@@ -115,9 +129,15 @@ public class BankAccountService {
      */
     public boolean withdraw(Long acctNum, Double amount) {
         double currentBalance = getBalance(acctNum);
-        if(currentBalance > 0 && currentBalance > amount) {
+        if(currentBalance > 0 && currentBalance >= amount) {
             double updatedBalance = currentBalance - amount;
-            int updatedRows = bankAccountRepository.updateBalance(acctNum, updatedBalance);
+
+            DecimalFormat df = new DecimalFormat("#.##");
+            df.setRoundingMode(RoundingMode.CEILING);
+
+            int updatedRows = bankAccountRepository.updateBalance(acctNum,
+                                    Double.valueOf(df.format(updatedBalance)));
+
             Optional<BankAccount> ba = bankAccountRepository.findById(acctNum);
 
             if(updatedRows > 0 && ba.isPresent()) {
