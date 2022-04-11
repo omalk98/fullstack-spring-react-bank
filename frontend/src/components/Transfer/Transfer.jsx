@@ -53,6 +53,9 @@ export default function Transfer(props) {
     if (isNaN(event.target[0].value)) {
       setVariant('danger');
       setError('Please enter a number for transfer amount.');
+    } else if (event.target[0].value < 0) {
+      setVariant('danger');
+      setError('Please enter a positive number for deposit amount.');
     } else {
       if (from === to) {
         setVariant('danger');
