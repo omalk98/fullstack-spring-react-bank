@@ -24,6 +24,10 @@ import java.util.Map;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
+/**
+ * Route controller for JWT token refresh.
+ * controls GET operations
+ */
 @RestController
 @RequestMapping(path="api")
 @CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "*")
@@ -32,6 +36,12 @@ public class JWTTokenController {
 
     private final UserAccountService userService;
 
+    /**
+     * Refreshes user access token as long as refresh token is still valid
+     * @param request request object
+     * @param response response object
+     * @throws IOException unable to communicate with client
+     */
     @GetMapping("token/refresh")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String refreshToken = request.getHeader(AUTHORIZATION);

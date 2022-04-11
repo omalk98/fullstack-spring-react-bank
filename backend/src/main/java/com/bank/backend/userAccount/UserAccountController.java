@@ -10,7 +10,7 @@ import java.util.Optional;
 
 /**
  * Route Controller for User Account.
- * Controls GET/POST/PUT/DELETE routes for user account as well
+ * Controls GET/POST/PUT/DELETE operations
  */
 @RestController
 @RequestMapping(path="api/users")
@@ -20,6 +20,10 @@ public class UserAccountController {
 
     private final UserAccountService userService;
 
+    /**
+     * Get all users route
+     * @return user response object / status
+     */
     @GetMapping("all")
     public ResponseEntity<List<UserAccount>> getUsers() {
         return ResponseEntity
@@ -27,6 +31,11 @@ public class UserAccountController {
                 .body(userService.getUsers());
     }
 
+    /**
+     * Get single user route
+     * @param email user email
+     * @return user response object / status
+     */
     @GetMapping("user")
     public ResponseEntity<Optional<UserAccount>> getUser(@RequestParam("email") String email) {
         return ResponseEntity
@@ -34,12 +43,24 @@ public class UserAccountController {
                 .body(userService.getUser(email));
     }
 
+    /**
+     * Delete route for single user
+     * @param id user id
+     * @return response object / status
+     */
     @DeleteMapping( path = "remove/{studentID}")
     public ResponseEntity<String> deleteUser(@PathVariable("studentID") Long id) {
         userService.deleteUser(id);
         return ResponseEntity.accepted().body("Removed userID: " + id);
     }
 
+    /**
+     * Put route for single user
+     * @param id user id
+     * @param username optional username
+     * @param email optional email
+     * @return response object / status
+     */
     @PutMapping("update/{id}")
     public ResponseEntity<String> updateUser(
         @PathVariable("id") Long id,
@@ -50,6 +71,11 @@ public class UserAccountController {
         return ResponseEntity.accepted().body("Updated userID: " + id);
     }
 
+    /**
+     * Post route for adding bank account
+     * @param userId user id
+     * @return response object / status
+     */
     @PostMapping(path = "createAccount")
     public ResponseEntity<Boolean> addBankAccount(Long userId) {
         ResponseEntity<Boolean> response;

@@ -5,6 +5,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.bank.backend.userAccount.UserAccount;
 import com.bank.backend.userAccount.UserResponseObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -22,14 +23,21 @@ import java.util.Map;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
+/**
+ * Filter user connections and handle authentication procedure
+ */
+@AllArgsConstructor
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
 
-    public AuthenticationFilter(AuthenticationManager authenticationManager) {
-        this.authenticationManager = authenticationManager;
-    }
-
+    /**
+     * Initial attempt for user authentication
+     * @param request request object
+     * @param response response object
+     * @return authentication manager
+     * @throws AuthenticationException failed to authenticate
+     */
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         String username = request.getParameter("username");
@@ -38,8 +46,16 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         return authenticationManager.authenticate(authenticationToken);
     }
 
+    /**
+     * Response on successful authentication
+     * @param request request object
+     * @param response response object
+     * @param chain filter chain
+     * @param authResult result
+     * @throws IOException unable to communicate with client
+     */
     @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException {
         UserAccount user = (UserAccount) authResult.getPrincipal();
         Algorithm algorithm = Algorithm.HMAC256("SECRET".getBytes());
         String accessToken = JWT.create()
@@ -62,8 +78,15 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         new ObjectMapper().writeValue(response.getOutputStream(), tokens);
     }
 
+    /**
+     * Response on failed authentication
+     * @param request request object
+     * @param response request object
+     * @param failed result
+     * @throws IOException unable to communicate with client
+     */
     @Override
-    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
+    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         Map<String, String> error = new HashMap<>();
         error.put("cod", Integer.toString(HttpServletResponse.SC_UNAUTHORIZED));

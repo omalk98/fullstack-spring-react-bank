@@ -20,9 +20,20 @@ import java.util.Map;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
+/**
+ * Filter user requests and handle authorities
+ */
 public class AuthorizationFilter extends OncePerRequestFilter {
 
 
+    /**
+     * Override for filter handling, permits user access based on permissions
+     * @param request request object
+     * @param response response object
+     * @param filterChain filter chain
+     * @throws ServletException unable to perform filtering
+     * @throws IOException unable to communicate with client
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         if (request.getServletPath().equals("/login")

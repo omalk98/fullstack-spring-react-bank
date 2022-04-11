@@ -19,6 +19,9 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
+/**
+ * Configuration for web security, authentication, CORS, and route management
+ */
 @Configuration
 @AllArgsConstructor
 @EnableWebSecurity
@@ -27,6 +30,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserAccountService userAccountService;
     private final PasswordEncoder passwordEncoder;
 
+    /**
+     * Configure HTTP security
+     * @param http http security module
+     * @throws Exception unable to configure security
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable();
@@ -40,11 +48,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.addFilterBefore(new AuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
+    /**
+     * Configure authentication manager
+     * @param auth authentication manager builder
+     * @throws Exception unable to build authentication manager
+     */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(daoAuthenticationProvider());
     }
 
+    /**
+     * Create authentication provider
+     * @return authentication provider
+     */
     @Bean
     public DaoAuthenticationProvider daoAuthenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
@@ -53,12 +70,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return provider;
     }
 
+    /**
+     * Create authentication manager
+     * @return authentication manager
+     * @throws Exception unable to create manager
+     */
     @Bean
     @Override
     public AuthenticationManager authenticationManager() throws Exception {
         return super.authenticationManager();
     }
 
+    /**
+     * CORS filtering settings
+     * @return CORS filer
+     */
     @Bean
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

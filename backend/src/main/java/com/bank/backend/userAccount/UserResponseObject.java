@@ -6,6 +6,9 @@ import lombok.Getter;
 
 import java.io.Serializable;
 
+/**
+ * Stripped down User Account Object for response purposes leaving sensitive data hidden.
+ */
 @AllArgsConstructor
 @Getter
 public class UserResponseObject implements Serializable {
@@ -16,6 +19,10 @@ public class UserResponseObject implements Serializable {
     private String username;
     private UserAccountRole userRole;
 
+    /**
+     * Constructor takes a user account object and strips it of sensitive data
+     * @param user user account
+     */
     public UserResponseObject(UserAccount user) {
         this.id = user.getId();
         this.firstName = user.getFirstName();

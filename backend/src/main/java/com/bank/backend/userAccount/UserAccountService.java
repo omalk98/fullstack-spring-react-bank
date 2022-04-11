@@ -24,7 +24,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 /**
- * DB CRUD operations for UserAccount objects
+ * User Account Service handler for Database CRUD operations
  */
 @Service
 @AllArgsConstructor
@@ -40,16 +40,28 @@ public class UserAccountService implements UserDetailsService {
     private final BankAccountRepository bankRepository;
     private final BankAccountService bankService;
 
+    /**
+     * Get all user accounts from database
+     * @return user account list
+     */
     public List<UserAccount> getUsers() {
         return userRepository.findAll();
     }
 
+    /**
+     * Get a single user from database
+     * @param email user email
+     * @return user account
+     */
     public Optional<UserAccount> getUser(String email) {
         return userRepository.findUserAccountByEmail(email);
     }
 
-    // TODO: if email not confirmed send confirmation email
-
+    /**
+     * Sign up new user and adds their details to database
+     * @param user user details
+     * @return confirmation token
+     */
     public String signupNewUser(UserAccount user) {
         if (userRepository.findUserAccountByEmail(user.getEmail()).isPresent())
             throw new IllegalStateException(String.format(EMAIL_IN_USE, user.getEmail()));
@@ -69,11 +81,21 @@ public class UserAccountService implements UserDetailsService {
         return token;
     }
 
+    /**
+     * Delete user from database
+     * @param id user id
+     */
     public void deleteUser(Long id) {
         if (!userRepository.existsById(id))
             throw new IllegalStateException();
     }
 
+    /**
+     * Update user details
+     * @param id user id
+     * @param username optional username
+     * @param email optional email
+     */
     @Transactional
     public void updateUser(Long id, String username, String email) {
         UserAccount user = userRepository.findById(id)
@@ -89,10 +111,21 @@ public class UserAccountService implements UserDetailsService {
         }
     }
 
+    /**
+     * Enable user account for login
+     * @param email user email
+     * @return status
+     */
     public int enableUserAccount(String email) {
         return userRepository.enableUserAccount(email);
     }
 
+    /**
+     * Login provider functionality override
+     * @param username username/email
+     * @return user details
+     * @throws UsernameNotFoundException user not foound in database
+     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return username.contains("@")
@@ -100,9 +133,13 @@ public class UserAccountService implements UserDetailsService {
                 : userRepository.findUserAccountByUsername(username).orElseThrow(()->new UsernameNotFoundException(String.format(USER_NOT_FOUND, username)));
     }
 
+    /**
+     * Add bank account to User
+     * @param userId user id
+     * @return status
+     */
     public boolean addBankAccount(Long userId) {
         Optional<UserAccount> ua = userRepository.findById(userId);
-        System.out.println("hello world thththttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt");
         if(ua.isPresent()) {
             BankAccount ba = new BankAccount(0.0, ua.get());
             bankService.addBankAccount(ba);

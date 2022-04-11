@@ -8,6 +8,9 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+/**
+ * Confirmation token Model
+ */
 @Getter
 @Setter
 @NoArgsConstructor
@@ -43,6 +46,13 @@ public class ConfirmationToken {
     )
     private UserAccount user;
 
+    /**
+     * Constructor for creating confirmation tokens without specifying ID
+     * @param token token string
+     * @param createdAt created time
+     * @param expiresAt expiry date
+     * @param user user account
+     */
     public ConfirmationToken(String token, LocalDateTime createdAt, LocalDateTime expiresAt, UserAccount user) {
         this.token = token;
         this.createdAt = createdAt;
