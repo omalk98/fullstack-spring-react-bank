@@ -29,11 +29,11 @@ public class Transaction implements Serializable {
     private Double value;
     private String transactionType;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "source")
     private BankAccount source;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "destination")
     private BankAccount destination;
 

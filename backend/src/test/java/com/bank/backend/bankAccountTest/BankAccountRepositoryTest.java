@@ -1,12 +1,10 @@
 package com.bank.backend.bankAccountTest;
 
 import com.bank.backend.bankaccount.BankAccount;
-import com.bank.backend.bankaccount.BankAccountService;
 import com.bank.backend.interfaces.BankAccountRepository;
 import com.bank.backend.interfaces.TransactionRepository;
 import com.bank.backend.interfaces.UserAccountRepository;
 import com.bank.backend.transaction.Transaction;
-import com.bank.backend.transaction.TransactionService;
 import com.bank.backend.transaction.TransactionType;
 import com.bank.backend.userAccount.UserAccount;
 import com.bank.backend.security.access.UserAccountRole;
@@ -19,23 +17,33 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Tester class that tests database functionality.
+ */
 @SpringBootTest
 class BankAccountRepositoryTest {
+    /**
+     * Reference to BankAccountRepository
+     */
     @Autowired
     private BankAccountRepository bankAccountRepository;
 
+    /**
+     * Reference to UserAccountRepository
+     */
     @Autowired
     UserAccountRepository userAccountRepository;
 
-    @Autowired
-    BankAccountService bankAccountService;
-
+    /**
+     * Reference to TransactionRepository
+     */
     @Autowired
     private TransactionRepository transactionRepository;
 
-    @Autowired
-    private TransactionService transactionService = new TransactionService(transactionRepository);
-
+    /**
+     * Tests creating user, associating a bank account and associating transaction to
+     * that bank account in the database.
+     */
     @Test
     public void createBankAccount(){
 
@@ -75,14 +83,13 @@ class BankAccountRepositoryTest {
         Transaction tr2 = new Transaction(45.45, bc2, null, TransactionType.DEPOSIT);
         Transaction tr3 = new Transaction(12.12, null, bc3, TransactionType.WITHDRAW);
 
-        transactionService.addTransaction(tr1);
-        transactionService.addTransaction(tr2);
-        transactionService.addTransaction(tr3);
-
-
-        userAccountRepository.saveAll(List.of(ua1, ua2, ua3, ua4));
+        transactionRepository.saveAll(List.of(tr1,tr2,tr3));
+        bankAccountRepository.saveAll(List.of(bc1, bc2, bc3, bc4, bc5));
     }
 
+    /**
+     * Tests updating balance for a bank account.
+     */
     @Test
     public void updateBalance() {
         int updated = bankAccountRepository.updateBalance(1L, 23.23);
@@ -94,27 +101,30 @@ class BankAccountRepositoryTest {
         }
     }
 
+    /**
+     * Tests deleting a bank account.
+     */
     @Test
     public void deleteBankAccount() {
         bankAccountRepository.deleteById(1L);
         System.out.println("User Account deleted!");
     }
 
+    /**
+     * Reads all the bank account present in the database.
+     */
     @Test
     public void readAllBankAccount(){
         List<BankAccount> bankAccountList = bankAccountRepository.findAll();
         System.out.println(bankAccountList);
     }
 
+    /**
+     * Reads a specific bank account based on account number passed.
+     */
     @Test
     public void readOneBankAccount(){
         Optional<BankAccount> bankAccountList = bankAccountRepository.findById(4L);
-        System.out.println(bankAccountList);
-    }
-
-    @Test
-    public void getAllBankAccounts(){
-        List<BankAccount> bankAccountList = bankAccountRepository.getAllBankAccountsByID(1L);
         System.out.println(bankAccountList);
     }
 }
