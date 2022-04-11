@@ -48,7 +48,7 @@ public class UserAccount implements UserDetails {
     private Boolean enabled = false;
 
     /**
-     * Constructor fpr creating user without as assigned ID
+     * Constructor for creating user without an assigned ID
      * @param firstName first name
      * @param lastName last name
      * @param email email
