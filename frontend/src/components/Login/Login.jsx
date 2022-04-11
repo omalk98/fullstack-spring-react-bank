@@ -2,24 +2,16 @@ import axios from 'axios';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
+import { Alert } from 'react-bootstrap';
+import * as Yup from 'yup';
 import qs from 'qs';
 import './Login.scss';
+import Cog from '../../cog.svg?component';
 
 const mode = 'login';
 
 function LoginComponent(props) {
   const [errorMessage, setErrorMessage] = useState('');
-
-  const navigate = useNavigate();
-
-  function submitSignup(e) {
-    e.preventDefault();
-    console.log('signup works');
-    // use spring route to create new user in database
-    //axios.post("http://localhost:8080/api");
-    //only navigate when login is successful
-    navigate('/customer');
-  }
 
   return (
     <div>
@@ -46,17 +38,93 @@ function LoginComponent(props) {
         </header>
         <LoginForm
           mode={props.mode}
+          setMode={props.setMode}
           setErrorMessage={setErrorMessage}
           setUser={props.setUser}
         />
-        {errorMessage.length > 0 ? <p>{errorMessage}</p> : null}
+        {errorMessage.length > 0 && <div><br /><Alert variant="danger" >{errorMessage}</Alert></div>}
       </section>
     </div>
   );
 }
 
 function LoginForm(props) {
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const errorLoginStyle = { fontSize: "10pt", position: "absolute", transform: "translate(300px, -70px)" };
+  const errorSignupStyle = { fontSize: "10pt", position: "absolute", transform: "translate(-128px, -70px)" };
+
+  function submitLogin(values) {
+    setLoading(true);
+    axios({
+      method: 'post',
+      url: 'http://localhost:8080/login',
+      headers: {
+        Authorization: 'Basic Og==',
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      data: qs.stringify({
+        username: values.username,
+        password: values.password,
+      }),
+    })
+      //api call returns 200, credentials are valid
+      .then((res) => {
+        console.log(res.data);
+        localStorage.setItem('isAuthenticated', 'true');
+
+        let user = {
+          id: res.data?.user?.id,
+          firstName: res.data?.user?.firstName,
+          lastName: res.data?.user?.lastName,
+          email: res.data?.user?.email,
+          username: res.data?.user?.username,
+          userRole: res.data?.user?.userRole,
+          numAccounts: res.data?.user?.numAccounts,
+          access_token: res.data?.access_token,
+          refresh_token: res.data?.refresh_token,
+        };
+
+        props.setUser(user);
+
+        localStorage.setItem('user', JSON.stringify(user));
+
+        props.setErrorMessage('');
+        setLoading(false);
+        navigate('/customer');
+      })
+      //else show error on frontend
+      .catch((error) => {
+        setLoading(false);
+        props.setErrorMessage('Invalid username/password.');
+      });
+  }
+
+  function submitSignup(values) {
+    axios({
+      method: 'post',
+      url: 'http://localhost:8080/api/user/registration/register',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: JSON.stringify({
+        firstName: values.firstName,
+        lastName: values.lastName,
+        email: values.email,
+        username: values.username,
+        password: values.createPassword,
+        dateOfBirth: values.dob,
+      }),
+    })
+      .then((res) => {
+        props.setErrorMessage('Please confirm email to login');
+        props.setMode("login")
+      })
+      .catch((error) => {
+        props.setErrorMessage('Invalid username/email');
+        console.log(error);
+      });
+  }
 
   const formik = useFormik({
     initialValues: {
@@ -70,70 +138,21 @@ function LoginForm(props) {
       createPassword: '',
       repeatPassword: '',
     },
+    validationSchema: Yup.object({
+      firstName: props.mode === "signup" ? Yup.string().max(30, "Must be less than 30 characters").required("Required") : null,
+      lastName: props.mode === "signup" ? Yup.string().max(30, "Must be less than 30 characters").required("Required") : null,
+      email: props.mode === "signup" ? Yup.string().email("Invalid email address").max(50, "Must be less than 50 characters").required("Required") : null,
+      username: props.mode === "signup" ? Yup.string().min(4, "Username must be at least 4 characters").max(30, "Must be less than 30 characters").required("Required") : null,
+      createPassword: props.mode === "signup" ? Yup.string().min(8, "Password must be at least 8 characters").required("Required") : null,
+      repeatPassword: props.mode === "signup" ? Yup.string().matches(/^${createPassword}$/, "Passwords must match").required("Required") : null,
+      username: props.mode === "login" ? Yup.string().required("Required") : null,
+      password: props.mode === "login" ? Yup.string().required("Required") : null
+    }),
     onSubmit: (values) => {
-      if (props.mode === 'login') {
-        axios({
-          method: 'post',
-          url: 'http://localhost:8080/login',
-          headers: {
-            Authorization: 'Basic Og==',
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          data: qs.stringify({
-            username: values.username,
-            password: values.password,
-          }),
-        })
-          //api call returns 200, credentials are valid
-          .then((res) => {
-            console.log(res.data);
-            localStorage.setItem('isAuthenticated', 'true');
-
-            let user = {
-              id: res.data?.user?.id,
-              firstName: res.data?.user?.firstName,
-              lastName: res.data?.user?.lastName,
-              email: res.data?.user?.email,
-              username: res.data?.user?.username,
-              userRole: res.data?.user?.userRole,
-              access_token: res.data?.access_token,
-              refresh_token: res.data?.refresh_token,
-            };
-
-            props.setUser(user);
-
-            localStorage.setItem('user', JSON.stringify(user));
-
-            props.setErrorMessage('');
-            navigate('/customer');
-          })
-          //else show error on frontend
-          .catch((error) => {
-            props.setErrorMessage('Invalid username/password');
-          });
-      } else if (props.mode === 'signup') {
-        axios({
-          method: 'post',
-          url: 'http://localhost:8080/api/user/registration/register',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          data: JSON.stringify({
-            firstName: values.firstName,
-            lastName: values.lastName,
-            email: values.email,
-            username: values.username,
-            password: values.createPassword,
-            dateOfBirth: values.dob,
-          }),
-        })
-          .then((res) => {
-            console.log(res.data);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      }
+      if (props.mode === 'login')
+        submitLogin(values);
+      else if (props.mode === 'signup')
+        submitSignup(values);
     },
   });
 
@@ -149,6 +168,8 @@ function LoginForm(props) {
             onChange={formik.handleChange}
             value={formik.values.username}
           />
+          {formik.errors.username && <Alert variant="danger" style={errorLoginStyle}>{formik.errors.username}</Alert>}
+
           <Input
             type='password'
             id='password'
@@ -157,7 +178,9 @@ function LoginForm(props) {
             onChange={formik.handleChange}
             value={formik.values.password}
           />
+          {formik.errors.password && <Alert variant="danger" style={errorLoginStyle}>{formik.errors.password}</Alert>}
         </div>
+
         <div className='form-group form-group--signup'>
           <Input
             type='text'
@@ -167,6 +190,7 @@ function LoginForm(props) {
             onChange={formik.handleChange}
             value={formik.values.firstName}
           />
+          {formik.errors.firstName && <Alert variant="danger" style={errorSignupStyle}>{formik.errors.firstName}</Alert>}
           <Input
             type='text'
             id='lastName'
@@ -175,6 +199,7 @@ function LoginForm(props) {
             onChange={formik.handleChange}
             value={formik.values.lastName}
           />
+          {formik.errors.lastName && <Alert variant="danger" style={errorSignupStyle}>{formik.errors.lastName}</Alert>}
           <Input
             type='date'
             id='dob'
@@ -191,6 +216,7 @@ function LoginForm(props) {
             onChange={formik.handleChange}
             value={formik.values.email}
           />
+          {formik.errors.email && <Alert variant="danger" style={errorSignupStyle}>{formik.errors.email}</Alert>}
           <Input
             type='password'
             id='createPassword'
@@ -199,6 +225,7 @@ function LoginForm(props) {
             onChange={formik.handleChange}
             value={formik.values.createPassword}
           />
+          {formik.errors.createPassword && <Alert variant="danger" style={errorSignupStyle}>{formik.errors.createPassword}</Alert>}
           <Input
             type='password'
             id='repeatPassword'
@@ -207,15 +234,15 @@ function LoginForm(props) {
             onChange={formik.handleChange}
             value={formik.values.repeatPassword}
           />
+          {formik.errors.repeatPassword && <Alert variant="danger" style={errorSignupStyle}>{formik.errors.repeatPassword}</Alert>}
         </div>
       </div>
       <button
         className='custom-button custom-button--primary full-width'
         type='submit'
       >
-        {props.mode === 'login' ? 'Log In' : 'Sign Up'}
+        {props.mode === 'login' ? 'Log In' : 'Sign Up'} &nbsp; {loading && <Cog className="logo-spin" style={{ width: "25px", height: "25px" }} />}
       </button>
-      <div></div>
     </form>
   );
 }

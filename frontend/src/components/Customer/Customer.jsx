@@ -20,6 +20,7 @@ const paperStyle = {
 //need to add a view/button that allows a user to
 //open a new account
 export default function Customer(props) {
+  const [numAccounts, setNumAccounts] = useState(0);
   const navigate = useNavigate();
   let user = JSON.parse(localStorage.getItem('user'));
 
@@ -30,11 +31,55 @@ export default function Customer(props) {
     }
   }, [props.user]);
 
+  useEffect(() => {
+    var config = {
+      method: 'get',
+      url: `http://localhost:8080/api/bankAccount/getAllBankAccount?userId=${props.user.id}`,
+      headers: {
+        Authorization: props.user.access_token,
+      },
+      data: '',
+    };
+
+    axios(config)
+      .then(function (response) {
+        setNumAccounts(response.data?.length);
+      })
+      .catch(function (error) {
+        if (error.response.status === 403) {
+          var config = {
+            method: 'get',
+            url: 'http://localhost:8080/api/users/token/refresh',
+            headers: {
+              Authorization: props.user.refresh_token,
+            },
+            data: '',
+          };
+
+          axios(config)
+            .then(function (response) {
+              let updateUser = props.user;
+              updateUser.access_token = response.data.access_token;
+              updateUser.refresh_token = response.data.refresh_token;
+            })
+            .catch(function (error) {
+              navigate('/');
+              localStorage.setItem('isAuthenticated', false);
+            });
+        }
+      });
+  }, []);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     localStorage.setItem('isAuthenticated', false);
     navigate('/');
   };
+
+  const handleCreate = (e) => {
+    e.preventDefault();
+    navigate('/customer/balance');
+  }
 
   return (
     <Container fluid style={{ ...styleForHorizontalCenter }}>
@@ -48,9 +93,20 @@ export default function Customer(props) {
               <br />
               <h2>Welcome to our banking app!</h2>
               <br />
-              <h3>What has brought you here!</h3>
+              <h3>What has brought you here today?</h3>
               <br />
+              <h4 style={{color : "var(--bs-success)", textShadow : "0pc 1px 5px white", textDecoration : "underline"}}>You currently have <span style={{color:"red"}}><b>{numAccounts}</b></span> accounts with us!</h4> 
+              <br/>
             </div>
+            <Button
+              variant='secondary'
+              size='lg'
+              style={{ width: '15rem', margin: '0 auto' }}
+              onClick={handleCreate}
+            >
+              Add New Account +
+            </Button>
+            <br/>
             <Button
               variant='primary'
               size='lg'
@@ -96,7 +152,7 @@ export default function Customer(props) {
             </Button>
             <br />
             <Button
-              onClick={(e) => handleSubmit(e)}
+              onClick={handleSubmit}
               variant='success'
               size='lg'
               style={{ width: '15rem', margin: '0 auto' }}
