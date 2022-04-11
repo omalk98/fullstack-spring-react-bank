@@ -6,21 +6,18 @@ import com.bank.backend.transaction.Transaction;
 import com.bank.backend.transaction.TransactionService;
 import com.bank.backend.transaction.TransactionType;
 import com.bank.backend.userAccount.UserAccount;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 @Service
+@AllArgsConstructor
 public class BankAccountService {
     private final BankAccountRepository bankAccountRepository;
     private final TransactionRepository transactionRepository;
 
-    @Autowired
-    public BankAccountService(BankAccountRepository bankAccountRepository, TransactionRepository transactionRepository, UserAccountRepository userAccountRepository) {
-        this.bankAccountRepository = bankAccountRepository;
-        this.transactionRepository = transactionRepository;
-    }
 
     public Double getBalance(Long acctNum) {
         Optional<BankAccount> bankAccount =

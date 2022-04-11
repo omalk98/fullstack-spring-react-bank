@@ -38,6 +38,7 @@ public class UserAccountService implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
     private final ConfirmationTokenService confirmationTokenService;
     private final BankAccountRepository bankRepository;
+    private final BankAccountService bankService;
 
     public List<UserAccount> getUsers() {
         return userRepository.findAll();
@@ -101,12 +102,10 @@ public class UserAccountService implements UserDetailsService {
 
     public boolean addBankAccount(Long userId) {
         Optional<UserAccount> ua = userRepository.findById(userId);
-
+        System.out.println("hello world thththttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt");
         if(ua.isPresent()) {
             BankAccount ba = new BankAccount(0.0, ua.get());
-            BankAccountService bas = new BankAccountService(bankRepository,
-                    null ,null);
-            bas.addBankAccount(ba);
+            bankService.addBankAccount(ba);
             return true;
         }
         return false;
