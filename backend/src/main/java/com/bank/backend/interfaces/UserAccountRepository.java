@@ -10,18 +10,31 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 /**
- *
+ * The repository for interfacing with the user entity.
  */
 @Repository
 @Transactional(readOnly = true)
 public interface UserAccountRepository extends JpaRepository<UserAccount, Long> {
 
+    /**
+     * @param email The email by which a user will be found
+     * @return The account of the found user.
+     */
     @Query("SELECT u FROM UserAccount u WHERE u.email = ?1")
     Optional<UserAccount> findUserAccountByEmail(String email);
 
+    /**
+     * @param username The username by which a user will be found.
+     * @return The account of the found user.
+     */
     @Query("SELECT u FROM UserAccount u WHERE u.username = ?1")
     Optional<UserAccount> findUserAccountByUsername(String username);
 
+    /**
+     * Sets enabled to true.
+     * @param email The email by which a user will be found.
+     * @return The status of the update.
+     */
     @Transactional
     @Modifying
     @Query("""

@@ -7,6 +7,9 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * Records all transactions made between bank accounts
+ */
 @Getter
 @Setter
 @NoArgsConstructor
@@ -37,6 +40,13 @@ public class Transaction implements Serializable {
     @JoinColumn(name = "destination")
     private BankAccount destination;
 
+    /**
+     * The constructor for a transaction.
+     * @param value The amount of money that was part of the transaction.
+     * @param source The bank account from which the money is moved from.
+     * @param destination The bank account from which the money is moved to.
+     * @param transactionType The type of the transaction (WITHDRAW, DEPOSIT, TRANSFER)
+     */
     public Transaction(Double value, BankAccount source,
                        BankAccount destination, TransactionType transactionType) {
         this.value = value;

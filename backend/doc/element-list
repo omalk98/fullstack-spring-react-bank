@@ -1,0 +1,15 @@
+com.bank.backend
+com.bank.backend.bankaccount
+com.bank.backend.bankAccountTest
+com.bank.backend.interfaces
+com.bank.backend.security.access
+com.bank.backend.security.config
+com.bank.backend.security.filter
+com.bank.backend.security.password
+com.bank.backend.transaction
+com.bank.backend.transactionTest
+com.bank.backend.userAccount
+com.bank.backend.userAccount.registration
+com.bank.backend.userAccount.registration.email
+com.bank.backend.userAccount.registration.token
+com.bank.backend.userAccountTest

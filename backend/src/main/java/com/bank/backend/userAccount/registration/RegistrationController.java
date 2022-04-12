@@ -19,6 +19,11 @@ public class RegistrationController {
 
     private final RegistrationService registrationService;
 
+    /**
+     *
+     * @param request The body of the request.
+     * @return The status and the registration token.
+     */
     @PostMapping("register")
     public ResponseEntity<String> register(@RequestBody RegistrationRequest request) {
         return ResponseEntity
@@ -26,6 +31,11 @@ public class RegistrationController {
                 .body(registrationService.register(request));
     }
 
+    /**
+     *
+     * @param token The confirmation token.
+     * @return The confirmation status.
+     */
     @GetMapping(path = "confirm")
     public String confirm(@RequestParam("token") String token) {
         return registrationService.confirmToken(token);
