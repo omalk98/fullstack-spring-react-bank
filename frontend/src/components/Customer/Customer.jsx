@@ -82,39 +82,39 @@ export default function Customer(props) {
     var config = {
       method: 'post',
       url: `http://localhost:8080/api/users/createAccount?userId=${props.user?.id}`,
-      headers: { 
-        'Authorization': props.user?.access_token
-      }
+      headers: {
+        Authorization: props.user?.access_token,
+      },
     };
-    
-    axios(config)
-    .then(function (response) {
-      navigate('/customer/balance');
-    })
-    .catch(function (error) {
-      if (error.response.status === 403) {
-        var config = {
-          method: 'get',
-          url: 'http://localhost:8080/api/token/refresh',
-          headers: {
-            Authorization: props.user.refresh_token,
-          },
-          data: '',
-        };
 
-        axios(config)
-          .then(function (response) {
-            let updateUser = props.user;
-            updateUser.access_token = response.data.access_token;
-            updateUser.refresh_token = response.data.refresh_token;
-          })
-          .catch(function (error) {
-            navigate('/');
-            localStorage.setItem('isAuthenticated', false);
-          });
-      }
-    });
-  }
+    axios(config)
+      .then(function (response) {
+        navigate('/customer/balance');
+      })
+      .catch(function (error) {
+        if (error.response.status === 403) {
+          var config = {
+            method: 'get',
+            url: 'http://localhost:8080/api/token/refresh',
+            headers: {
+              Authorization: props.user.refresh_token,
+            },
+            data: '',
+          };
+
+          axios(config)
+            .then(function (response) {
+              let updateUser = props.user;
+              updateUser.access_token = response.data.access_token;
+              updateUser.refresh_token = response.data.refresh_token;
+            })
+            .catch(function (error) {
+              navigate('/');
+              localStorage.setItem('isAuthenticated', false);
+            });
+        }
+      });
+  };
 
   return (
     <Container fluid style={{ ...styleForHorizontalCenter }}>
@@ -123,15 +123,31 @@ export default function Customer(props) {
           <Card style={paperStyle}>
             <div style={{ color: 'black' }}>
               <h1>
-                Hello {props.user?.firstName} {props.user?.lastName}!
+                Hello{' '}
+                <span style={{ color: 'green' }}>
+                  {props.user?.firstName} {props.user?.lastName}
+                </span>
+                !
               </h1>
               <br />
               <h2>Welcome to our banking app!</h2>
               <br />
               <h3>What has brought you here today?</h3>
               <br />
-              <h4 style={{color : "var(--bs-success)", textShadow : "0pc 1px 5px white", textDecoration : "underline"}}>You currently have <span style={{color:"red"}}><b>{numAccounts}</b></span> accounts with us!</h4> 
-              <br/>
+              <h4
+                style={{
+                  color: 'var(--bs-success)',
+                  textShadow: '0pc 1px 5px white',
+                  textDecoration: 'underline',
+                }}
+              >
+                You currently have{' '}
+                <span style={{ color: 'red' }}>
+                  <b>{numAccounts}</b>
+                </span>{' '}
+                accounts with us!
+              </h4>
+              <br />
             </div>
             <Button
               variant='secondary'
@@ -141,7 +157,7 @@ export default function Customer(props) {
             >
               Add New Account +
             </Button>
-            <br/>
+            <br />
             <Button
               variant='primary'
               size='lg'
