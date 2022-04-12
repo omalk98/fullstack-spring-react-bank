@@ -218,6 +218,7 @@ export default function Deposit(props) {
                       </Dropdown.Item>
                     ))}
                   </DropdownButton>
+                  {selectedAccountNo && <span style={{position: "absolute", transform: "translate(185px, -38px)"}} class="input-group-text" id="basic-addon1">{selectedAccountNo}</span>}
                 </Col>
               </Row>
             </InputGroup>
