@@ -230,6 +230,7 @@ export default function Transfer(props) {
                 </Dropdown.Item>
               ))}
             </DropdownButton>
+            {from && <span style={{position: "absolute", transform: "translate(-46px, -42px)"}} class="input-group-text" id="basic-addon1">{from}</span>}
           </Col>
           <Col>
             <DropdownButton
@@ -254,6 +255,7 @@ export default function Transfer(props) {
                 </Dropdown.Item>
               ))}
             </DropdownButton>
+            {to && <span style={{position: "absolute", transform: "translate(85px, -42px)"}} class="input-group-text" id="basic-addon1">{to}</span>}
           </Col>
         </Row>
         <br></br>

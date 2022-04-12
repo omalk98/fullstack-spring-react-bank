@@ -29,19 +29,6 @@ export default function NotFound() {
         <Col>
           <Card style={paperStyle}>
             <Alert variant='danger'>404 - Page not found!</Alert>
-            {localStorage.getItem('isAuthenticated') === 'true' ? (
-              <Button
-                onClick={() => {
-                  navigate('/customer');
-                }}
-                variant='primary'
-                size='lg'
-                style={{ width: '15rem', textAlign: 'center' }}
-                className='m-auto'
-              >
-                Go to Customer Page
-              </Button>
-            ) : (
               <Button
                 variant='primary'
                 size='lg'
@@ -53,7 +40,6 @@ export default function NotFound() {
               >
                 Go to Login Page
               </Button>
-            )}
           </Card>
         </Col>
       </Row>
