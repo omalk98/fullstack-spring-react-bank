@@ -68,7 +68,6 @@ public class BankAccountController {
      */
     @PutMapping(path = "withdraw")
     public boolean withdraw(Long acctNum, Double amount){
-        System.out.println("withdrawal///////////////////////////////////////////////////////////////////////////////////////////////////////");
         return bankAccountService.withdraw(acctNum, amount);
     }
 
